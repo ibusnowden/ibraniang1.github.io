@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Ibra Niang</title>
+  <meta name="color-scheme" content="dark" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="top-nav" aria-label="Primary">
+      <a class="top-link" href="index.html">home</a>
+      <a class="top-link" href="projects.html">projects</a>
+      <a class="top-link is-active" href="blog.html">blog</a>
+      <a class="top-link" href="reading.html">reading</a>
+      <a class="top-link" href="school.html">school</a>
+    </nav>
+  </header>
+
+  <main id="content" class="container">
+    <section class="section">
+      <h2>Blog</h2>
+      <p class="muted">Short write-ups on VLMs, training, kernels, and building research tooling.</p>
+
+      <div class="post-list">
+        <a class="post" href="#">
+          <div class="post-meta">Jan 29, 2026</div>
+          <div class="post-title">Your first post title</div>
+          <div class="post-snippet">What you learned, what you built, and the key takeaways…</div>
+        </a>
+
+        <!-- Add more posts the same way -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="muted">© 2026 Ibra Niang.</p>
+    </footer>
+  </main>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
