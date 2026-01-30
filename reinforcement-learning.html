@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ibra Niang — Reinforcement Learning</title>
+
+  <meta name="description" content="Reinforcement Learning reading list." />
+  <meta name="color-scheme" content="dark" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="top-nav" aria-label="Primary">
+      <a class="top-link" href="index.html">home</a>
+      <a class="top-link" href="projects.html">projects</a>
+      <a class="top-link" href="blog.html">blog</a>
+      <a class="top-link is-active" href="reading.html">reading list</a>
+      <a class="top-link" href="school.html">school</a>
+    </nav>
+  </header>
+
+  <main id="content" class="container">
+    <section class="section">
+      <h2>Reinforcement Learning</h2>
+
+      <h3>On-policy</h3>
+      <ul class="clean-list">
+        <li><a href="https://rlhfbook.com/c/11-policy-gradients.html" target="_blank" rel="noreferrer">Policy gradients (KPT blog)</a></li>
+        <li><a href="https://docs.cleanrl.dev/rl-algorithms/ppo/#video-tutorial" target="_blank" rel="noreferrer">PPO video tutorial (CleanRL)</a></li>
+        <li><a href="https://openai.com/index/openai-baselines-ppo/" target="_blank" rel="noreferrer">OpenAI Baselines PPO</a></li>
+        <li><a href="https://arxiv.org/abs/1506.02438" target="_blank" rel="noreferrer">Generalized Advantage Estimation (GAE) paper</a></li>
+        <li>Costa 37 PPO blogpost</li>
+        <li><a href="https://thinkingmachines.ai/blog/on-policy-distillation/" target="_blank" rel="noreferrer">On-policy distillation</a></li>
+      </ul>
+
+      <h3>Off-policy</h3>
+      <ul class="clean-list">
+        <li><a href="https://arxiv.org/abs/1312.5602" target="_blank" rel="noreferrer">DQN</a> (read then skip to Rainbow)</li>
+        <li><a href="https://arxiv.org/abs/1710.02298" target="_blank" rel="noreferrer">Rainbow</a></li>
+      </ul>
+
+      <h3>Resources</h3>
+      <ul class="clean-list">
+        <li><a href="https://github.com/Paulescu/hands-on-rl" target="_blank" rel="noreferrer">Hands-on RL (GitHub)</a></li>
+        <li><a href="https://docs.unsloth.ai/get-started/reinforcement-learning-rl-guide" target="_blank" rel="noreferrer">Unsloth RL guide</a></li>
+        <li><a href="https://blog.gopenai.com/the-llm-training-journey-from-sft-to-ppo-dpo-grpo-explained-4fe65b8711fd" target="_blank" rel="noreferrer">LLM training journey: SFT → PPO/DPO/GRPO</a></li>
+        <li><a href="https://huyenchip.com/2023/05/02/rlhf.html" target="_blank" rel="noreferrer">RLHF (Huyen Chip)</a></li>
+        <li><a href="https://pub.towardsai.net/grpo-and-deepseek-r1-zero-9e81f15c6ba2" target="_blank" rel="noreferrer">GRPO and DeepSeek R1 Zero</a></li>
+        <li><a href="https://arxiv.org/pdf/2412.05265" target="_blank" rel="noreferrer">Reinforcement Learning An Overview by K. Murphy</a></li>
+        <li><a href="https://www.nature.com/articles/s41586-025-09761-x" target="_blank" rel="noreferrer">Discovering state-of-the-art reinforcement learning algorithms. DeepMind</a></li>
+        <li><a href="https://andyljones.com/posts/rl-debugging.html" target="_blank" rel="noreferrer">RL debugging (Andy L. Jones) — read the paper at the top</a></li>
+      </ul>
+
+      <h3>Projects / ideas</h3>
+      <ul class="clean-list">
+        <li><a href="https://github.com/google-deepmind/disco_rl" target="_blank" rel="noreferrer">DiscoRL (DeepMind)</a> — reimplementation in PyTorch and training.</li>
+        <li>No AI use. Only autocomplete and docs. After Codex/OP review.</li>
+        <li>Nanomoe</li>
+        <li>Mira MHC (try different optimizer from NVIDIA) and Pandey MLP — all train runs on MLRun.</li>
+      </ul>
+
+      <h3>Notes</h3>
+      <ul class="clean-list">
+        <li>World Models by David Ha and saved LeCun Twitter post explanation.</li>
+        <li>Paper on top of Andy Jones (see RL debugging link above).</li>
+        <li>Kaparthy last 30M models ideas.</li>
+        <li><a href="https://spinningup.openai.com/" target="_blank" rel="noreferrer">Spinning Up</a> (OpenAI).</li>
+        <li>OpenAI Five paper · AlphaStar · Learning Dexterity · Emergent Tool Use · Capture the Flag · AlphaGo.</li>
+        <li>How do you know what lines of work are promising?</li>
+        <li>OpenAI blog on how AI training scales and scaling laws for single-agent RL.</li>
+        <li>Look at RL scaling compute and RL scaling discussed from Grok chat.</li>
+        <li>Most promising: rerun old work with more experiments on faster envs (Puffer and others) to run hundreds per GPU/day.</li>
+        <li>RL deals with high-performance distributed simulation. Get your hands dirty with async multiprocessing and writing envs from scratch in C.</li>
+        <li>Skim Sutton book and other.</li>
+        <li>Opinion guide: read PufferLib docs on writing your own env.</li>
+        <li>Blog posts are often more accessible than papers. Start there, then read the full papers if doing research.</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p class="muted">© 2026 Ibra Niang. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
