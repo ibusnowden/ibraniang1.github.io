@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>From ~0.15 to ~0.60 Reward - Ibra Niang</title>
+  <meta name="color-scheme" content="dark" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="top-nav" aria-label="Primary">
+      <a class="top-link" href="index.html">home</a>
+      <a class="top-link" href="projects.html">projects</a>
+      <a class="top-link is-active" href="blog.html">blog</a>
+      <a class="top-link" href="reading.html">reading list</a>
+      <a class="top-link" href="school.html">school</a>
+    </nav>
+  </header>
+
+  <main id="content" class="container">
+    <section class="section">
+      <div class="post-meta">Jan 30, 2026</div>
+      <h2>From ~0.15 to ~0.60 Reward: Fast RL Gains on Low-Resource Translation with Small Tweaks</h2>
+
+      <div class="prose">
+        <p>
+          Low-resource language translation is one of the clearest places where modern LLMs still underperform.
+          For many communities, that gap is not academic - it affects access to information, education, and public services.
+        </p>
+        <p>
+          In this project, we built a low-resource translation environment with Prime Intellect Verifiers and trained on Hosted Training.
+          The interesting part: we got a large reward jump with a handful of practical changes, not a huge architecture overhaul.
+        </p>
+
+        <h3>Why this problem matters</h3>
+        <p>
+          Most model pretraining data is heavily skewed toward high-resource languages.
+          That creates a quality cliff for low-resource languages like Yoruba, Swahili, and Welsh, especially for faithful translation under strict format constraints.
+        </p>
+        <p>We wanted a setup that is measurable, reproducible, and easy to iterate in RL.</p>
+
+        <h3>Environment setup (Verifiers + Hosted Training)</h3>
+        <p>We implemented a custom Verifiers environment: <strong>low-resource-translation</strong>.</p>
+        <p>
+          Environment link:
+          <a href="https://app.primeintellect.ai/dashboard/environments/ibra-niang/low-resource-translation" target="_blank" rel="noreferrer">
+            Prime Intellect Environment Dashboard
+          </a>
+        </p>
+        <p><strong>Environment reward rubric (dense + practical):</strong></p>
+<pre><code>rubric = vf.Rubric(
+    funcs=[chrf_score, threshold_bonus, format_length_reward],
+    weights=[0.85, 0.15, 0.05],
+)
+</code></pre>
+        <p><strong>Dataset</strong></p>
+        <ul>
+          <li>FLORES-200 sentence files</li>
+          <li>English-pivoted translation directions:</li>
+          <li>from_english (English -&gt; low-resource)</li>
+          <li>to_english (low-resource -&gt; English)</li>
+        </ul>
+
+        <h3>Why this implementation detail mattered</h3>
+        <p>
+          The Hugging Face <strong>facebook/flores</strong> loader script is not compatible with <strong>datasets==4.x</strong> script loading behavior.
+          So we moved to a script-free loader path: direct FLORES sentence files + caching.
+          That made training and eval stable in our runtime.
+        </p>
+
+        <h3>Reward design (current)</h3>
+        <p>We designed reward signals with three simple pieces:</p>
+        <ul>
+          <li><strong>chrf_score:</strong> dense continuous translation-quality signal.</li>
+          <li><strong>threshold_bonus:</strong> extra reward when output crosses a target quality bar.</li>
+          <li><strong>format_length_reward:</strong> small auxiliary term to discourage rambling and formatting drift.</li>
+        </ul>
+        <p>We also keep metrics like length_ratio, exact_match, and num_turns for diagnosis.</p>
+
+        <h3>Model and training config (example)</h3>
+<pre><code>model = "Qwen/Qwen3-30B-A3B-Instruct-2507"
+max_steps = 200
+batch_size = 64
+rollouts_per_example = 2
+# max_async_level = 1
+# learning_rate = 5e-5
+# lora_alpha = 16
+# env_file = ["secrets.env"]
+</code></pre>
+
+        <h3>Run 1 (baseline): reward moved ~0.15 -&gt; ~0.30</h3>
+        <p>
+          In the first run, reward started near 0.15 and trended up to roughly 0.30 by the end of training.
+          That was a good "it learns" signal, but still noisy, with broad reward spread and many low-quality outputs.
+        </p>
+        <figure>
+          <img src="assets/convo.png" alt="Low-resource translation conversation example output" style="width:100%; border:1px solid rgba(233,233,234,0.12); border-radius:14px;" />
+          <figcaption class="muted">Translation example from the environment.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/run1.png" alt="Run 1 dashboard showing reward around 0.15 to 0.30" style="width:100%; border:1px solid rgba(233,233,234,0.12); border-radius:14px;" />
+          <figcaption class="muted">Run 1 dashboard (baseline).</figcaption>
+        </figure>
+
+        <h3>Run 2 (after small tweaks): reward stabilized around ~0.59-0.60</h3>
+        <p>
+          After targeted changes, the second run shifted reward upward and much more consistently, with values clustering around 0.59-0.60
+          (and occasional higher bins).
+        </p>
+        <figure>
+          <img src="assets/run2.png" alt="Run 2 dashboard showing reward stabilized around 0.59 to 0.60" style="width:100%; border:1px solid rgba(233,233,234,0.12); border-radius:14px;" />
+          <figcaption class="muted">Run 2 dashboard (after small tweaks).</figcaption>
+        </figure>
+
+        <h3>The tweaks that moved reward quickly</h3>
+        <ul>
+          <li>
+            <strong>Start with easier curriculum first:</strong> train <strong>direction="to_english"</strong> first (Yoruba/Swahili), then add from_english.
+            This gives a cleaner supervision signal early and improves stability.
+          </li>
+          <li>
+            <strong>Make reward denser:</strong> shifted from sparse-ish weighting to a more continuous emphasis:
+            <strong>0.7/0.3 -&gt; 0.85/0.15</strong> (chrf_score / threshold_bonus), plus a small format/length auxiliary reward.
+          </li>
+          <li>
+            <strong>Lower threshold initially:</strong> chrf_threshold from 0.25 down to 0.18-0.22 for early learning.
+            Later, we can raise it once the model stabilizes.
+          </li>
+          <li>
+            <strong>Stabilize decoding:</strong> low temperature (~0.2) and tighter max tokens (128-192).
+            This reduced noisy outputs and improved reward consistency.
+          </li>
+          <li>
+            <strong>Reward output hygiene:</strong> the format/length reward helped reduce rambling and keep outputs closer to clean translation form.
+          </li>
+        </ul>
+
+        <h3>What we learned</h3>
+        <ul>
+          <li>Small reward-shaping and curriculum changes can dominate early RL gains.</li>
+          <li>Direction matters: to_english is often an easier starting curriculum.</li>
+          <li>Output discipline matters: decoding + format reward can materially improve training signal quality.</li>
+          <li>Infrastructure details matter too: data-loading compatibility can be the hidden blocker before model quality.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p class="muted">© 2026 Ibra Niang.</p>
+    </footer>
+  </main>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
