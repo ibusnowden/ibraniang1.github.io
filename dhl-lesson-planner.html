@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dHL Lesson Planner - AI-Assisted Lesson Planning</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&family=Source+Serif+4:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6f9;
+    --bg-warm: #eef2f7;
+    --surface: #ffffff;
+    --surface-hover: #f8f9fb;
+    --border: #dde3eb;
+    --border-light: #e8ecf1;
+    --text: #1e2a3a;
+    --text-secondary: #4a5a6e;
+    --text-muted: #8e9bac;
+    --blue: #2e7bbc;
+    --blue-dark: #265f94;
+    --blue-dim: rgba(46,123,188,0.07);
+    --blue-border: rgba(46,123,188,0.2);
+    --orange: #e8983e;
+    --orange-hover: #d68832;
+    --orange-dim: rgba(232,152,62,0.07);
+    --orange-border: rgba(232,152,62,0.2);
+    --green: #5bab4e;
+    --green-dim: rgba(91,171,78,0.07);
+    --green-border: rgba(91,171,78,0.2);
+    --cyan: #38b6d4;
+    --cyan-dim: rgba(56,182,212,0.06);
+    --radius: 10px;
+    --radius-sm: 7px;
+    --shadow-sm: 0 1px 3px rgba(30,42,58,0.05);
+    --shadow-md: 0 4px 16px rgba(30,42,58,0.07);
+    --shadow-lg: 0 8px 32px rgba(30,42,58,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Nunito Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+  .header { background: var(--blue); padding: 0 32px; height: 58px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(46,123,188,0.2); }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .logo-mark { width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 12px; border: 1px solid rgba(255,255,255,0.15); }
+  .logo-text { font-size: 16px; font-weight: 700; color: #fff; }
+  .header-nav { display: flex; align-items: center; gap: 4px; }
+  .nav-link { font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,0.8); text-decoration: none; padding: 7px 14px; border-radius: var(--radius-sm); transition: all 0.15s; cursor: pointer; }
+  .nav-link:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--orange); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 13px; margin-left: 10px; cursor: pointer; border: 2px solid rgba(255,255,255,0.25); }
+
+  .page-container { max-width: 860px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  .stepper { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 32px; padding: 0 10px; }
+  .step { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+  .step-number { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 2px solid var(--border); color: var(--text-muted); background: var(--surface); transition: all 0.3s; flex-shrink: 0; }
+  .step-label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); transition: color 0.3s; }
+  .step-connector { width: 36px; height: 2px; background: var(--border); margin: 0 5px; border-radius: 1px; transition: background 0.3s; }
+  .step.active .step-number { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 2px 8px rgba(46,123,188,0.25); }
+  .step.active .step-label { color: var(--blue); }
+  .step.done .step-number { background: var(--green); border-color: var(--green); color: #fff; }
+  .step.done .step-label { color: var(--green); }
+  .step-connector.done { background: var(--green); }
+
+  .screen { display: none; animation: fadeSlideIn 0.3s ease; }
+  .screen.active { display: block; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden; }
+  .card-header { padding: 22px 28px 18px; border-bottom: 1px solid var(--border-light); background: linear-gradient(180deg, #f8fafc 0%, #fff 100%); }
+  .card-header h2 { font-size: 19px; font-weight: 800; letter-spacing: -0.2px; margin-bottom: 3px; }
+  .card-header p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; }
+  .card-body { padding: 24px 28px 28px; }
+
+  .form-group { margin-bottom: 20px; }
+  .form-group:last-child { margin-bottom: 0; }
+  .form-label { display: block; font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .form-label .optional { font-weight: 500; color: var(--text-muted); font-size: 12px; }
+  .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+
+  .form-input, .form-textarea, .form-select { width: 100%; padding: 10px 14px; font-size: 14px; font-family: 'Nunito Sans', sans-serif; background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-sm); color: var(--text); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+  .form-input::placeholder, .form-textarea::placeholder { color: #b0bac8; }
+  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-dim); }
+  .form-textarea { min-height: 88px; resize: vertical; line-height: 1.5; }
+  .form-textarea.tall { min-height: 120px; }
+  .form-select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238e9bac' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .grade-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 8px; }
+  .grade-chip { padding: 8px 10px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.15s; background: #fff; color: var(--text-secondary); user-select: none; }
+  .grade-chip:hover { border-color: var(--blue-border); background: var(--blue-dim); }
+  .grade-chip.selected { border-color: var(--blue); background: var(--blue-dim); color: var(--blue); }
+
+  .checkbox-group { display: flex; flex-direction: column; gap: 8px; }
+  .checkbox-item { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); transition: all 0.15s; background: #fff; }
+  .checkbox-item:hover { border-color: var(--blue-border); background: var(--blue-dim); }
+  .checkbox-item.checked { border-color: var(--blue); background: var(--blue-dim); }
+  .checkbox-box { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .checkbox-item.checked .checkbox-box { background: var(--blue); border-color: var(--blue); }
+  .checkbox-box svg { width: 12px; height: 12px; stroke: #fff; opacity: 0; transition: opacity 0.15s; }
+  .checkbox-item.checked .checkbox-box svg { opacity: 1; }
+  .checkbox-label { font-size: 13.5px; font-weight: 600; color: var(--text); }
+  .checkbox-desc { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+  .resource-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .resource-card { border: 1.5px solid var(--border); border-radius: var(--radius); padding: 16px; transition: all 0.15s; cursor: pointer; background: #fff; }
+  .resource-card:hover { border-color: var(--blue-border); box-shadow: var(--shadow-sm); }
+  .resource-card.added { border-color: var(--green-border); background: var(--green-dim); }
+  .resource-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .resource-avatar { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .resource-avatar svg { width: 20px; height: 20px; }
+  .resource-avatar.expert { background: var(--blue-dim); }
+  .resource-avatar.expert svg { stroke: var(--blue); }
+  .resource-avatar.vr { background: var(--cyan-dim); }
+  .resource-avatar.vr svg { stroke: var(--cyan); }
+  .resource-name { font-size: 14px; font-weight: 700; }
+  .resource-role { font-size: 12px; color: var(--text-muted); }
+  .resource-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.45; margin-bottom: 12px; }
+  .resource-actions { display: flex; gap: 8px; }
+
+  .btn-small { padding: 5px 12px; font-size: 12px; font-weight: 700; font-family: 'Nunito Sans', sans-serif; border-radius: 5px; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: #fff; color: var(--text-secondary); }
+  .btn-small:hover { border-color: var(--blue); color: var(--blue); }
+  .btn-small.primary { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .btn-small.primary:hover { background: var(--orange-hover); }
+  .btn-small.added { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border-light); }
+
+  .search-bar { display: flex; gap: 10px; margin-bottom: 24px; }
+  .search-bar .form-input { flex: 1; }
+  .btn-search { padding: 10px 20px; background: var(--blue); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; font-family: 'Nunito Sans', sans-serif; cursor: pointer; transition: background 0.15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .btn-search:hover { background: var(--blue-dark); }
+  .btn-search svg { width: 16px; height: 16px; }
+
+  .form-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; }
+  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 22px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; font-family: 'Nunito Sans', sans-serif; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--border); background: #fff; color: var(--text-secondary); }
+  .btn:hover { background: var(--bg-warm); color: var(--text); }
+  .btn svg { width: 16px; height: 16px; }
+  .btn-primary { background: var(--orange); border-color: var(--orange); color: #fff; box-shadow: 0 2px 8px rgba(232,152,62,0.25); }
+  .btn-primary:hover { background: var(--orange-hover); border-color: var(--orange-hover); color: #fff; }
+  .btn-success { background: var(--green); border-color: var(--green); color: #fff; box-shadow: 0 2px 8px rgba(91,171,78,0.2); }
+  .btn-success:hover { background: #4f9a44; border-color: #4f9a44; color: #fff; }
+
+  .welcome-hero { text-align: center; padding: 56px 40px; }
+  .welcome-icon { width: 72px; height: 72px; margin: 0 auto 24px; border-radius: 50%; background: var(--blue-dim); border: 2px solid var(--blue-border); display: flex; align-items: center; justify-content: center; animation: float 3s ease-in-out infinite; }
+  .welcome-icon svg { width: 32px; height: 32px; stroke: var(--blue); }
+  .welcome-hero h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 10px; line-height: 1.25; }
+  .welcome-hero h1 .blue { color: var(--blue); }
+  .welcome-hero p { font-size: 15px; color: var(--text-secondary); max-width: 420px; margin: 0 auto 28px; line-height: 1.6; font-family: 'Source Serif 4', serif; }
+  .feature-pills { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+  .feature-pill { display: inline-flex; align-items: center; gap: 5px; padding: 6px 13px; background: var(--bg-warm); border: 1px solid var(--border); border-radius: 20px; font-size: 12.5px; font-weight: 600; color: var(--text-secondary); }
+  .feature-pill svg { width: 14px; height: 14px; }
+  .feature-pill.blue svg { stroke: var(--blue); }
+  .feature-pill.orange svg { stroke: var(--orange); }
+  .feature-pill.green svg { stroke: var(--green); }
+  .feature-pill.cyan svg { stroke: var(--cyan); }
+
+  .confirm-center { text-align: center; padding: 56px 40px; }
+  .confirm-check { width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 50%; background: var(--green-dim); border: 2px solid var(--green-border); display: flex; align-items: center; justify-content: center; animation: scaleIn 0.4s ease; }
+  .confirm-check svg { width: 30px; height: 30px; stroke: var(--green); }
+  .confirm-center h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+  .confirm-center p { font-size: 15px; color: var(--text-secondary); margin-bottom: 28px; font-family: 'Source Serif 4', serif; }
+  .confirm-actions { display: flex; justify-content: center; gap: 12px; }
+
+  .login-overlay { display: none; position: fixed; inset: 0; background: rgba(30,42,58,0.35); backdrop-filter: blur(6px); z-index: 200; align-items: center; justify-content: center; }
+  .login-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+  .login-card { background: #fff; border-radius: 12px; width: 400px; max-width: 90%; box-shadow: var(--shadow-lg); overflow: hidden; animation: slideUp 0.3s ease; }
+  .login-card-top { background: var(--blue); padding: 24px 28px; text-align: center; }
+  .login-card-top h3 { font-size: 19px; font-weight: 700; color: #fff; }
+  .login-card-top p { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 4px; }
+  .login-body { padding: 24px 28px 12px; }
+  .login-btn { width: 100%; padding: 12px; background: var(--orange); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; font-family: 'Nunito Sans', sans-serif; cursor: pointer; transition: background 0.15s; margin-top: 4px; }
+  .login-btn:hover { background: var(--orange-hover); }
+  .login-footer { text-align: center; padding: 16px 28px 24px; font-size: 13px; color: var(--text-muted); }
+  .login-footer a { color: var(--blue); text-decoration: none; font-weight: 700; cursor: pointer; }
+
+  .ai-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: var(--blue); background: var(--blue-dim); padding: 3px 9px; border-radius: 10px; margin-left: 6px; vertical-align: middle; border: 1px solid var(--blue-border); }
+  .ai-tag svg { width: 12px; height: 12px; }
+
+  .footer { text-align: center; padding: 24px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-light); margin-top: 48px; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scaleIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+  @media (max-width: 700px) {
+    .stepper { overflow-x: auto; justify-content: flex-start; }
+    .step-label { display: none; }
+    .resource-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .page-container { padding: 20px 16px 60px; }
+    .card-header, .card-body { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo-mark">dHL</div>
+    <div class="logo-text">dHL Lesson Planner</div>
+  </div>
+  <div class="header-nav">
+    <a class="nav-link" href="#">Home</a>
+    <a class="nav-link" href="#">My Profile</a>
+    <a class="nav-link" onclick="showLogin()">Login</a>
+    <div class="avatar" onclick="showLogin()">JD</div>
+  </div>
+</header>
+
+<div class="page-container">
+  <div class="stepper" id="stepper">
+    <div class="step active" data-step="0"><div class="step-number">1</div><span class="step-label">Welcome</span></div>
+    <div class="step-connector"></div>
+    <div class="step" data-step="1"><div class="step-number">2</div><span class="step-label">Details</span></div>
+    <div class="step-connector"></div>
+    <div class="step" data-step="2"><div class="step-number">3</div><span class="step-label">Curriculum</span></div>
+    <div class="step-connector"></div>
+    <div class="step" data-step="3"><div class="step-number">4</div><span class="step-label">Connections</span></div>
+    <div class="step-connector"></div>
+    <div class="step" data-step="4"><div class="step-number">5</div><span class="step-label">Finalize</span></div>
+    <div class="step-connector"></div>
+    <div class="step" data-step="5"><div class="step-number">6</div><span class="step-label">Done</span></div>
+  </div>
+
+  <!-- SCREEN 0: Welcome -->
+  <div class="screen active" data-screen="0">
+    <div class="card">
+      <div class="welcome-hero">
+        <div class="welcome-icon">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
+        </div>
+        <h1>Welcome to the <span class="blue">AI-Assisted</span><br>Lesson Planner</h1>
+        <p>Start creating engaging and effective lesson plans with the power of AI and the <strong>Digital Human Library</strong>.</p>
+        <div class="feature-pills">
+          <span class="feature-pill blue"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347"/></svg>Curriculum-aligned</span>
+          <span class="feature-pill orange"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg>Expert connections</span>
+          <span class="feature-pill green"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12"/></svg>AI-powered</span>
+          <span class="feature-pill cyan"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3"/></svg>Virtual tours & VR</span>
+        </div>
+        <button class="btn btn-primary" onclick="goTo(1)" style="font-size:15px; padding: 12px 32px;">Start New Lesson Plan <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 1: Lesson Details -->
+  <div class="screen" data-screen="1">
+    <div class="card">
+      <div class="card-header">
+        <h2>Lesson Details Input <span class="ai-tag"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12"/></svg> AI Assist</span></h2>
+        <p>Fill in the core details for your lesson. AI will help refine your content.</p>
+      </div>
+      <div class="card-body">
+        <div class="form-group"><label class="form-label">Lesson Title</label><input type="text" class="form-input" placeholder="e.g. Introduction to Ecosystems"></div>
+        <div class="form-group"><label class="form-label">Lesson Overview</label><textarea class="form-textarea tall" placeholder="Describe the main focus and activities of this lesson..."></textarea></div>
+        <div class="form-group"><label class="form-label">Learning Goals</label><textarea class="form-textarea" placeholder="What should students understand or be able to do?"></textarea></div>
+        <div class="section-label" style="margin-top:24px;">Assessment</div>
+        <div class="form-group"><label class="form-label">Formative Assessment</label><input type="text" class="form-input" placeholder="observations, conversations, products"></div>
+        <div class="form-group"><label class="form-label">Summative Assessment</label><input type="text" class="form-input" placeholder="observations, conversations, products"></div>
+        <div class="form-group"><label class="form-label">Evaluation</label><textarea class="form-textarea" placeholder="How will student learning be measured?"></textarea></div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn" onclick="goTo(0)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg> Back</button>
+      <button class="btn btn-primary" onclick="goTo(2)">Next <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Curriculum -->
+  <div class="screen" data-screen="2">
+    <div class="card">
+      <div class="card-header"><h2>Curriculum & Grade Selection</h2><p>Select grade levels and align with curriculum standards.</p></div>
+      <div class="card-body">
+        <div class="form-group">
+          <label class="form-label">Grade Levels</label>
+          <div class="grade-grid">
+            <div class="grade-chip" onclick="toggleGrade(this)">Kindergarten</div>
+            <div class="grade-chip" onclick="toggleGrade(this)">Grade 1</div>
+            <div class="grade-chip" onclick="toggleGrade(this)">Grade 2</div>
+            <div class="grade-chip" onclick="toggleGrade(this)">Grade 3</div>
+            <div class="grade-chip selected" onclick="toggleGrade(this)">Grade 4</div>
+            <div class="grade-chip selected" onclick="toggleGrade(this)">Grade 5</div>
+            <div class="grade-chip" onclick="toggleGrade(this)">Grade 6</div>
+            <div class="grade-chip" onclick="toggleGrade(this)">Grade 7</div>
+            <div class="grade-chip" onclick="toggleGrade(this)">Grade 8</div>
+            <div class="grade-chip" onclick="toggleGrade(this)">Grade 9</div>
+            <div class="grade-chip" onclick="toggleGrade(this)">Grade 10</div>
+            <div class="grade-chip" onclick="toggleGrade(this)">Grade 11</div>
+            <div class="grade-chip" onclick="toggleGrade(this)">Grade 12</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Curriculum Subject Area(s)</label><input type="text" class="form-input" placeholder="Enter subject areas"></div>
+          <div class="form-group"><label class="form-label">Province / State</label><select class="form-select"><option>Select Province/State</option><option>Ontario</option><option>British Columbia</option><option>Alberta</option><option>Quebec</option></select></div>
+        </div>
+        <div class="form-group"><label class="form-label">Curriculum Strands and Expectations</label><textarea class="form-textarea tall" placeholder="Curriculum strands will load based on selections above..."></textarea><div class="form-hint">Auto-populates from grade, subject, and province.</div></div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn" onclick="goTo(1)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg> Back</button>
+      <button class="btn btn-primary" onclick="goTo(3)">Next <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: Connections -->
+  <div class="screen" data-screen="3">
+    <div class="card">
+      <div class="card-header"><h2>Real World Connections & Search</h2><p>Search the Digital Human Library for experts and virtual experiences.</p></div>
+      <div class="card-body">
+        <div class="search-bar">
+          <input type="text" class="form-input" placeholder="Search for experts or virtual tours...">
+          <button class="btn-search"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg> Search</button>
+        </div>
+        <div class="section-label">Experts</div>
+        <div class="resource-grid" style="margin-bottom:24px;">
+          <div class="resource-card added">
+            <div class="resource-top"><div class="resource-avatar expert"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg></div><div><div class="resource-name">Dr. Jane Doe</div><div class="resource-role">Marine Biologist · Climate Conservation</div></div></div>
+            <div class="resource-desc">Expert in ocean ecosystems and coral reef preservation. Available for live Q&A.</div>
+            <div class="resource-actions"><button class="btn-small added">✓ Added</button><button class="btn-small">View Details</button></div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-top"><div class="resource-avatar expert"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0"/></svg></div><div><div class="resource-name">Mr. John Smith</div><div class="resource-role">Aerospace Engineer · Space</div></div></div>
+            <div class="resource-desc">Specializes in satellite tech and planetary science. Great for K-12.</div>
+            <div class="resource-actions"><button class="btn-small primary">Add to Lesson</button><button class="btn-small">View Details</button></div>
+          </div>
+        </div>
+        <div class="section-label">Virtual Tours & VR</div>
+        <div class="resource-grid">
+          <div class="resource-card">
+            <div class="resource-top"><div class="resource-avatar vr"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3"/></svg></div><div><div class="resource-name">Great Barrier Reef Tour</div><div class="resource-role">360° Underwater</div></div></div>
+            <div class="resource-desc">Explore vibrant marine life in immersive 360°.</div>
+            <div class="resource-actions"><button class="btn-small primary">Add to Lesson</button><button class="btn-small">View Details</button></div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-top"><div class="resource-avatar vr"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3"/></svg></div><div><div class="resource-name">Ancient Rome VR</div><div class="resource-role">Historical Walkthrough</div></div></div>
+            <div class="resource-desc">Walk through the Roman Forum as it appeared 2,000 years ago.</div>
+            <div class="resource-actions"><button class="btn-small primary">Add to Lesson</button><button class="btn-small">View Details</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn" onclick="goTo(2)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg> Back</button>
+      <button class="btn btn-primary" onclick="goTo(4)">Next <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: Finalization -->
+  <div class="screen" data-screen="4">
+    <div class="card">
+      <div class="card-header"><h2>Lesson Plan Finalization</h2><p>Add final details - materials, technology, competencies, and resources.</p></div>
+      <div class="card-body">
+        <div class="form-group"><label class="form-label">Materials</label><textarea class="form-textarea" placeholder="List all materials required..."></textarea></div>
+        <div class="form-group"><label class="form-label">Technology</label><textarea class="form-textarea" placeholder="Describe technology used..."></textarea></div>
+        <div class="form-group">
+          <label class="form-label">Global Competencies Addressed</label>
+          <div class="checkbox-group">
+            <div class="checkbox-item checked" onclick="toggleCheck(this)"><div class="checkbox-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><div class="checkbox-label">Critical Thinking & Problem Solving</div><div class="checkbox-desc">Analyzing information and creating solutions</div></div></div>
+            <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><div class="checkbox-label">Innovation, Creativity & Entrepreneurship</div><div class="checkbox-desc">Generating original ideas and initiative</div></div></div>
+            <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><div class="checkbox-label">Self-Awareness & Self-Management</div><div class="checkbox-desc">Recognizing strengths and managing emotions</div></div></div>
+            <div class="checkbox-item checked" onclick="toggleCheck(this)"><div class="checkbox-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><div class="checkbox-label">Collaboration</div><div class="checkbox-desc">Working with diverse teams</div></div></div>
+            <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><div class="checkbox-label">Communication</div><div class="checkbox-desc">Expressing ideas clearly</div></div></div>
+            <div class="checkbox-item" onclick="toggleCheck(this)"><div class="checkbox-box"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><div><div class="checkbox-label">Global Citizenship & Sustainability</div><div class="checkbox-desc">Understanding global issues</div></div></div>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Activities & Tasks</label><textarea class="form-textarea tall" placeholder="Outline activities and tasks..."></textarea></div>
+        <div class="form-group"><label class="form-label">Additional Resources <span class="optional">(optional)</span></label><textarea class="form-textarea" placeholder="Websites, books, videos..."></textarea></div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn" onclick="goTo(3)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg> Back</button>
+      <button class="btn btn-success" onclick="goTo(5)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Finalize & Save Lesson Plan</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: Confirmation -->
+  <div class="screen" data-screen="5">
+    <div class="card">
+      <div class="confirm-center">
+        <div class="confirm-check"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div>
+        <h2>Lesson Plan Confirmed!</h2>
+        <p>Your lesson plan has been successfully saved.</p>
+        <div class="confirm-actions">
+          <button class="btn btn-primary"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg> View Lesson Plan</button>
+          <button class="btn" onclick="goTo(0)"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> Create New</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">© 2025 Digital Human Library. All rights reserved.</div>
+
+<!-- Login Modal -->
+<div class="login-overlay" id="loginOverlay" onclick="if(event.target===this)hideLogin()">
+  <div class="login-card">
+    <div class="login-card-top"><h3>dHL Log in</h3><p>Log in to view details and save your lesson plans</p></div>
+    <div class="login-body">
+      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="Enter your email"></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" placeholder="Enter your password"></div>
+      <button class="login-btn" onclick="hideLogin()">Log in</button>
+    </div>
+    <div class="login-footer">Not a dHL Member?<br><a href="#">Register here</a> | <a href="#">Forgot your password</a></div>
+  </div>
+</div>
+
+<script>
+  let currentStep = 0;
+  function goTo(step) {
+    currentStep = step;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelector('[data-screen="'+step+'"]').classList.add('active');
+    const steps = document.querySelectorAll('.step');
+    const connectors = document.querySelectorAll('.step-connector');
+    steps.forEach((s, i) => { s.classList.remove('active', 'done'); if (i < step) s.classList.add('done'); if (i === step) s.classList.add('active'); });
+    connectors.forEach((c, i) => { c.classList.remove('done'); if (i < step) c.classList.add('done'); });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function toggleGrade(el) { el.classList.toggle('selected'); }
+  function toggleCheck(el) { el.classList.toggle('checked'); }
+  function showLogin() { document.getElementById('loginOverlay').classList.add('active'); }
+  function hideLogin() { document.getElementById('loginOverlay').classList.remove('active'); }
+</script>
+</body>
+</html>
