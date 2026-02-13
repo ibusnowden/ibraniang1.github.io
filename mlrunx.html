@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MLRunX Python SDK - Ibra Niang</title>
+
+  <meta name="description" content="MLRunX Python SDK documentation." />
+  <meta name="color-scheme" content="dark" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="top-nav" aria-label="Primary">
+      <a class="top-link" href="index.html">home</a>
+      <a class="top-link is-active" href="projects.html">projects</a>
+      <a class="top-link" href="blog.html">blog</a>
+      <a class="top-link" href="reading.html">reading list</a>
+      <a class="top-link" href="school.html">school</a>
+    </nav>
+  </header>
+
+  <main id="content" class="container">
+    <section class="section doc">
+      <h2>MLRunX Python SDK</h2>
+      <p class="muted">Async, non-blocking ML experiment tracking SDK for Python.</p>
+
+      <h3>Installation</h3>
+      <pre><code>pip install mlrunx</code></pre>
+
+      <h3>Quick Start</h3>
+      <pre><code>import mlrunx
+
+# Initialize a run (works offline if server unavailable)
+run = mlrunx.init(
+    project="my-project",
+    name="training-run-1",
+    tags={"model": "resnet50", "dataset": "imagenet"},
+)
+
+# Log hyperparameters
+run.log_params({
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "optimizer": "adam",
+})
+
+# Training loop - logging is non-blocking!
+for step in range(1000):
+    loss, accuracy = train_step()
+    run.log({"loss": loss, "accuracy": accuracy}, step=step)
+
+# Finish (flushes all pending data)
+run.finish()</code></pre>
+
+      <h3>Using Context Manager</h3>
+      <pre><code>import mlrunx
+
+with mlrunx.init(project="my-project") as run:
+    run.log_params({"lr": 0.001})
+
+    for step in range(1000):
+        run.log({"loss": loss}, step=step)
+
+    # Automatically finished on exit</code></pre>
+
+      <h3>Features</h3>
+      <p><strong>Non-Blocking Logging</strong></p>
+      <p>All <code>log()</code> calls are non-blocking. Events are queued in memory and flushed in the background, ensuring your training loop runs at full speed.</p>
+      <pre><code># This won't slow down your training!
+for step in range(100000):
+    loss = train_step()  # Your expensive computation
+    run.log({"loss": loss}, step=step)  # &lt; 1us overhead</code></pre>
+
+      <p><strong>Adaptive Batching</strong></p>
+      <p>Events are batched intelligently before being sent:</p>
+      <ul class="clean-list">
+        <li>Size trigger: flush when batch reaches max items (default: 1000).</li>
+        <li>Bytes trigger: flush when batch reaches max bytes (default: 1MB).</li>
+        <li>Time trigger: flush after max age (default: 1 second).</li>
+      </ul>
+      <p>Configure via environment variables:</p>
+      <pre><code>export MLRUNX_BATCH_SIZE=500
+export MLRUNX_BATCH_MAX_BYTES=500000
+export MLRUNX_BATCH_TIMEOUT_MS=2000</code></pre>
+
+      <p><strong>Metric Coalescing</strong></p>
+      <p>When logging the same metric multiple times at the same step, only the latest value is sent (configurable):</p>
+      <pre><code># Only the last value (0.3) is sent for step 0
+run.log({"loss": 0.5}, step=0)
+run.log({"loss": 0.4}, step=0)
+run.log({"loss": 0.3}, step=0)</code></pre>
+      <p>Disable with:</p>
+      <pre><code>export MLRUNX_COALESCE_METRICS=false</code></pre>
+
+      <p><strong>Offline Mode &amp; Disk Spool</strong></p>
+      <p>If the server is unavailable, events are automatically spooled to disk and synced when the connection is restored:</p>
+      <pre><code># Works even if server is down!
+run = mlrunx.init(project="my-project")
+print(run.is_offline)  # True if server unavailable
+
+# Events are saved to ~/.mlrunx/spool/
+for step in range(1000):
+    run.log({"loss": loss}, step=step)
+
+# When server comes back online, data syncs automatically</code></pre>
+      <p>Configure spool settings:</p>
+      <pre><code>export MLRUNX_SPOOL_ENABLED=true
+export MLRUNX_SPOOL_DIR=~/.mlrunx/spool
+export MLRUNX_SPOOL_MAX_SIZE=100000000  # 100MB</code></pre>
+
+      <p><strong>Compression</strong></p>
+      <p>Large batches are automatically compressed with gzip:</p>
+      <pre><code>export MLRUNX_COMPRESSION=true
+export MLRUNX_COMPRESSION_LEVEL=6  # 1-9
+export MLRUNX_COMPRESSION_MIN_BYTES=1000  # Only compress if &gt; 1KB</code></pre>
+
+      <h3>API Reference</h3>
+      <p><strong>mlrunx.init()</strong> - Initialize a new run.</p>
+      <pre><code>run = mlrunx.init(
+    project="my-project",       # Required: project name
+    name="experiment-1",        # Optional: run name (auto-generated if not provided)
+    tags={"key": "value"},      # Optional: initial tags
+    config={"lr": 0.001},       # Optional: initial config (logged as params)
+)</code></pre>
+
+      <p><strong>run.log()</strong> - Log metrics (non-blocking).</p>
+      <pre><code>run.log(
+    {"loss": 0.5, "accuracy": 0.8},  # Metrics dict
+    step=100,                         # Optional: step number
+    timestamp=time.time(),            # Optional: custom timestamp
+)</code></pre>
+
+      <p><strong>run.log_params()</strong> - Log hyperparameters (non-blocking).</p>
+      <pre><code>run.log_params({
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "model": "resnet50",
+})</code></pre>
+
+      <p><strong>run.log_tags()</strong> - Log or update tags (non-blocking).</p>
+      <pre><code>run.log_tags({
+    "status": "running",
+    "gpu": "A100",
+})</code></pre>
+
+      <p><strong>run.finish()</strong> - Finish the run and flush all pending data.</p>
+      <pre><code>run.finish(status="finished")  # or "failed", "killed"</code></pre>
+
+      <h3>Examples</h3>
+      <p><strong>Simple Training Loop</strong></p>
+      <pre><code>import mlrunx
+
+run = mlrunx.init(project="demo")
+run.log_params({"lr": 0.001, "epochs": 10})
+
+for epoch in range(10):
+    for batch in dataloader:
+        loss = train_step(batch)
+        run.log({"train/loss": loss})
+
+    val_loss = validate()
+    run.log({"val/loss": val_loss}, step=epoch)
+
+run.finish()</code></pre>
+
+      <p><strong>PyTorch Integration</strong></p>
+      <p>See <code>examples/pytorch_mnist.py</code> for a complete example.</p>
+      <pre><code>import mlrunx
+import torch
+
+with mlrunx.init(project="mnist", tags={"framework": "pytorch"}) as run:
+    run.log_params({"lr": 0.01, "epochs": 10})
+
+    for epoch in range(10):
+        for batch_idx, (data, target) in enumerate(train_loader):
+            loss = train_step(data, target)
+            run.log({"train/loss": loss.item()}, step=epoch * len(train_loader) + batch_idx)
+
+        val_loss, val_acc = validate()
+        run.log({"val/loss": val_loss, "val/accuracy": val_acc}, step=epoch)</code></pre>
+
+      <p><strong>HuggingFace Transformers</strong></p>
+      <p>See <code>examples/huggingface_text_classification.py</code> for a complete example.</p>
+      <pre><code>import mlrunx
+from transformers import Trainer, TrainerCallback
+
+class MLRunCallback(TrainerCallback):
+    def __init__(self, run):
+        self.run = run
+
+    def on_log(self, args, state, control, logs=None, **kwargs):
+        if logs:
+            self.run.log(logs, step=state.global_step)
+
+with mlrunx.init(project="nlp", tags={"framework": "transformers"}) as run:
+    callback = MLRunCallback(run)
+    trainer = Trainer(..., callbacks=[callback])
+    trainer.train()</code></pre>
+
+      <h3>Configuration</h3>
+      <p>All settings can be configured via environment variables:</p>
+      <table class="doc-table">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>MLRUNX_SERVER_URL</td><td>http://localhost:3001</td><td>Server URL</td></tr>
+          <tr><td>MLRUNX_API_KEY</td><td>None</td><td>API key for authentication</td></tr>
+          <tr><td>MLRUNX_BATCH_SIZE</td><td>1000</td><td>Max events per batch</td></tr>
+          <tr><td>MLRUNX_BATCH_MAX_BYTES</td><td>1000000</td><td>Max batch size in bytes</td></tr>
+          <tr><td>MLRUNX_BATCH_TIMEOUT_MS</td><td>1000</td><td>Max time before flush (ms)</td></tr>
+          <tr><td>MLRUNX_COALESCE_METRICS</td><td>true</td><td>Merge same metric at same step</td></tr>
+          <tr><td>MLRUNX_DEDUPE_PARAMS</td><td>true</td><td>Keep only last value for params</td></tr>
+          <tr><td>MLRUNX_COMPRESSION</td><td>true</td><td>Enable gzip compression</td></tr>
+          <tr><td>MLRUNX_SPOOL_ENABLED</td><td>true</td><td>Enable disk spooling</td></tr>
+          <tr><td>MLRUNX_SPOOL_DIR</td><td>~/.mlrunx/spool</td><td>Spool directory</td></tr>
+          <tr><td>MLRUNX_OFFLINE</td><td>false</td><td>Force offline mode</td></tr>
+          <tr><td>MLRUNX_DEBUG</td><td>false</td><td>Enable debug logging</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Development</h3>
+      <pre><code># Clone the repository
+git clone https://github.com/your-org/mlrunx.git
+cd mlrunx/sdks/python
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate
+
+# Install in development mode
+pip install -e ".[dev]"
+
+# Run tests
+pytest tests/ -v
+
+# Run examples
+python examples/simple_training.py
+python examples/pytorch_mnist.py</code></pre>
+
+      <h3>License</h3>
+      <p>MIT License - see LICENSE for details.</p>
+    </section>
+
+    <footer class="footer">
+      <p class="muted">© 2026 Ibra Niang. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

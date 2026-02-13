@@ -238,6 +238,46 @@ h3{
 }
 .clean-list li{ padding: 6px 0; }
 
+/* Docs */
+.doc pre{
+  margin: 12px 0 16px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--faint2);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+.doc code{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  color: var(--fg);
+}
+.doc p code{
+  background: rgba(255,255,255,0.06);
+  padding: 2px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--faint2);
+}
+.doc-table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 18px;
+  font-size: 14px;
+}
+.doc-table th,
+.doc-table td{
+  border-bottom: 1px solid var(--faint);
+  padding: 10px 8px;
+  text-align: left;
+}
+.doc-table th{
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+}
+
 /* Blog */
 .post-list{
   margin-top: 18px;
