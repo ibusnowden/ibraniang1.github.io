@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ibra Niang — Home</title>
+  <title>Ibra Niang — Researcher · Builder</title>
 
-  <meta name="description" content="Ibra Niang — Multimodal NLP Researcher @ University of Memphis. Personal site: home, projects, blog, reading, school." />
-  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="Ibra Niang — Multimodal NLP researcher at the University of Memphis (BS/MS '26). Building vision-language models and the systems that train them." />
+  <meta name="color-scheme" content="light" />
 
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,55 +37,115 @@
 
   <main id="content" class="container">
     <section class="section hero">
-      <p class="eyebrow">MULTIMODAL NLP RESEARCHER</p>
-      <h1 class="name">Ibra Niang</h1>
-      <p class="subtitle">Multimodal NLP Researcher @ The University of Memphis · BS/MS (Class of 2026)</p>
-
-      <p class="meta">
-        <span>memphis.edu</span>
-        <span class="dot">•</span>
-        <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a>
-      </p>
-
-      <p class="affiliation">
-        Currently building a benchmark multimodal LLM for agriculture in the University of Memphis CS department.
-      </p>
-
-      <div class="detail-grid">
-        <div class="detail">
-          <div class="label">FOCUS</div>
-          <div class="value">Vision-language models, training pipelines, and efficient inference.</div>
-        </div>
-        <div class="detail">
-          <div class="label">ADVISED BY</div>
-          <div class="value"><a href="https://sites.google.com/site/xiaoleiedu" target="_blank" rel="noreferrer">Dr. Xiaolei Huang</a></div>
+      <div class="hero-grid">
+        <img class="portrait" src="assets/photo.jpeg" alt="Ibra Niang" width="72" height="72" />
+        <div class="hero-copy">
+          <p class="eyebrow">RESEARCHER · BUILDER</p>
+          <h1 class="name">Ibra Niang</h1>
+          <p class="hero-line">
+            Multimodal NLP researcher at the University of Memphis (BS/MS '26),
+            building vision-language models and the systems that train them.
+          </p>
+          <p class="hero-meta">
+            <span>Memphis, TN</span>
+            <span class="dot">·</span>
+            <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a>
+            <span class="dot">·</span>
+            <span>Advised by <a href="https://sites.google.com/site/xiaoleiedu" target="_blank" rel="noreferrer">Dr. Xiaolei Huang</a></span>
+          </p>
         </div>
       </div>
+    </section>
 
-      <h2>Publications &amp; Preprints</h2>
-      <p class="muted">Selected work, drafts, and papers in progress.</p>
+    <section class="section" aria-labelledby="now-heading">
+      <h2 id="now-heading">Now</h2>
+      <p class="now-stamp">Updated May 2026</p>
       <div class="prose">
         <p>
-          <strong>llms for agri...</strong> — Coming soon.
-        </p>
-      </div>
-
-      <h2>Who am I?</h2>
-      <p class="muted">A quick snapshot of what I’m building right now and how I got here.</p>
-      <div class="prose">
-        <p>
-          I’m a final-year Computer Science student at the University of Memphis working on hard multimodal ML problems—
-          especially vision-language models, training pipelines, and efficient inference.
-        </p>
-        <p>
-          My current focus is building research-grade benchmarks and datasets for agriculture VLMs, and iterating on
-          models end-to-end: data → pretraining → SFT → evaluation → deployment.
+          Building a benchmark multimodal LLM for agriculture in the University of Memphis CS department —
+          dataset construction, pretraining, and evaluation. Iterating on vision-language alignment and
+          efficient inference. Teaching COMP 1800 this semester.
         </p>
       </div>
     </section>
 
+    <section class="section" aria-labelledby="work-heading">
+      <h2 id="work-heading">Selected Work</h2>
+      <p class="section-lead">Things I've built or am building. Code and write-ups linked.</p>
+
+      <div class="work-list">
+        <article class="work-item">
+          <h3 class="work-title"><a href="mlrunx.html">MLRun</a></h3>
+          <p class="work-tagline">
+            High-performance, open-source ML experiment tracking — metrics, params, artifacts, LLM
+            evaluations, agent tracing, and high-frequency data ingestion.
+          </p>
+          <p class="work-links">
+            <a href="https://github.com/ibusnowden/MLRun" target="_blank" rel="noreferrer">repo &#8599;</a>
+            <a href="mlrunx.html">docs</a>
+          </p>
+        </article>
+
+        <article class="work-item">
+          <h3 class="work-title"><a href="https://github.com/ibusnowden/ghost" target="_blank" rel="noreferrer">Ghost</a></h3>
+          <p class="work-tagline">
+            Vision-language model on top of nanochat — end-to-end pipeline from pretraining and CLIP
+            alignment through RL and SGLang inference, with fused Triton kernels for the text stack.
+          </p>
+          <p class="work-links">
+            <a href="https://github.com/ibusnowden/ghost" target="_blank" rel="noreferrer">repo &#8599;</a>
+          </p>
+        </article>
+
+        <article class="work-item">
+          <h3 class="work-title">Agriculture VLM Benchmark</h3>
+          <p class="work-tagline">
+            Research-grade benchmark for vision-language models in agriculture: dataset, evaluation
+            harness, and reference baselines.
+          </p>
+          <p class="work-status">in progress · paper forthcoming</p>
+        </article>
+      </div>
+
+      <a class="see-all" href="projects.html">all projects &rarr;</a>
+    </section>
+
+    <section class="section" aria-labelledby="writing-heading">
+      <h2 id="writing-heading">Writing</h2>
+      <p class="section-lead">Notes on VLMs, training, kernels, and building research tooling.</p>
+
+      <a class="post-row" href="fast-rl-gains-low-resource-translation.html">
+        <div class="post-row-meta">Jan 30, 2026</div>
+        <div class="post-row-title">From ~0.15 to ~0.60 reward: fast RL gains on low-resource translation</div>
+        <p class="post-row-snippet">How curriculum, reward shaping, and decoding stability moved reward quickly in a low-resource translation setup.</p>
+      </a>
+
+      <a class="see-all" href="blog.html">all writing &rarr;</a>
+    </section>
+
+    <section class="section" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Get in touch</h2>
+      <p class="section-lead">Open to research collaborations, applied roles, and conversations.</p>
+      <p class="contact-line">
+        <a href="mailto:inniang@memphis.edu">Email</a>,
+        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">LinkedIn</a>,
+        or <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">GitHub</a>.
+      </p>
+    </section>
+
     <footer class="footer">
-      <p class="muted">© 2026 Ibra Niang. All rights reserved.</p>
+      <div class="footer-row primary">
+        <span>Memphis, TN</span>
+        <span class="dot">·</span>
+        <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a>
+        <span class="dot">·</span>
+        <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">github</a>
+        <span class="dot">·</span>
+        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">linkedin</a>
+        <span class="dot">·</span>
+        <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">twitter</a>
+      </div>
+      <div class="footer-row secondary">© 2026 Ibra Niang</div>
     </footer>
   </main>
 

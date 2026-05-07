@@ -51,7 +51,7 @@ strong{ font-weight: 650; }
 .top-nav{
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 18px 24px;
+  padding: 18px 24px 6px;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -61,7 +61,7 @@ strong{ font-weight: 650; }
   color: var(--link);
   font-family: var(--font-sans);
   font-size: 13px;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.24em;
   text-transform: lowercase;
   opacity: 0.8;
 }
@@ -69,13 +69,13 @@ strong{ font-weight: 650; }
 .top-link.is-active{
   opacity: 1;
   text-decoration: underline;
-  text-underline-offset: 6px;
+  text-underline-offset: 7px;
 }
 
 .top-links{
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 0 24px 16px;
+  padding: 4px 24px 16px;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -112,9 +112,10 @@ strong{ font-weight: 650; }
   color: var(--muted);
 }
 .name{
-  margin: 10px 0 6px;
-  font-size: 30px;
-  letter-spacing: -0.2px;
+  margin: 6px 0 4px;
+  font-size: 40px;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
 }
 .subtitle{
   margin: 0 0 10px;
@@ -315,9 +316,32 @@ h3{
 
 /* Footer */
 .footer{
-  margin-top: 64px;
+  margin-top: 72px;
   border-top: 1px solid var(--faint);
   padding-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.footer-row{
+  font-family: var(--font-sans);
+  color: var(--muted);
+}
+.footer-row.primary{
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.footer-row.primary a{ color: var(--link); }
+.footer-row.primary a:hover{ text-decoration: none; opacity: 1; }
+.footer-row.primary .dot{ opacity: 0.55; }
+.footer-row.secondary{
+  font-size: 12px;
+  letter-spacing: 0.04em;
 }
 
 /* Back to top */
@@ -347,10 +371,229 @@ h3{
 
 @media (max-width: 680px){
   .top-nav{ gap: 14px; }
-  .name{ font-size: 26px; }
+  .name{ font-size: 32px; }
+  .hero-grid{
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .portrait{ width: 64px; height: 64px; }
 }
 
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior: auto; }
   .back-to-top{ transition: none; }
 }
+
+/* ── Hero ────────────────────────────────────────────────────── */
+.hero-grid{
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+.portrait{
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid var(--faint2);
+  display: block;
+}
+.hero-copy{ min-width: 0; }
+.hero-line{
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 8px 0 12px;
+  color: var(--fg);
+}
+.hero-meta{
+  font-family: var(--font-sans);
+  color: var(--muted);
+  font-size: 13.5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.hero-meta a{
+  color: var(--muted);
+  text-decoration: underline;
+  text-decoration-color: var(--faint2);
+  text-underline-offset: 3px;
+}
+.hero-meta a:hover{ color: var(--link); text-decoration-color: currentColor; }
+
+/* ── Section helpers ─────────────────────────────────────────── */
+.section-lead{
+  margin: 4px 0 18px;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 15.5px;
+}
+.now-stamp{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  margin: 0 0 10px;
+}
+.see-all{
+  display: inline-block;
+  margin-top: 16px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--link);
+}
+
+/* ── Selected Work — flat hairline list ──────────────────────── */
+.work-list{
+  margin-top: 6px;
+  border-top: 1px solid var(--faint);
+}
+.work-item{
+  padding: 18px 0;
+  border-bottom: 1px solid var(--faint);
+}
+.work-title{
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 650;
+  margin: 0;
+  color: var(--fg);
+  font-style: normal;
+}
+.work-title a{ color: var(--fg); }
+.work-title a:hover{ color: var(--link); text-decoration: none; }
+.work-tagline{
+  margin: 6px 0 10px;
+  color: var(--muted);
+  font-size: 15px;
+}
+.work-links{
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: var(--muted);
+}
+.work-links a{ color: var(--link); }
+.work-status{
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--muted);
+}
+
+/* ── Writing — flat post rows ────────────────────────────────── */
+.post-row{
+  display: block;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--faint);
+  color: var(--fg);
+  text-decoration: none;
+}
+.post-row:first-child{ border-top: 1px solid var(--faint); }
+.post-row:hover{ text-decoration: none; }
+.post-row:hover .post-row-title{ color: var(--link); }
+.post-row-meta{
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.post-row-title{
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 650;
+  margin: 4px 0;
+  color: var(--fg);
+}
+.post-row-snippet{
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* ── Contact line ────────────────────────────────────────────── */
+.contact-line{
+  margin: 6px 0 0;
+  font-size: 16px;
+}
+.contact-line a{
+  color: var(--fg);
+  border-bottom: 1px solid var(--faint2);
+  padding-bottom: 1px;
+}
+.contact-line a:hover{
+  color: var(--link);
+  border-bottom-color: var(--link);
+  text-decoration: none;
+}
+
+/* ── Reading-page back link ──────────────────────────────────── */
+.back-link{
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+.back-link:hover{ color: var(--link); text-decoration: none; }
+
+/* ── Long-form reading article (.doc.reading) ────────────────── */
+.doc.reading{ line-height: 1.75; }
+.doc.reading h1{
+  font-family: var(--font-serif);
+  font-size: 32px;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  font-weight: 600;
+}
+.doc.reading .lead{
+  font-size: 18px;
+  color: var(--muted);
+  font-style: italic;
+  margin: 4px 0 24px;
+}
+.doc.reading h2{
+  font-size: 1.4rem;
+  margin: 1.7em 0 0.5em;
+  letter-spacing: -0.005em;
+}
+.doc.reading h3{
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 1.4em 0 0.4em;
+}
+.doc.reading p{ margin: 0 0 1.2rem; }
+.doc.reading ul, .doc.reading ol{ margin: 0 0 1.2rem; padding-left: 22px; }
+.doc.reading li{ margin: 4px 0; }
+.doc.reading blockquote{
+  margin: 1.2rem 0;
+  padding: 6px 18px;
+  border-left: 2px solid var(--faint2);
+  color: var(--muted);
+  font-style: italic;
+}
+.doc.reading hr{
+  border: 0;
+  border-top: 1px solid var(--faint);
+  margin: 2rem 0;
+}
+.doc.reading img{ max-width: 100%; height: auto; border-radius: var(--radius); }
