@@ -663,3 +663,57 @@ h3{
   margin: 2rem 0;
 }
 .doc.reading img{ max-width: 100%; height: auto; border-radius: var(--radius); }
+
+/* ── Blog index — large display title + entry list ───────────── */
+.page-title{
+  font-family: var(--font-serif);
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 24px 0 28px;
+}
+@media (max-width: 680px){
+  .page-title{ font-size: 38px; }
+}
+
+.page-sort{
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 28px;
+}
+.page-sort a{
+  color: var(--muted);
+  text-decoration: none;
+}
+.page-sort a:hover{
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.page-sort a.is-active{
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.entry-list{
+  list-style: disc;
+  padding-left: 22px;
+  margin: 0 0 28px;
+}
+.entry-list li{
+  margin: 8px 0;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--fg);
+}
+.entry-list li a{
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.entry-list li a:hover{
+  text-decoration: none;
+}
