@@ -1,5 +1,40 @@
-// Smooth scrolling + active section highlighting + back-to-top + reveal animations
+// Smooth scrolling + active section highlighting + back-to-top + reveal animations + theme toggle
 (function () {
+  // Theme toggle
+  const HLJS_LIGHT = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css';
+  const HLJS_DARK = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css';
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const hljsLink = document.getElementById('hljs-theme');
+    if (hljsLink) hljsLink.href = theme === 'dark' ? HLJS_DARK : HLJS_LIGHT;
+  }
+
+  // Initial state — the head inline script may have already set data-theme to avoid FOUC.
+  let initial = document.documentElement.getAttribute('data-theme');
+  if (!initial) {
+    try {
+      const saved = localStorage.getItem('theme');
+      initial = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    } catch (e) {
+      initial = 'light';
+    }
+  }
+  applyTheme(initial);
+
+  const themeBtn = document.getElementById('themeToggle');
+  if (themeBtn) {
+    themeBtn.setAttribute('aria-pressed', initial === 'dark' ? 'true' : 'false');
+    themeBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      themeBtn.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+  }
+
+
   // Smooth in-page scrolling
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {

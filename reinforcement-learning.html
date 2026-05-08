@@ -8,6 +8,14 @@
   <meta name="description" content="Reinforcement Learning reading list." />
   <meta name="color-scheme" content="light" />
 
+  <script>
+    (function(){
+      try{
+        var t = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', t);
+      }catch(e){}
+    })();
+  </script>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +33,7 @@
       <a class="top-link" href="blog.html">blog</a>
       <a class="top-link is-active" href="reading.html">reading list</a>
       <a class="top-link" href="school.html">school</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span class="theme-toggle-thumb"></span></button>
     </nav>
   </header>
 
@@ -87,10 +96,6 @@
         <li>Blog posts are often more accessible than papers. Start there, then read the full papers if doing research.</li>
       </ul>
 
-      <p class="muted">
-        dHL Lesson Planner (Wireframe) — Standalone UI wireframe for an AI-assisted lesson planning workflow.
-        <a href="dhl-lesson-planner.html">Open wireframe</a>
-      </p>
     </section>
 
     <footer class="footer">

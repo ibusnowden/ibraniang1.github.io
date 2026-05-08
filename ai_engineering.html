@@ -8,6 +8,14 @@
   <meta name="description" content="An end-to-end architecture reference for modern AI engineering: PyTorch internals, vLLM, LangChain, Hugging Face, and a research lab from scratch." />
   <meta name="color-scheme" content="light" />
 
+  <script>
+    (function(){
+      try{
+        var t = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', t);
+      }catch(e){}
+    })();
+  </script>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +24,7 @@
 
   <!-- Markdown + light syntax highlighting -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <link rel="stylesheet" id="hljs-theme" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
@@ -33,6 +41,7 @@
       <a class="top-link" href="blog.html">blog</a>
       <a class="top-link is-active" href="reading.html">reading list</a>
       <a class="top-link" href="school.html">school</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span class="theme-toggle-thumb"></span></button>
     </nav>
   </header>
 

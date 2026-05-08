@@ -8,6 +8,14 @@
   <meta name="description" content="Ibra Niang — Multimodal NLP researcher at the University of Memphis (BS/MS '26). Building vision-language models and the systems that train them." />
   <meta name="color-scheme" content="light" />
 
+  <script>
+    (function(){
+      try{
+        var t = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', t);
+      }catch(e){}
+    })();
+  </script>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +34,7 @@
       <a class="top-link" href="blog.html">blog</a>
       <a class="top-link" href="reading.html">reading list</a>
       <a class="top-link" href="school.html">school</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span class="theme-toggle-thumb"></span></button>
     </nav>
     <div class="top-links">
       <a href="assets/resume_2025.pdf" target="_blank" rel="noreferrer" aria-label="Open resume"><span class="top-arrow">&#8599;</span> resume</a>
