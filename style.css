@@ -462,6 +462,7 @@ h3{
   height: 72px;
   border-radius: 999px;
   object-fit: cover;
+  object-position: center 28%;
   border: 1px solid var(--faint2);
   display: block;
 }
