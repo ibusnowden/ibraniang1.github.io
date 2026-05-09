@@ -39,31 +39,22 @@
 
   <main id="content" class="container">
     <section class="section">
-      <h2>Projects</h2>
+      <h1 class="page-title">Projects</h1>
 
-      <article class="project">
-        <h3>MLRun</h3>
-        <p class="muted">
-          MLRun is a high-performance, open-source ML experiment tracking platform designed for modern AI workflows.
-          It provides infrastructure for logging metrics, parameters, and artifacts from training runs, with built-in
-          support for LLM evaluations, agent tracing, and high-frequency data ingestion.
-        </p>
-        <a href="https://github.com/ibusnowden/MLRun" target="_blank" rel="noreferrer">GitHub</a>
-        <span class="dot">·</span>
-        <a href="mlrunx.html">Docs</a>
-      </article>
-
-      <article class="project">
-        <h3>Ghost</h3>
-        <p class="muted">
-          GhostVis is a vision-language model built on top of nanochat, transforming a text-only LLM into a full multimodal
-          system capable of understanding both images and text. Like nanochat, it maintains a clean, minimal, hackable
-          codebase designed to run on a single 8xH100 node. From pretraining / mid / vision alignment with CLIP, Rl, and
-          Slang inference, it is an end to end pipeline, and with swiglu architecture + fused triton kernels for the LLM
-          text architecture.
-        </p>
-        <a href="https://github.com/ibusnowden/ghost" target="_blank" rel="noreferrer">GitHub</a>
-      </article>
+      <ul class="entry-list">
+        <li>
+          <a href="https://github.com/ibusnowden/security_agent" target="_blank" rel="noreferrer">Security Agent</a>, fine-tuned Qwen3.6-27B model trained for cybersecurity tasks and bug finding.
+        </li>
+        <li>
+          <a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">Jaxchat</a>, end-to-end LLM training pipeline: pretraining, SFT, RL, and a chat web UI for inference, all in JAX.
+        </li>
+        <li>
+          <a href="https://github.com/ibusnowden/ML" target="_blank" rel="noreferrer">Multimodal Training</a>, CUDA/C multimodal training stack for multimodal LLMs across image and vision modalities.
+        </li>
+        <li>
+          Agriculture VLM Benchmark, research-grade benchmark for vision-language models in agriculture: dataset, evaluation harness, and reference baselines. <span class="muted">In progress.</span>
+        </li>
+      </ul>
     </section>
 
     <footer class="footer">
