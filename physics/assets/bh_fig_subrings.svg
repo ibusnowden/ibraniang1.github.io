@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="700" viewBox="0 0 1100 700">
+<rect width="100%" height="100%" fill="#0b0f1a"/>
+<text x="90" y="34" font-family="Arial" font-size="23" fill="#e5e7eb">Photon subrings: ln(b_n - b_c) vs n  (slope = -gamma, gamma_Schw = pi)</text>
+<line x1="90.0" y1="620.0" x2="1060.0" y2="620.0" stroke="#64748b" stroke-width="1.5"/>
+<line x1="90.0" y1="620.0" x2="90.0" y2="56.0" stroke="#64748b" stroke-width="1.5"/>
+<text x="550" y="674" text-anchor="middle" font-family="Arial" font-size="16" fill="#cbd5e1">half-orbit number n</text>
+<text x="24" y="350" text-anchor="middle" transform="rotate(-90 24 350)" font-family="Arial" font-size="16" fill="#cbd5e1">ln(b_n - b_c)</text>
+<text x="90" y="644" font-family="Arial" font-size="12" fill="#94a3b8">2.50</text>
+<text x="1060" y="644" text-anchor="end" font-family="Arial" font-size="12" fill="#94a3b8">7.50</text>
+<text x="80" y="620" text-anchor="end" font-family="Arial" font-size="12" fill="#94a3b8">-18.6</text>
+<text x="80" y="56" text-anchor="end" font-family="Arial" font-size="12" fill="#94a3b8">-4.04</text>
+<polyline points="187.00,94.70 381.00,216.44 575.00,338.05 769.00,459.63 963.00,581.30" fill="none" stroke="#f97316" stroke-width="2.4"/>
+<circle cx="187.0" cy="94.7" r="3.5" fill="#fde68a"/>
+<circle cx="381.0" cy="216.4" r="3.5" fill="#fde68a"/>
+<circle cx="575.0" cy="338.0" r="3.5" fill="#fde68a"/>
+<circle cx="769.0" cy="459.6" r="3.5" fill="#fde68a"/>
+<circle cx="963.0" cy="581.3" r="3.5" fill="#fde68a"/>
+<text x="740" y="90" font-family="Arial" font-size="17" fill="#fde68a">measured gamma = 3.1427  (pi = 3.1416)</text>
+</svg>

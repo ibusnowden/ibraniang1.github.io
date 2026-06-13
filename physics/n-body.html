@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N-Body Gravity — Making Physics</title>
+  <meta name="description" content="When every force comes from the other bodies, what must the simulator preserve, and what does each integrator actually do to it?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#mechanics">Mechanics</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 06</span>
+      <h1 class="article-title">N-Body Gravity</h1>
+      <p class="article-lead">When every force comes from the other bodies, what must the simulator preserve, and what does each integrator actually do to it?</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="nbody"></div>
+      <p class="sim-cap">The stable figure-eight three-body choreography, integrated live with velocity-Verlet — watch total momentum stay pinned. Switch to a binary, or click anywhere to drop in another body.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/nbody_pythagorean_trajectory.svg" alt="N-Body Gravity — simulation render" /></div>
+      <figcaption>The Pythagorean three-body problem: masses 3-4-5 released from rest at the corners of a right triangle. A famously intricate dance of close encounters and ejections.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">\vec F_{ij} = G\,m_i m_j\,\frac{\vec r_j - \vec r_i}{\left(\lvert\vec r_j - \vec r_i\rvert^2 + \epsilon^2\right)^{3/2}}</span><span class="eq-note">softened pairwise gravity</span></li>        <li><span class="eq-tex">\vec P = \sum_i m_i \vec v_i = \text{const}</span><span class="eq-note">total momentum — exact to machine precision</span></li>        <li><span class="eq-tex">L = \sum_i m_i\,(x_i\dot y_i - y_i\dot x_i) = \text{const}</span><span class="eq-note">total angular momentum</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>Newton's third law as a checksum</h2>
+        <p>With no external force, total linear momentum is conserved exactly — and so it is by the discrete scheme too: every velocity kick sums to <code>Σ Fᵢ dt = 0</code> by Newton's third law. Even RK4 holds it to ~1e-15. That makes momentum a far sharper correctness check than energy: any drift you see is roundoff, not algorithm.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/nbody_binary_trajectory.svg" alt="A two-body binary. With explicit Euler the orbit spirals out as energy grows, wh" loading="lazy" /></div>
+        <figcaption>A two-body binary. With explicit Euler the orbit spirals out as energy grows, while linear and angular momentum stay flat to floating point.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Energy tells the real story</h2>
+        <p>Energy and angular momentum are the interesting diagnostics. Energy drifts under explicit Euler, oscillates under semi-implicit Euler and Verlet, and slowly creeps under RK4. The binary visibly spirals outward under Euler while its momentum sits perfectly still — two invariants, two completely different verdicts on the same run.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/nbody_pythagorean_conserved.svg" alt="Conserved quantities. Total momentum holds to machine precision regardless of in" loading="lazy" /></div>
+        <figcaption>Conserved quantities. Total momentum holds to machine precision regardless of integrator; energy and angular momentum reveal the algorithm's true quality.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Softening and the COM</h2>
+        <p>A softening length keeps close approaches finite. Boost every body by the same velocity and the center of mass drifts at exactly that speed while the relative motion is untouched — Galilean invariance you can read off the plot.</p>
+      </section>
+
+
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="double-pendulum.html"><span>&larr; Previous</span><strong>The Double Pendulum</strong></a>
+      <a class="pager-next" href="collisions.html"><span>Next &rarr;</span><strong>Hard-Disk Collisions</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

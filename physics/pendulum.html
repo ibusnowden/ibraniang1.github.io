@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Simple Pendulum — Making Physics</title>
+  <meta name="description" content="When is the small-angle approximation good enough, and how does the integrator affect energy conservation?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#mechanics">Mechanics</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 02</span>
+      <h1 class="article-title">The Simple Pendulum</h1>
+      <p class="article-lead">When is the small-angle approximation good enough, and how does the integrator affect energy conservation?</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="pendulum"></div>
+      <p class="sim-cap">Drag the bob to set the starting angle, or change the length and gravity. The faint ghost is the small-angle approximation released from the same point — watch it drift apart at large amplitude.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/pendulum_angle.svg" alt="The Simple Pendulum — simulation render" /></div>
+      <figcaption>Nonlinear `θ'' = -(g/L) sinθ` against the linearized `θ'' = -(g/L)θ`. At small amplitude the two curves overlap; as the start angle grows the true pendulum visibly slows and its period stretches.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">\ddot\theta = -\frac{g}{L}\sin\theta</span><span class="eq-note">the true nonlinear pendulum</span></li>        <li><span class="eq-tex">\ddot\theta \approx -\frac{g}{L}\,\theta \quad (\theta \ll 1)</span><span class="eq-note">the small-angle approximation</span></li>        <li><span class="eq-tex">E = \tfrac12 m L^2\dot\theta^2 + m g L\,(1-\cos\theta)</span><span class="eq-note">energy of the nonlinear swing</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>Two equations, one pendulum</h2>
+        <p>The real pendulum obeys <code>θ'' = -(g/L) sinθ</code>; the textbook one replaces <code>sinθ</code> with <code>θ</code>. The approximation is only good while the amplitude is small enough that those two agree — and the lab is built to show you exactly where it breaks.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/pendulum_energy.svg" alt="Energy trace. A symplectic step keeps it flat; the gap between nonlinear and sma" loading="lazy" /></div>
+        <figcaption>Energy trace. A symplectic step keeps it flat; the gap between nonlinear and small-angle potential energy `mgL(1-cosθ)` vs `½mgLθ²` is the approximation made visible.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Where it breaks</h2>
+        <p>Start at 0.1, 0.5, and 1.0 rad. At 0.1 rad the nonlinear and linear curves are indistinguishable. By 1.0 rad the true period is noticeably longer — the restoring torque saturates because <code>sinθ &lt; θ</code>, so a wide swing takes its time. The small-angle model never knows this; it ticks at a fixed frequency forever.</p>
+      </section>
+
+
+
+      <section class="prose reveal">
+        <h2>The energy check</h2>
+        <p>Because the swing is conservative, total energy should be flat. Watching it under different integrators and timesteps is the same lesson as the projectile lab: a non-symplectic step slowly pumps or bleeds energy, and the pendulum's amplitude wanders as a result.</p>
+      </section>
+
+
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="projectile-motion.html"><span>&larr; Previous</span><strong>Projectile Motion</strong></a>
+      <a class="pager-next" href="springs.html"><span>Next &rarr;</span><strong>Mass on a Spring</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Fourier View — Making Physics</title>
+  <meta name="description" content="Is there a basis in which the coupled chain becomes N independent oscillators — and what does the energy in each mode tell us?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#waves">Waves</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 10</span>
+      <h1 class="article-title">The Fourier View</h1>
+      <p class="article-lead">Is there a basis in which the coupled chain becomes N independent oscillators — and what does the energy in each mode tell us?</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="fourier"></div>
+      <p class="sim-cap">The top panel is the chain; the bottom is its live mode-energy spectrum. Energy stays locked in each mode (decoupled oscillators) — a triangle pluck lights up only the odd modes, falling off like 1/j².</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/fourier_triangle_spectrum.svg" alt="The Fourier View — simulation render" /></div>
+      <figcaption>A triangular pluck (a plucked guitar string): only odd modes survive by symmetry, and their energies fall off as roughly 1/j² — the physics of musical timbre as a bar chart.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">\phi_j(n) = \sqrt{\tfrac{2}{N-1}}\,\sin\!\frac{\pi j n}{N-1}</span><span class="eq-note">the orthonormal mode shapes</span></li>        <li><span class="eq-tex">a_j = \sum_n u_n\,\phi_j(n), \qquad \ddot a_j = -\omega_j^2\,a_j</span><span class="eq-note">each mode is an independent oscillator</span></li>        <li><span class="eq-tex">\sum_j E_j = \tfrac12 m\!\sum_n v_n^2 + \tfrac12 k\!\sum_n (u_{n+1}-u_n)^2 = E_{\text{chain}}</span><span class="eq-note">Parseval's identity — exact</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>Diagonalizing the chain</h2>
+        <p>Project the chain onto orthonormal sine mode shapes <code>φ_j(n) = √(2/(N-1)) sin(πjn/(N-1))</code>. Each modal amplitude obeys <code>a_j'' = -ω_j² a_j</code> — a plain harmonic oscillator, completely decoupled from every other mode. The coupling in the position basis was an illusion of coordinates.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/fourier_single_mode_spectrum.svg" alt="Seed a single mode and the spectrum is one spike that stays put forever — decoup" loading="lazy" /></div>
+        <figcaption>Seed a single mode and the spectrum is one spike that stays put forever — decoupled oscillators never leak energy between each other.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Parseval, exactly</h2>
+        <p>Because the mode shapes are orthonormal and the Hamiltonian is diagonal in this basis, total energy splits exactly into a sum of per-mode energies. That identity is the lab's correctness check: if the mode energies don't sum to the chain's total, the projection is wrong.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/fourier_gaussian_spectrum.svg" alt="A localized Gaussian pulse: narrow in space means broad in mode space — the disc" loading="lazy" /></div>
+        <figcaption>A localized Gaussian pulse: narrow in space means broad in mode space — the discrete uncertainty principle.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Why a string holds its tone</h2>
+        <p>In an undamped run each mode's energy is constant in time — energy does not leak between modes. That is precisely what "decoupled oscillators" means, and it is why a struck string keeps its timbre instead of decaying into noise. The triangle pluck's <code>1/j²</code> odd-mode falloff is the same spectrum that makes a guitar sound musical.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/fourier_mode_mix_mode_energy.svg" alt="A deliberate three-mode mix holding its 1 : 0.36 : 0.09 energy ratio constant in" loading="lazy" /></div>
+        <figcaption>A deliberate three-mode mix holding its 1 : 0.36 : 0.09 energy ratio constant in time.</figcaption>
+      </figure>
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="mass-spring-chain.html"><span>&larr; Previous</span><strong>The Mass-Spring Chain</strong></a>
+      <a class="pager-next" href="lorentz-force.html"><span>Next &rarr;</span><strong>The Lorentz Force</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gas in a Box — Making Physics</title>
+  <meta name="description" content="Start a few hundred disks all moving at the same speed and let them collide. Where do temperature and pressure — quantities no single particle has — come from?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#thermal">Thermal & Statistical</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 14</span>
+      <h1 class="article-title">Gas in a Box</h1>
+      <p class="article-lead">Start a few hundred disks all moving at the same speed and let them collide. Where do temperature and pressure — quantities no single particle has — come from?</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="gas"></div>
+      <p class="sim-cap">Every disk starts at the same speed; collisions alone relax the speed distribution onto the Maxwell-Boltzmann curve (gold) on the right. The total kinetic energy — the temperature — never changes.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/thermal_gas_relaxation_distribution.svg" alt="Gas in a Box — simulation render" /></div>
+      <figcaption>The speed distribution relaxes from an initial single-speed spike to the Maxwell-Boltzmann (Rayleigh) curve — equilibrium emerging from elastic collisions alone.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">f(v) = \frac{m v}{k_B T}\,\exp\!\left(-\frac{m v^2}{2 k_B T}\right)</span><span class="eq-note">the 2D Maxwell-Boltzmann (Rayleigh) distribution</span></li>        <li><span class="eq-tex">v_p = \sqrt{\tfrac{k_B T}{m}}, \;\; \langle v\rangle = \sqrt{\tfrac{\pi k_B T}{2m}}, \;\; v_{\text{rms}} = \sqrt{\tfrac{2 k_B T}{m}}</span><span class="eq-note">the three speeds</span></li>        <li><span class="eq-tex">P A = N k_B T</span><span class="eq-note">the ideal gas law, derived from collisions</span></li>        <li><span class="eq-tex">\frac{P}{P_{\text{ideal}}} \approx 1 + 2\pi r^2\,\frac{N}{A}</span><span class="eq-note">the hard-disk van der Waals correction</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>Temperature is locked, sharing is not</h2>
+        <p>Elastic collisions conserve total kinetic energy exactly, so the temperature <code>T = KE_total/Nk_B</code> is fixed from the very first step. What is not fixed is how that energy is shared — collisions shuffle it between particles until the speed distribution reaches the unique maximum-entropy form.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/thermal_gas_relaxation_diagnostics.svg" alt="Mean speed drops to √(πT/2m) while rms speed stays pinned at v₀ (conserved energ" loading="lazy" /></div>
+        <figcaption>Mean speed drops to √(πT/2m) while rms speed stays pinned at v₀ (conserved energy), and the wall-impulse pressure sits ~1.2× ideal — the van der Waals excluded-volume correction.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Maxwell-Boltzmann emerges</h2>
+        <p>In 2D the equilibrium is the Rayleigh distribution <code>f(v) ∝ v exp(-mv²/2k_BT)</code>: zero at rest, peaked at the most-probable speed, with an exponential tail. The simulation starts as a delta spike at <code>v_rms</code> and spreads downward in mean while <code>v_rms</code> stays pinned — because rms speed is just a restatement of the conserved energy.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/thermal_gas_hot_distribution.svg" alt="Doubling the initial speed quadruples the temperature; the distribution stretche" loading="lazy" /></div>
+        <figcaption>Doubling the initial speed quadruples the temperature; the distribution stretches to higher speeds and the pressure quadruples with it.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>The gas law, derived</h2>
+        <p>Pressure is the time-averaged momentum delivered to the walls. Summing those impulses gives <code>PA = Nk_BT</code> — the ideal gas law derived from nothing but elastic collisions. For finite-radius disks the measured pressure sits above ideal by <code>1 + 2πr²(N/A)</code>: the hard-disk second virial term, the microscopic origin of van der Waals' excluded volume, readable as a number off the plot.</p>
+      </section>
+
+
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="maxwell-fdtd.html"><span>&larr; Previous</span><strong>Maxwell FDTD</strong></a>
+      <a class="pager-next" href="random-walk.html"><span>Next &rarr;</span><strong>Random Walk &amp; Diffusion</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

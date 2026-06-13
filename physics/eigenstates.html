@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quantum Eigenstates — Making Physics</title>
+  <meta name="description" content="How do you find the energy eigenstates that set spectral lines and bonding — without diagonalizing a giant matrix?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#quantum">Quantum</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 18</span>
+      <h1 class="article-title">Quantum Eigenstates</h1>
+      <p class="article-lead">How do you find the energy eigenstates that set spectral lines and bonding — without diagonalizing a giant matrix?</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="eigenstates"></div>
+      <p class="sim-cap">Imaginary-time relaxation finding the eigenstates live: a random guess decays onto the ground state. Hit "Next state" to project it out and climb the ladder. Try the double well and watch the tunneling doublet appear.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/eigenstates_double_well_levels.svg" alt="Quantum Eigenstates — simulation render" /></div>
+      <figcaption>A double well: the low states form tunneling doublets — a symmetric state just below an antisymmetric one — the toy model behind the ammonia inversion line and bonding/antibonding orbitals.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">\hat H\,\phi_n = E_n\,\phi_n</span><span class="eq-note">the stationary-state eigenproblem</span></li>        <li><span class="eq-tex">\frac{\partial \psi}{\partial \tau} = -\hat H\psi \;\Rightarrow\; \psi(\tau) = \sum_n c_n\,e^{-E_n \tau}\,\phi_n</span><span class="eq-note">imaginary time turns it into diffusion</span></li>        <li><span class="eq-tex">\left(I + \Delta\tau\,\hat H\right)\psi_{\text{new}} = \psi</span><span class="eq-note">backward Euler — monotone damping in energy</span></li>        <li><span class="eq-tex">E_n^{\text{(h.o.)}} = n + \tfrac12</span><span class="eq-note">the harmonic ladder, reproduced to 1e-3</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>Rotate time into the imaginary axis</h2>
+        <p>Substitute <code>t = -iτ</code> into the Schrödinger equation and it becomes a diffusion equation <code>∂ψ/∂τ = -Hψ</code>. Every energy component decays as <code>exp(-E_n τ)</code>, but the lowest decays slowest. Renormalize after each step and any starting state relaxes onto the ground state — no matrix diagonalization, just the same tridiagonal Hamiltonian from the previous lab.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/eigenstates_harmonic_levels.svg" alt="The harmonic oscillator: the evenly spaced ladder E_n = n + ½, reproduced to bet" loading="lazy" /></div>
+        <figcaption>The harmonic oscillator: the evenly spaced ladder E_n = n + ½, reproduced to better than 1e-3.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Climbing the ladder</h2>
+        <p>To get excited states, relax again while projecting out every already-converged lower state (Gram-Schmidt). The slowest-surviving component is then the next eigenstate. The states come out orthonormal by construction, checked to 1e-6.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/eigenstates_square_well_levels.svg" alt="The infinite square well: energies following (n+1)²π²/2L², with higher states ac" loading="lazy" /></div>
+        <figcaption>The infinite square well: energies following (n+1)²π²/2L², with higher states acquiring a small lattice-dispersion bias.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Backward Euler, not Crank-Nicolson</h2>
+        <p>CN's amplification factor tends to -1 for high-energy lattice modes, so the relaxation gets stuck on the spurious zigzag mode. Backward Euler's factor <code>1/(1+ΔτE)</code> decreases monotonically with energy — high modes damped hardest — and the energy is read off as an exact Rayleigh quotient regardless of step accuracy. The double well's tunneling doublets are the payoff: the toy model behind molecular inversion lines and bonding pairs.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/eigenstates_double_well_spectrum.svg" alt="The double-well spectrum, showing how doublet splittings grow with energy as the" loading="lazy" /></div>
+        <figcaption>The double-well spectrum, showing how doublet splittings grow with energy as the barrier becomes more penetrable.</figcaption>
+      </figure>
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="schrodinger.html"><span>&larr; Previous</span><strong>Schrödinger Wave Packets</strong></a>
+      <a class="pager-next" href="kerr-grrt.html"><span>Next &rarr;</span><strong>Kerr Black Hole Ray Tracer</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

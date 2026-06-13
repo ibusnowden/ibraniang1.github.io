@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="700" viewBox="0 0 1100 700">
+<rect width="100%" height="100%" fill="#f8fafc"/>
+<text x="90" y="32" font-family="Arial, sans-serif" font-size="24" fill="#111827">Gaussian Step Walk (matched D): Displacement Distribution</text>
+<line x1="90.00" y1="620.00" x2="1060.00" y2="620.00" stroke="#374151" stroke-width="2"/>
+<line x1="90.00" y1="620.00" x2="90.00" y2="50.00" stroke="#374151" stroke-width="2"/>
+<text x="550.00" y="672" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#374151">x displacement (m)</text>
+<text x="24" y="350.00" text-anchor="middle" transform="rotate(-90 24 350.00)" font-family="Arial, sans-serif" font-size="16" fill="#374151">probability density</text>
+<text x="90" y="646" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">-56.24</text>
+<text x="1060" y="646" text-anchor="end" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">56.89</text>
+<text x="78" y="620.00" text-anchor="end" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">0.00</text>
+<text x="78" y="50.00" text-anchor="end" dominant-baseline="middle" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">0.03</text>
+<rect x="90.00" y="620.00" width="23.25" height="0.00" fill="#2563eb" opacity="0.55"/>
+<rect x="114.25" y="620.00" width="23.25" height="0.00" fill="#2563eb" opacity="0.55"/>
+<rect x="138.50" y="620.00" width="23.25" height="0.00" fill="#2563eb" opacity="0.55"/>
+<rect x="162.75" y="615.37" width="23.25" height="4.63" fill="#2563eb" opacity="0.55"/>
+<rect x="187.00" y="613.82" width="23.25" height="6.18" fill="#2563eb" opacity="0.55"/>
+<rect x="211.25" y="612.28" width="23.25" height="7.72" fill="#2563eb" opacity="0.55"/>
+<rect x="235.50" y="609.19" width="23.25" height="10.81" fill="#2563eb" opacity="0.55"/>
+<rect x="259.75" y="603.02" width="23.25" height="16.98" fill="#2563eb" opacity="0.55"/>
+<rect x="284.00" y="592.21" width="23.25" height="27.79" fill="#2563eb" opacity="0.55"/>
+<rect x="308.25" y="584.49" width="23.25" height="35.51" fill="#2563eb" opacity="0.55"/>
+<rect x="332.50" y="539.71" width="23.25" height="80.29" fill="#2563eb" opacity="0.55"/>
+<rect x="356.75" y="525.81" width="23.25" height="94.19" fill="#2563eb" opacity="0.55"/>
+<rect x="381.00" y="443.97" width="23.25" height="176.03" fill="#2563eb" opacity="0.55"/>
+<rect x="405.25" y="372.95" width="23.25" height="247.05" fill="#2563eb" opacity="0.55"/>
+<rect x="429.50" y="355.96" width="23.25" height="264.04" fill="#2563eb" opacity="0.55"/>
+<rect x="453.75" y="280.30" width="23.25" height="339.70" fill="#2563eb" opacity="0.55"/>
+<rect x="478.00" y="235.52" width="23.25" height="384.48" fill="#2563eb" opacity="0.55"/>
+<rect x="502.25" y="175.30" width="23.25" height="444.70" fill="#2563eb" opacity="0.55"/>
+<rect x="526.50" y="144.42" width="23.25" height="475.58" fill="#2563eb" opacity="0.55"/>
+<rect x="550.75" y="130.52" width="23.25" height="489.48" fill="#2563eb" opacity="0.55"/>
+<rect x="575.00" y="155.23" width="23.25" height="464.77" fill="#2563eb" opacity="0.55"/>
+<rect x="599.25" y="124.35" width="23.25" height="495.65" fill="#2563eb" opacity="0.55"/>
+<rect x="623.50" y="162.95" width="23.25" height="457.05" fill="#2563eb" opacity="0.55"/>
+<rect x="647.75" y="263.32" width="23.25" height="356.68" fill="#2563eb" opacity="0.55"/>
+<rect x="672.00" y="289.57" width="23.25" height="330.43" fill="#2563eb" opacity="0.55"/>
+<rect x="696.25" y="351.33" width="23.25" height="268.67" fill="#2563eb" opacity="0.55"/>
+<rect x="720.50" y="413.09" width="23.25" height="206.91" fill="#2563eb" opacity="0.55"/>
+<rect x="744.75" y="440.89" width="23.25" height="179.11" fill="#2563eb" opacity="0.55"/>
+<rect x="769.00" y="515.00" width="23.25" height="105.00" fill="#2563eb" opacity="0.55"/>
+<rect x="793.25" y="559.78" width="23.25" height="60.22" fill="#2563eb" opacity="0.55"/>
+<rect x="817.50" y="562.87" width="23.25" height="57.13" fill="#2563eb" opacity="0.55"/>
+<rect x="841.75" y="581.40" width="23.25" height="38.60" fill="#2563eb" opacity="0.55"/>
+<rect x="866.00" y="596.84" width="23.25" height="23.16" fill="#2563eb" opacity="0.55"/>
+<rect x="890.25" y="610.74" width="23.25" height="9.26" fill="#2563eb" opacity="0.55"/>
+<rect x="914.50" y="613.82" width="23.25" height="6.18" fill="#2563eb" opacity="0.55"/>
+<rect x="938.75" y="613.82" width="23.25" height="6.18" fill="#2563eb" opacity="0.55"/>
+<rect x="963.00" y="618.46" width="23.25" height="1.54" fill="#2563eb" opacity="0.55"/>
+<rect x="987.25" y="618.46" width="23.25" height="1.54" fill="#2563eb" opacity="0.55"/>
+<rect x="1011.50" y="616.91" width="23.25" height="3.09" fill="#2563eb" opacity="0.55"/>
+<rect x="1035.75" y="620.00" width="23.25" height="0.00" fill="#2563eb" opacity="0.55"/>
+<polyline points="90.00,619.83 114.25,619.64 138.50,619.24 162.75,618.48 187.00,617.06 211.25,614.53 235.50,610.22 259.75,603.22 284.00,592.34 308.25,576.18 332.50,553.31 356.75,522.48 381.00,482.98 405.25,435.05 429.50,380.13 453.75,321.10 478.00,262.15 502.25,208.38 526.50,165.09 550.75,136.96 575.00,127.20 599.25,136.96 623.50,165.09 647.75,208.38 672.00,262.15 696.25,321.10 720.50,380.13 744.75,435.05 769.00,482.98 793.25,522.48 817.50,553.31 841.75,576.18 866.00,592.34 890.25,603.22 914.50,610.22 938.75,614.53 963.00,617.06 987.25,618.48 1011.50,619.24 1035.75,619.64 1060.00,619.83" fill="none" stroke="#dc2626" stroke-width="3"/>
+<rect x="780" y="62" width="18" height="12" fill="#2563eb"/>
+<text x="804" y="73" font-family="Arial, sans-serif" font-size="15" fill="#111827">final displacements</text>
+<rect x="780" y="88" width="18" height="12" fill="#dc2626"/>
+<text x="804" y="99" font-family="Arial, sans-serif" font-size="15" fill="#111827">Gaussian N(mu, 2Dt)</text>
+</svg>

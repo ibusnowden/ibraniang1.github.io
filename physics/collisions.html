@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hard-Disk Collisions — Making Physics</title>
+  <meta name="description" content="What is conserved through a collision, what is not, and how does the coefficient of restitution interpolate between elastic and perfectly inelastic?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#mechanics">Mechanics</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 07</span>
+      <h1 class="article-title">Hard-Disk Collisions</h1>
+      <p class="article-lead">What is conserved through a collision, what is not, and how does the coefficient of restitution interpolate between elastic and perfectly inelastic?</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="collisions"></div>
+      <p class="sim-cap">Disks colliding in a box. Sweep the coefficient of restitution from 1 (elastic) to 0 (sticky) and watch the kinetic-energy readout fall while momentum is conserved. Toggle gravity to settle them into a jostling layer.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/collision_billiard_break_trajectory.svg" alt="Hard-Disk Collisions — simulation render" /></div>
+      <figcaption>A billiard break: a cue disk strikes a triangular rack, igniting a long elastic cascade off the walls. Momentum is broken by the walls, but total kinetic energy holds flat for the whole run.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">j = -\frac{(1+e)\,(\vec v_{\text{rel}}\!\cdot\hat n)}{1/m_i + 1/m_j}</span><span class="eq-note">the contact-normal impulse</span></li>        <li><span class="eq-tex">\Delta KE = -\tfrac12(1 - e^2)\,\mu\,(\vec v_{\text{rel}}\!\cdot\hat n)^2</span><span class="eq-note">energy removed by a collision</span></li>        <li><span class="eq-tex">\mu = \frac{m_i m_j}{m_i + m_j}</span><span class="eq-note">reduced mass</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>The impulse</h2>
+        <p>On contact, an impulse acts along the line of centers: <code>j = -(1+e)(v_rel·n̂)/(1/mᵢ + 1/mⱼ)</code>. The coefficient of restitution <code>e</code> runs from 1 (fully elastic) to 0 (the disks move together afterward). The impulse fires only when the disks are approaching, so resting contacts produce no spurious kicks.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/collision_head_on_elastic_diagnostics.svg" alt="Head-on elastic collision of equal masses — the velocities swap exactly at the c" loading="lazy" /></div>
+        <figcaption>Head-on elastic collision of equal masses — the velocities swap exactly at the contact instant.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Momentum always, energy sometimes</h2>
+        <p>Because the impulse is equal and opposite, momentum is conserved for any <code>e</code> — even a perfectly inelastic collision conserves momentum. Energy is what distinguishes the regimes: a collision removes exactly <code>½(1-e²)μ(v_rel·n̂)²</code>, so <code>e=1</code> removes nothing and <code>e=0</code> removes all of the normal relative kinetic energy.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/collision_inelastic_diagnostics.svg" alt="An inelastic head-on hit with e=0.5: kinetic energy drops to one quarter in a si" loading="lazy" /></div>
+        <figcaption>An inelastic head-on hit with e=0.5: kinetic energy drops to one quarter in a single step, matching the retained fraction e².</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Two clean theorems</h2>
+        <p>Equal-mass head-on elastic collisions swap velocities exactly. Equal-mass glancing elastic collisions send the two outgoing vectors off at exactly 90° — their dot product crossing zero is the thing to verify. Both fall straight out of the impulse rule.</p>
+      </section>
+
+
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="n-body.html"><span>&larr; Previous</span><strong>N-Body Gravity</strong></a>
+      <a class="pager-next" href="rigid-body.html"><span>Next &rarr;</span><strong>2D Rigid Body</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

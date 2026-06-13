@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schrödinger Wave Packets — Making Physics</title>
+  <meta name="description" content="Quantum mechanics replaces the particle with a complex wavefunction. What new phenomena — dispersion, coherent oscillation, tunneling — have no classical analogue?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#quantum">Quantum</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 17</span>
+      <h1 class="article-title">Schrödinger Wave Packets</h1>
+      <p class="article-lead">Quantum mechanics replaces the particle with a complex wavefunction. What new phenomena — dispersion, coherent oscillation, tunneling — have no classical analogue?</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="schrodinger"></div>
+      <p class="sim-cap">A wave packet hits a barrier, evolved live with a unitary leapfrog scheme. Lower the barrier or raise the energy and the transmitted fraction climbs — quantum tunneling you can dial in.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/schrodinger_barrier_tunneling_density.svg" alt="Schrödinger Wave Packets — simulation render" /></div>
+      <figcaption>Tunneling: a packet hits a barrier taller than its mean energy. Classically it would always bounce; quantum mechanically ~18% leaks through while ~82% reflects, with probability still summing to 1.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">i\hbar\,\frac{\partial \psi}{\partial t} = \hat H\psi, \qquad \hat H = -\frac{\hbar^2}{2m}\frac{\partial^2}{\partial x^2} + V(x)</span><span class="eq-note">the time-dependent Schrödinger equation</span></li>        <li><span class="eq-tex">\left(I + i\tfrac{\Delta t}{2}\hat H\right)\psi^{\,n+1} = \left(I - i\tfrac{\Delta t}{2}\hat H\right)\psi^{\,n}</span><span class="eq-note">the unitary Crank-Nicolson step</span></li>        <li><span class="eq-tex">\sigma(t) = \sigma\sqrt{1 + \left(\frac{\hbar t}{2 m \sigma^2}\right)^{\!2}}</span><span class="eq-note">wave-packet dispersion</span></li>        <li><span class="eq-tex">T \sim \exp\!\left(-\,2\sqrt{2m(V_0 - E)}\;\tfrac{w}{\hbar}\right)</span><span class="eq-note">tunneling probability through a barrier</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>Evolving a wavefunction</h2>
+        <p>The 1D time-dependent Schrödinger equation <code>i ∂ψ/∂t = Hψ</code> with <code>H = -½ ∂²/∂x² + V</code> is discretized on the same grid and three-point second difference as the wave-equation labs — but now the field is a complex probability amplitude, and <code>|ψ|²</code> is a probability density.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/schrodinger_free_packet_density.svg" alt="A free Gaussian packet spreads as it travels: different momentum components move" loading="lazy" /></div>
+        <figcaption>A free Gaussian packet spreads as it travels: different momentum components move at different speeds, so position uncertainty grows — quantum dispersion.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Unitarity demands Crank-Nicolson</h2>
+        <p>A quantum integrator must preserve total probability. Explicit Euler does not and the norm blows up. Crank-Nicolson averages the Hamiltonian over the step into a Cayley transform that is exactly unitary for any step size, so the norm — and, for static V, the energy — is conserved to round-off. The quantum echo of matching the integrator to the conserved structure.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/schrodinger_harmonic_coherent_density.svg" alt="A coherent state in a harmonic well oscillates as ⟨x⟩ = x₀cosωt without changing" loading="lazy" /></div>
+        <figcaption>A coherent state in a harmonic well oscillates as ⟨x⟩ = x₀cosωt without changing shape — the closest a quantum state comes to a classical oscillator.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Three irreducibly quantum effects</h2>
+        <p>A free packet disperses (<code>σ(t)</code> grows) because its momentum components travel at different speeds. A coherent state in a harmonic well oscillates without spreading. A packet tunnels through a barrier taller than its energy, splitting into reflected and transmitted parts whose probabilities still sum to 1 — with transmission falling exponentially in barrier width. And two superposed stationary states beat at their energy difference: the quantum origin of spectral lines.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/schrodinger_square_well_modes_density.svg" alt="Two stationary states superposed: the density beats side to side at the differen" loading="lazy" /></div>
+        <figcaption>Two stationary states superposed: the density beats side to side at the difference frequency E₂-E₁ — the quantum origin of spectral lines.</figcaption>
+      </figure>
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="ising-model.html"><span>&larr; Previous</span><strong>The Ising Model</strong></a>
+      <a class="pager-next" href="eigenstates.html"><span>Next &rarr;</span><strong>Quantum Eigenstates</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

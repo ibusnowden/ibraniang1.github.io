@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Double Pendulum — Making Physics</title>
+  <meta name="description" content="When does a pendulum hanging from a pendulum look regular, and when does it become chaotic?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#mechanics">Mechanics</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 05</span>
+      <h1 class="article-title">The Double Pendulum</h1>
+      <p class="article-lead">When does a pendulum hanging from a pendulum look regular, and when does it become chaotic?</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="doublependulum"></div>
+      <p class="sim-cap">Two double pendulums released 0.0001 rad apart, in blue and gold. Identical equations, identical timestep — and within seconds their lower bobs are nowhere near each other. This is deterministic chaos.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/double_pendulum_trajectory.svg" alt="The Double Pendulum — simulation render" /></div>
+      <figcaption>The lower bob's path. At small amplitude it weaves a quasi-regular two-mode pattern; at large amplitude two runs starting 1e-4 rad apart diverge into completely different trajectories.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">\delta = \theta_1 - \theta_2</span><span class="eq-note">the angle difference that drives the coupling</span></li>        <li><span class="eq-tex">\ddot\theta_1 = \frac{-g(2m_1{+}m_2)\sin\theta_1 - m_2 g\sin(\theta_1{-}2\theta_2) - 2\sin\delta\,m_2\!\left(\dot\theta_2^2 L_2 + \dot\theta_1^2 L_1\cos\delta\right)}{L_1\,(2m_1 + m_2 - m_2\cos 2\delta)}</span><span class="eq-note">the Lagrangian equation of motion for the upper arm</span></li>        <li><span class="eq-tex">\lvert\Delta\theta(t)\rvert \sim \lvert\Delta\theta_0\rvert\,e^{\lambda t}</span><span class="eq-note">exponential divergence — the signature of chaos</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>Coupled and nonlinear</h2>
+        <p>The Lagrangian equations of motion couple the two angular accelerations through the velocities. That velocity dependence is exactly why velocity-Verlet is no longer strictly symplectic for this system, so RK4 becomes the integrator of choice and explicit Euler is kept only as a cautionary tale.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/double_pendulum_energy.svg" alt="Total energy under RK4. The centripetal coupling makes Verlet non-symplectic her" loading="lazy" /></div>
+        <figcaption>Total energy under RK4. The centripetal coupling makes Verlet non-symplectic here, so RK4 is the workhorse — and its drift is the diagnostic.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Regular at small angles</h2>
+        <p>Start both arms at 15° and the motion is close to two coupled harmonic oscillators — the lower bob traces a tidy interference pattern of two normal modes. It looks almost periodic, and over short times it nearly is.</p>
+      </section>
+
+
+
+      <section class="prose reveal">
+        <h2>Chaos you can measure</h2>
+        <p>Start both arms at 120° and the system is chaotic in the technical sense: the <code>chaotic_perturbed</code> run shifts the second angle by just 1e-4 rad, and within a few seconds the two paths — same integrator, same timestep — are unrecognizably different. Sensitive dependence on initial conditions, rendered as two diverging curves.</p>
+      </section>
+
+
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="orbits.html"><span>&larr; Previous</span><strong>Kepler Orbits</strong></a>
+      <a class="pager-next" href="n-body.html"><span>Next &rarr;</span><strong>N-Body Gravity</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

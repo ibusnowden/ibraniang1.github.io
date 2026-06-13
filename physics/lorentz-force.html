@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Lorentz Force — Making Physics</title>
+  <meta name="description" content="The magnetic force acts perpendicular to velocity and does no work. What motion does v×B produce, and why does it demand a special integrator?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#em">Electromagnetism</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 11</span>
+      <h1 class="article-title">The Lorentz Force</h1>
+      <p class="article-lead">The magnetic force acts perpendicular to velocity and does no work. What motion does v×B produce, and why does it demand a special integrator?</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="lorentz"></div>
+      <p class="sim-cap">A charged particle in crossed E and B fields, pushed by the Boris algorithm. Add an E field to see the cycloidal E×B drift; flip the charge; or switch to explicit Euler and watch the orbit spiral out as energy leaks.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/lorentz_cyclotron_trajectory.svg" alt="The Lorentz Force — simulation render" /></div>
+      <figcaption>Pure magnetic field: a clean circular cyclotron orbit. Under the Boris pusher the radius and kinetic energy are conserved to machine precision.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">m\,\frac{d\vec v}{dt} = q\,(\vec E + \vec v \times \vec B)</span><span class="eq-note">the Lorentz force</span></li>        <li><span class="eq-tex">\omega_c = \frac{\lvert q\rvert B}{m}, \qquad r_g = \frac{m\,v_\perp}{\lvert q\rvert B}</span><span class="eq-note">cyclotron frequency and gyroradius</span></li>        <li><span class="eq-tex">\vec v_d = \frac{\vec E \times \vec B}{B^2}</span><span class="eq-note">the E×B drift — independent of charge and mass</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>A force that does no work</h2>
+        <p><code>m dv/dt = q(E + v×B)</code>. The magnetic term is always perpendicular to <code>v</code>, so it turns the velocity without changing its magnitude. In a pure B field, speed — and kinetic energy — is an exact invariant of the continuous motion, and the orbit is a circle of radius <code>r = mv⊥/|q|B</code> at frequency <code>ω_c = |q|B/m</code>.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/lorentz_e_cross_b_drift_trajectory.svg" alt="Crossed E and B fields: gyration plus a steady sideways drift at |E|/|B|, tracin" loading="lazy" /></div>
+        <figcaption>Crossed E and B fields: gyration plus a steady sideways drift at |E|/|B|, tracing cycloid cusps — and the drift does not reverse when the charge flips sign.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>The Boris pusher</h2>
+        <p>A naive integrator destroys that invariant: explicit Euler rotates <code>v</code> and lengthens it every step, so the orbit spirals out. The Boris pusher splits each step into a half electric kick, an exact magnetic rotation, and a second half kick. The rotation preserves <code>|v|</code> to machine precision — the magnetic analogue of choosing velocity-Verlet for Hamiltonian mechanics.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/lorentz_euler_drift_demo_trajectory.svg" alt="The failure mode: the same cyclotron run under explicit Euler spirals outward as" loading="lazy" /></div>
+        <figcaption>The failure mode: the same cyclotron run under explicit Euler spirals outward as the speed grows without bound.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>The E×B drift</h2>
+        <p>Add a steady E perpendicular to B and the particle does not accelerate along E. Instead its gyration develops a steady drift <code>(E×B)/|B|²</code>, perpendicular to both fields, at a speed independent of charge or mass. Flip the charge and the drift direction is unchanged — both the gyration sense and v×B flip together.</p>
+      </section>
+
+
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="fourier-modes.html"><span>&larr; Previous</span><strong>The Fourier View</strong></a>
+      <a class="pager-next" href="electric-fields.html"><span>Next &rarr;</span><strong>Electric Fields</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

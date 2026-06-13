@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Electric Fields — Making Physics</title>
+  <meta name="description" content="Where do the fields come from? Start with a static point charge and build up: superposition, field lines, and conservative motion." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#em">Electromagnetism</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 12</span>
+      <h1 class="article-title">Electric Fields</h1>
+      <p class="article-lead">Where do the fields come from? Start with a static point charge and build up: superposition, field lines, and conservative motion.</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="efield"></div>
+      <p class="sim-cap">Drag the charges around and watch the field arrows update. Switch between a dipole, two like charges (note the null point), and a quadrupole whose field dies off far faster with distance.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/efield_dipole_field.svg" alt="Electric Fields — simulation render" /></div>
+      <figcaption>A dipole: equal and opposite charges. Field lines flow visibly from + to -, and the far field falls off as 1/r³ — faster than a single charge.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">\vec E(\vec r) = \sum_i k_e\,q_i\,\frac{\vec r - \vec r_i}{\lvert\vec r - \vec r_i\rvert^3}</span><span class="eq-note">superposition of point-charge fields</span></li>        <li><span class="eq-tex">\vec E = -\nabla V, \qquad V(\vec r) = \sum_i \frac{k_e\,q_i}{\lvert\vec r - \vec r_i\rvert}</span><span class="eq-note">the field is the gradient of the potential</span></li>        <li><span class="eq-tex">E_{\text{tot}} = \tfrac12 m\lvert\vec v\rvert^2 + q\,V(\vec r) = \text{const}</span><span class="eq-note">a conservative field — RK4 is enough</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>Superposition</h2>
+        <p>The field and potential at any point are sums over the charges: <code>E(r) = Σ k qᵢ (r-rᵢ)/|r-rᵢ|³</code>, with <code>E = -∇V</code>. The field is the downhill gradient of the potential — every picture in this lab is built from that one rule applied to a few point sources.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/efield_quadrupole_field.svg" alt="An alternating quadrupole on a square's corners: tightly curving short lines and" loading="lazy" /></div>
+        <figcaption>An alternating quadrupole on a square's corners: tightly curving short lines and a weak distant field (1/r⁴). The higher the multipole, the faster the field dies.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Conservative, so RK4 is enough</h2>
+        <p>Static charges make a conservative field, so a test particle's total energy <code>½m|v|² + qV</code> is exactly conserved and ordinary RK4 suffices — no Boris machinery. That contrast is the point of the EM track: a magnetic field rotates <code>v</code> and needs Boris; a static electric field is a gradient and conserves a Hamiltonian energy.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/efield_parallel_plates_field.svg" alt="Two opposite rows of charges: a nearly uniform interior field (the capacitor ide" loading="lazy" /></div>
+        <figcaption>Two opposite rows of charges: a nearly uniform interior field (the capacitor idealization) with visible fringing at the edges.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Multipoles and a familiar cousin</h2>
+        <p>A single + charge with a - test charge is mathematically identical to the gravity orbit lab — an attractive 1/r² central force giving closed Kepler ellipses. Move to dipoles and quadrupoles and the far field falls off faster (1/r³, then 1/r⁴): the higher the multipole order, the more quickly the field dies with distance.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/efield_like_charges_field.svg" alt="Two like charges: the null point on the perpendicular bisector where the fields " loading="lazy" /></div>
+        <figcaption>Two like charges: the null point on the perpendicular bisector where the fields cancel, and the saddle topology around it.</figcaption>
+      </figure>
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="lorentz-force.html"><span>&larr; Previous</span><strong>The Lorentz Force</strong></a>
+      <a class="pager-next" href="maxwell-fdtd.html"><span>Next &rarr;</span><strong>Maxwell FDTD</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

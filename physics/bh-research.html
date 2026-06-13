@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Black Hole Research Extensions — Making Physics</title>
+  <meta name="description" content="Eight validated research directions built on the GRRT engine — from the EHT crescent and the photon-ring Lyapunov exponent to a binary-merger gravitational waveform." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#relativity">Relativity</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 20</span>
+      <h1 class="article-title">Black Hole Research Extensions</h1>
+      <p class="article-lead">Eight validated research directions built on the GRRT engine — from the EHT crescent and the photon-ring Lyapunov exponent to a binary-merger gravitational waveform.</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="shadow"></div>
+      <p class="sim-cap">The Bardeen critical curve — the black-hole shadow — drawn live. Raise the spin and watch the shadow shift sideways (frame dragging) and flatten into the characteristic "D"; change the inclination to view it from a new angle.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/bh_eht_riaf.png" alt="Black Hole Research Extensions — simulation render" /></div>
+      <figcaption>EHT synchrotron image: covariant radiative transfer of thermal synchrotron through a RIAF gives the asymmetric, Doppler-brightened photon-ring crescent — the M87*/Sgr A* morphology.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">(b_n - b_c) \;\propto\; e^{-\gamma n}, \qquad \gamma \to \pi</span><span class="eq-note">photon-ring demagnification (fit: γ = 3.143)</span></li>        <li><span class="eq-tex">\frac{d}{d\lambda}\!\left(\frac{I_\nu}{\nu^3}\right) = \frac{j_\nu}{\nu^2} - \nu\,\alpha_\nu\,\frac{I_\nu}{\nu^3}</span><span class="eq-note">covariant radiative transfer along a geodesic</span></li>        <li><span class="eq-tex">W = \ln(-u_t)</span><span class="eq-note">the Fishbone-Moncrief torus potential</span></li>        <li><span class="eq-tex">M_f\,\omega_R = 0.529, \qquad a_f = 0.687</span><span class="eq-note">the l=m=2 Kerr ringdown of an equal-mass merger</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>One engine, eight frontiers</h2>
+        <p>Because the geodesic right-hand side uses numerical metric derivatives, a new spacetime is one <code>metric()</code> override — so testing the Kerr hypothesis against charged Kerr-Newman, regular Bardeen, and Hayward black holes is nearly free. Each extension is a real, validated computation, with the two genuinely multi-week efforts (turbulent GRMHD, 3+1 numerical relativity) done at the standard reduced-but-rigorous level and labeled as such.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/bh_fig_shadow_spin.svg" alt="Shadow critical curves: the exact Bardeen analytic curve against the numerically" loading="lazy" /></div>
+        <figcaption>Shadow critical curves: the exact Bardeen analytic curve against the numerically traced boundary, agreeing to ~0.1%, flattening into a "D" as spin rises.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Universal photon-ring structure</h2>
+        <p>Equatorial photons wind by an angle that diverges near the critical impact parameter, and the subring spacing obeys <code>(b_n - b_c) ∝ e^{-γn}</code>. The fit gives γ = 3.143, matching the Schwarzschild value π to 0.03% — the universal photon-ring demagnification of Johnson et al. (2020), reproduced from a traced ray bundle.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/bh_fig_subrings.svg" alt="Photon subrings: successive rings are e^{-π} ≈ 0.043× closer to the critical cur" loading="lazy" /></div>
+        <figcaption>Photon subrings: successive rings are e^{-π} ≈ 0.043× closer to the critical curve. The fitted Lyapunov exponent γ = 3.143 matches π to 0.03%.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>From light to images to waves</h2>
+        <p>Covariant radiative transfer of thermal synchrotron yields the EHT crescent; exact Penrose-Walker transport gives a polarized image with |m| ≈ 11%; a Fishbone-Moncrief torus closes the honest fluid-to-image chain at equilibrium. And a semi-analytic inspiral-merger-ringdown — PN chirp, NR-calibrated remnant (a_f = 0.687, 4.8% radiated), Kerr l=m=2 ringdown — reproduces the GW150914 numbers.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/bh_fig_polarization.svg" alt="Polarized image via exact Penrose-Walker transport: the electric-vector angles f" loading="lazy" /></div>
+        <figcaption>Polarized image via exact Penrose-Walker transport: the electric-vector angles form a coherent spiral, with image-integrated linear polarization |m| ≈ 11%.</figcaption>
+      </figure>      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/bh_eht_torus.png" alt="A Fishbone-Moncrief equilibrium torus — the GR-hydro initial condition every GRM" loading="lazy" /></div>
+        <figcaption>A Fishbone-Moncrief equilibrium torus — the GR-hydro initial condition every GRMHD run starts from — built from its relativistic potential and imaged.</figcaption>
+      </figure>      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/bh_fig_hotspot.svg" alt="An orbiting hotspot light curve flaring ×20 per orbit from Doppler boosting and " loading="lazy" /></div>
+        <figcaption>An orbiting hotspot light curve flaring ×20 per orbit from Doppler boosting and lensing, with light-travel-time delays — the Sgr A* flare model.</figcaption>
+      </figure>      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/bh_fig_gw.svg" alt="A binary-merger waveform: post-Newtonian chirp, NR-calibrated remnant, and Kerr " loading="lazy" /></div>
+        <figcaption>A binary-merger waveform: post-Newtonian chirp, NR-calibrated remnant, and Kerr ringdown. Scaled to 65 M_⊙ it gives a ~276 Hz ringdown — the GW150914 values.</figcaption>
+      </figure>
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="kerr-grrt.html"><span>&larr; Previous</span><strong>Kerr Black Hole Ray Tracer</strong></a>
+      <span></span>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

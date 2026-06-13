@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Ising Model — Making Physics</title>
+  <meta name="description" content="Can a phase transition emerge from a trivially simple rule, and how do you simulate a system at temperature T when you can't enumerate its 2^N states?" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+  <script defer src="sims.js"></script>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="progress" id="progress"></div>
+  <main class="article">
+    <div class="crumbs">
+      <a href="index.html">Making Physics</a>
+      <span class="sep">/</span>
+      <a href="index.html#thermal">Thermal & Statistical</a>
+    </div>
+
+    <header class="article-head">
+      <span class="article-num">Chapter 16</span>
+      <h1 class="article-title">The Ising Model</h1>
+      <p class="article-lead">Can a phase transition emerge from a trivially simple rule, and how do you simulate a system at temperature T when you can't enumerate its 2^N states?</p>
+    </header>
+
+    <section class="sim-wrap reveal">
+      <div class="sim-tag">Interactive &middot; live simulation</div>
+      <div class="sim" data-sim="ising"></div>
+      <p class="sim-cap">Drag the temperature through the critical point T_c ≈ 2.269 J and watch the lattice live. Cold: large ordered domains. Hot: salt-and-pepper noise. At T_c: clusters of every size at once.</p>
+    </section>
+
+    <figure class="hero-fig reveal">
+      <div class="fig-frame"><img class="zoomable" src="assets/ising_critical_domains.svg" alt="The Ising Model — simulation render" /></div>
+      <figcaption>At the critical temperature: scale-free, fractal-looking clusters of every size at once — the hallmark of a diverging correlation length.</figcaption>
+    </figure>
+
+    <aside class="eqs reveal" aria-label="Key equations">
+      <h2 class="eqs-head"><span class="eqs-kicker">Key equations</span></h2>
+      <ul class="eq-list">
+        <li><span class="eq-tex">E = -J\!\sum_{\langle ij\rangle} s_i s_j \; - \; h\sum_i s_i</span><span class="eq-note">the Ising energy on a square lattice</span></li>        <li><span class="eq-tex">P(\text{flip}) = \min\!\left(1,\; e^{-\Delta E / T}\right)</span><span class="eq-note">the Metropolis acceptance rule</span></li>        <li><span class="eq-tex">T_c = \frac{2J}{\ln\!\left(1 + \sqrt 2\right)} \approx 2.269\,J</span><span class="eq-note">Onsager's exact critical temperature</span></li>        <li><span class="eq-tex">\chi = \frac{N}{T}\,\text{Var}(\lvert m\rvert)</span><span class="eq-note">susceptibility — peaks at the transition</span></li>
+      </ul>
+    </aside>
+
+      <section class="prose reveal">
+        <h2>Neighbors prefer to agree</h2>
+        <p>A square lattice of spins <code>s = ±1</code> with energy <code>E = -J Σ sᵢsⱼ</code>. Aligned neighbors lower the energy. That is the entire microscopic rule — and yet it produces a sharp, qualitative change in collective behavior at a critical temperature, exactly like a magnet losing its magnetism.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/ising_ordered_domains.svg" alt="Below T_c: large ferromagnetic domains, neighbors agreeing ~97% of the time." loading="lazy" /></div>
+        <figcaption>Below T_c: large ferromagnetic domains, neighbors agreeing ~97% of the time.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>Never compute Z</h2>
+        <p>The partition function has 2^N terms, so direct evaluation is hopeless. The Metropolis algorithm samples the Boltzmann distribution anyway, using only energy differences: flip a spin if it lowers the energy, otherwise accept with probability <code>exp(-ΔE/T)</code>. After enough sweeps the configurations are drawn from the correct thermal ensemble — the central trick of computational statistical mechanics.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/ising_disordered_domains.svg" alt="Above T_c: salt-and-pepper noise as entropy wins and spins flip freely." loading="lazy" /></div>
+        <figcaption>Above T_c: salt-and-pepper noise as entropy wins and spins flip freely.</figcaption>
+      </figure>
+
+      <section class="prose reveal">
+        <h2>The transition and its fingerprints</h2>
+        <p>Sweep temperature and the magnetization holds near 1, then collapses through <code>T_c = 2J/ln(1+√2) ≈ 2.269</code> — Onsager's exact result, reproduced on a 48×48 grid. The sharper fingerprints are the fluctuations: susceptibility and specific heat both peak at T_c, because the system poised between order and disorder responds enormously to tiny perturbations.</p>
+      </section>
+
+      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/ising_transition.svg" alt="The order parameter ⟨|m|⟩ holding near 1, then collapsing sharply through T_c ≈ " loading="lazy" /></div>
+        <figcaption>The order parameter ⟨|m|⟩ holding near 1, then collapsing sharply through T_c ≈ 2.269 J — Onsager's exact value, reproduced.</figcaption>
+      </figure>      <figure class="fig reveal">
+        <div class="fig-frame"><img class="zoomable" src="assets/ising_response.svg" alt="Susceptibility and specific heat both peaking at the transition: near T_c, tiny " loading="lazy" /></div>
+        <figcaption>Susceptibility and specific heat both peaking at the transition: near T_c, tiny perturbations produce huge responses.</figcaption>
+      </figure>
+
+    <section class="cta">
+      <p>This chapter is drawn from the <code>physics-lab</code> study notes and renders. The longer write-ups and project essays live on the blog.</p>
+      <a class="cta-btn" href="https://ibra-niang.com/blog.html">Read more on the blog &rarr;</a>
+    </section>
+
+    <nav class="pager">
+      <a class="pager-prev" href="random-walk.html"><span>&larr; Previous</span><strong>Random Walk &amp; Diffusion</strong></a>
+      <a class="pager-next" href="schrodinger.html"><span>Next &rarr;</span><strong>Schrödinger Wave Packets</strong></a>
+    </nav>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

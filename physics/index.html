@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Making Physics — an illustrated guide to physics simulation</title>
+  <meta name="description" content="An illustrated reference guide to physics through simulation. Every figure is a real render from a from-scratch C++ physics engine — mechanics, waves, electromagnetism, thermodynamics, quantum, and a general-relativistic black-hole ray tracer." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Newsreader:ital,opt@0,8..60;1,8..60&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161821'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23f0ad3f'/%3E%3Cg fill='none' stroke='%232f49e0' stroke-width='1.6'%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(60 16 16)'/%3E%3Cellipse cx='16' cy='16' rx='11' ry='4.5' transform='rotate(120 16 16)'/%3E%3C/g%3E%3C/svg%3E" />
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="index.html"><svg class='mark' viewBox='0 0 32 32' aria-hidden='true'><circle cx='16' cy='16' r='3.4' fill='var(--accent2)'/><g fill='none' stroke='var(--accent)' stroke-width='1.5'><ellipse cx='16' cy='16' rx='12' ry='5'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(60 16 16)'/><ellipse cx='16' cy='16' rx='12' ry='5' transform='rotate(120 16 16)'/></g></svg><span>Making&nbsp;Physics</span></a>
+    <nav class="nav-links">
+      <a class="is-active" href="index.html">chapters</a>
+      <a href="index.html#about">about</a>
+      <a href="https://ibra-niang.com/blog.html">blog&nbsp;&rarr;</a>
+      <a href="https://ibra-niang.com">ibra-niang.com</a>
+    </nav>
+  </header>
+  <div class="pills" id="pills"><div class="pills-inner"><a href="#mechanics" data-pill="mechanics">Mechanics</a><a href="#waves" data-pill="waves">Waves</a><a href="#em" data-pill="em">Electromagnetism</a><a href="#thermal" data-pill="thermal">Thermal & Statistical</a><a href="#quantum" data-pill="quantum">Quantum</a><a href="#relativity" data-pill="relativity">Relativity</a></div></div>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">An illustrated reference guide</p>
+      <h1 class="hero-title">Physics, made by<br/>making it run.</h1>
+      <p class="hero-lead">Twenty experiments that build physics from the equations up — and then make those equations move. Each one is a from-scratch C++ simulation; <em>every figure on this site is a real render straight out of it</em>, not a stock illustration. Start anywhere.</p>
+      <div class="hero-meta">
+        <span><strong>20</strong> chapters</span>
+        <span class="sep">&middot;</span>
+        <span><strong>6</strong> tracks, mechanics to general relativity</span>
+        <span class="sep">&middot;</span>
+        <a href="https://ibra-niang.com/blog.html">companion blog &rarr;</a>
+      </div>
+    </section>
+
+    <section class="chapter-group" id="mechanics">
+      <div class="group-head reveal">
+        <h2 class="group-title">
+          <span class="group-part">Part 1</span>
+          <span class="group-kicker">Mechanics</span>
+          <span class="group-count">8 chapters</span>
+        </h2>
+        <p class="group-blurb">Point masses, springs, and rigid bodies under Newton's laws — and the integrators that keep their energy honest.</p>
+      </div>
+      <div class="ch-grid">
+        <a class="ch reveal" href="projectile-motion.html">
+          <span class="ch-thumb"><img src="assets/projectile_trajectory.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">01</span>
+            <span class="ch-title">Projectile Motion</span>
+            <span class="ch-desc">Constant gravity, a closed-form parabola, and the first lesson in how a timestep quietly bends the truth.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="pendulum.html">
+          <span class="ch-thumb"><img src="assets/pendulum_angle.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">02</span>
+            <span class="ch-title">The Simple Pendulum</span>
+            <span class="ch-desc">When is `sin θ ≈ θ` good enough? The honest nonlinear swing versus its small-angle cartoon.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="springs.html">
+          <span class="ch-thumb"><img src="assets/spring_position.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">03</span>
+            <span class="ch-title">Mass on a Spring</span>
+            <span class="ch-desc">Simple harmonic motion, and exactly how much damping it takes to kill an oscillation.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="orbits.html">
+          <span class="ch-thumb"><img src="assets/orbit_trajectory.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">04</span>
+            <span class="ch-title">Kepler Orbits</span>
+            <span class="ch-desc">Inverse-square gravity, closed ellipses, and why symplectic integrators don't let orbits spiral.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="double-pendulum.html">
+          <span class="ch-thumb"><img src="assets/double_pendulum_trajectory.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">05</span>
+            <span class="ch-title">The Double Pendulum</span>
+            <span class="ch-desc">A pendulum on a pendulum: the cleanest desktop demonstration of deterministic chaos.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="n-body.html">
+          <span class="ch-thumb"><img src="assets/nbody_pythagorean_trajectory.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">06</span>
+            <span class="ch-title">N-Body Gravity</span>
+            <span class="ch-desc">No central mass, no walls — just mutual gravity. Momentum becomes a near-perfect digital invariant.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="collisions.html">
+          <span class="ch-thumb"><img src="assets/collision_billiard_break_trajectory.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">07</span>
+            <span class="ch-title">Hard-Disk Collisions</span>
+            <span class="ch-desc">Impulses along the contact normal, the 90° rule, and how restitution interpolates elastic to sticky.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="rigid-body.html">
+          <span class="ch-thumb"><img src="assets/rigid_body_spinning_throw_trajectory.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">08</span>
+            <span class="ch-title">2D Rigid Body</span>
+            <span class="ch-desc">Objects gain extent. An off-center hit splits into translation and spin through one little cross product.</span>
+          </span>
+        </a>
+      </div>
+    </section>
+    <section class="chapter-group" id="waves">
+      <div class="group-head reveal">
+        <h2 class="group-title">
+          <span class="group-part">Part 2</span>
+          <span class="group-kicker">Waves</span>
+          <span class="group-count">2 chapters</span>
+        </h2>
+        <p class="group-blurb">Couple the oscillators together and the system learns to propagate. Pulses, normal modes, and the Fourier recipe behind them.</p>
+      </div>
+      <div class="ch-grid">
+        <a class="ch reveal" href="mass-spring-chain.html">
+          <span class="ch-thumb"><img src="assets/chain_pulse_fixed_ends_waterfall.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">09</span>
+            <span class="ch-title">The Mass-Spring Chain</span>
+            <span class="ch-desc">Chain enough oscillators together and a medium appears — one that carries, reflects, and disperses waves.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="fourier-modes.html">
+          <span class="ch-thumb"><img src="assets/fourier_triangle_spectrum.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">10</span>
+            <span class="ch-title">The Fourier View</span>
+            <span class="ch-desc">The change of basis that turns N tangled, coupled masses into N independent oscillators.</span>
+          </span>
+        </a>
+      </div>
+    </section>
+    <section class="chapter-group" id="em">
+      <div class="group-head reveal">
+        <h2 class="group-title">
+          <span class="group-part">Part 3</span>
+          <span class="group-kicker">Electromagnetism</span>
+          <span class="group-count">3 chapters</span>
+        </h2>
+        <p class="group-blurb">Static charges, the magnetic force that does no work, and Maxwell's fields generating themselves into light.</p>
+      </div>
+      <div class="ch-grid">
+        <a class="ch reveal" href="lorentz-force.html">
+          <span class="ch-thumb"><img src="assets/lorentz_cyclotron_trajectory.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">11</span>
+            <span class="ch-title">The Lorentz Force</span>
+            <span class="ch-desc">A magnetic force that does no work, the cycloidal E×B drift, and the pusher built to respect them.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="electric-fields.html">
+          <span class="ch-thumb"><img src="assets/efield_dipole_field.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">12</span>
+            <span class="ch-title">Electric Fields</span>
+            <span class="ch-desc">Where the fields come from: superposition, field lines, and multipoles dying off at different rates.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="maxwell-fdtd.html">
+          <span class="ch-thumb"><img src="assets/fdtd_dielectric_field.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">13</span>
+            <span class="ch-title">Maxwell FDTD</span>
+            <span class="ch-desc">Fields that generate themselves and leapfrog through space as light — reflecting, refracting, resonating.</span>
+          </span>
+        </a>
+      </div>
+    </section>
+    <section class="chapter-group" id="thermal">
+      <div class="group-head reveal">
+        <h2 class="group-title">
+          <span class="group-part">Part 4</span>
+          <span class="group-kicker">Thermal & Statistical</span>
+          <span class="group-count">3 chapters</span>
+        </h2>
+        <p class="group-blurb">Where temperature, pressure, diffusion, and phase transitions emerge from many particles that individually know nothing of them.</p>
+      </div>
+      <div class="ch-grid">
+        <a class="ch reveal" href="gas-maxwell-boltzmann.html">
+          <span class="ch-thumb"><img src="assets/thermal_gas_relaxation_distribution.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">14</span>
+            <span class="ch-title">Gas in a Box</span>
+            <span class="ch-desc">Start every disk at the same speed; collisions alone discover Maxwell-Boltzmann and the ideal gas law.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="random-walk.html">
+          <span class="ch-thumb"><img src="assets/random_walk_gaussian_distribution.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">15</span>
+            <span class="ch-title">Random Walk &amp; Diffusion</span>
+            <span class="ch-desc">No forces, just random steps — and predictable diffusion that forgets the microscopic rule entirely.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="ising-model.html">
+          <span class="ch-thumb"><img src="assets/ising_critical_domains.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">16</span>
+            <span class="ch-title">The Ising Model</span>
+            <span class="ch-desc">"Neighbors prefer to agree" — and out of that trivial rule comes a genuine phase transition.</span>
+          </span>
+        </a>
+      </div>
+    </section>
+    <section class="chapter-group" id="quantum">
+      <div class="group-head reveal">
+        <h2 class="group-title">
+          <span class="group-part">Part 5</span>
+          <span class="group-kicker">Quantum</span>
+          <span class="group-count">2 chapters</span>
+        </h2>
+        <p class="group-blurb">The particle becomes a complex wavefunction. Dispersion, tunneling, and the stationary states that set every spectral line.</p>
+      </div>
+      <div class="ch-grid">
+        <a class="ch reveal" href="schrodinger.html">
+          <span class="ch-thumb"><img src="assets/schrodinger_barrier_tunneling_density.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">17</span>
+            <span class="ch-title">Schrödinger Wave Packets</span>
+            <span class="ch-desc">The particle becomes a complex wavefunction. Dispersion, coherent oscillation, and tunneling appear.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="eigenstates.html">
+          <span class="ch-thumb"><img src="assets/eigenstates_double_well_levels.svg" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">18</span>
+            <span class="ch-title">Quantum Eigenstates</span>
+            <span class="ch-desc">Find the stationary states by rotating time into the imaginary axis — diffusion as a ground-state finder.</span>
+          </span>
+        </a>
+      </div>
+    </section>
+    <section class="chapter-group" id="relativity">
+      <div class="group-head reveal">
+        <h2 class="group-title">
+          <span class="group-part">Part 6</span>
+          <span class="group-kicker">Relativity</span>
+          <span class="group-count">2 chapters</span>
+        </h2>
+        <p class="group-blurb">A from-scratch general-relativistic ray tracer for a spinning black hole — images, spectra, shadows, and gravitational waves.</p>
+      </div>
+      <div class="ch-grid">
+        <a class="ch reveal" href="kerr-grrt.html">
+          <span class="ch-thumb"><img src="assets/bh_image_a0998_i80.png" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">19</span>
+            <span class="ch-title">Kerr Black Hole Ray Tracer</span>
+            <span class="ch-desc">A from-scratch general-relativistic ray tracer: the Gargantua image, light bending, and the spin diagnostic.</span>
+          </span>
+        </a>
+        <a class="ch reveal" href="bh-research.html">
+          <span class="ch-thumb"><img src="assets/bh_eht_riaf.png" alt="" loading="lazy" /></span>
+          <span class="ch-text">
+            <span class="ch-num">20</span>
+            <span class="ch-title">Black Hole Research Extensions</span>
+            <span class="ch-desc">Eight directions on the same engine: shadows, photon rings, EHT imaging, polarization, and merger waveforms.</span>
+          </span>
+        </a>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <h2 class="group-title"><span class="group-kicker">About this guide</span></h2>
+      <div class="about-grid">
+        <p>This is a homage, in form, to <a href="https://www.makingsoftware.com/">Making Software</a> by Dan Hollick — the idea that the best way to explain how something works is to show it, with pictures doing the heavy lifting. Here the subject is physics, and the pictures are not drawn by hand: they are the literal output of a physics engine written from scratch in C++.</p>
+        <p>Each chapter follows the same arc as the underlying lab notes: the question, the model, the numerical method chosen to respect what the physics conserves, and what the simulation actually shows. The running theme across all six tracks is that the integrator must match the structure you care about — symplectic for orbits, Boris for magnetic fields, unitary Crank-Nicolson for wavefunctions, monotone backward-Euler for eigenstates.</p>
+        <p>The companion essays and project notes live on the <a href="https://ibra-niang.com/blog.html">blog at ibra-niang.com</a>, where every chapter links back for the longer write-up.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="foot">
+    <div class="foot-top">
+      <span>Making&nbsp;Physics</span>
+      <span class="sep">&middot;</span>
+      <span>every figure is a real render from the <code>physics-lab</code> C++ simulations</span>
+    </div>
+    <div class="foot-bot">
+      Written, coded, and illustrated by <a href="https://ibra-niang.com">Ibra&nbsp;Niang</a>.
+      Read the companion writing on the <a href="https://ibra-niang.com/blog.html">blog</a>.
+      <span class="sep">&middot;</span> &copy; 2026
+    </div>
+  </footer>
+  <button class="totop" id="totop" aria-label="Back to top">&uarr;</button>
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt="" /></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
