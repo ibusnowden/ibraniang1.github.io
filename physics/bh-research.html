@@ -25,11 +25,50 @@
     </nav>
   </header>
   <div class="progress" id="progress"></div>
+  <div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-controls="toc" aria-expanded="false">Contents</button>
+  <aside class="toc" id="toc">
+    <div class="toc-inner">
+      <nav class="toc-nav" aria-label="All chapters">
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 1</span><span class="toc-part-l">Mechanics</span></div>
+          <a class="toc-link" href="projectile-motion.html"><span class="toc-num">01</span><span class="toc-name">Projectile Motion</span></a><a class="toc-link" href="pendulum.html"><span class="toc-num">02</span><span class="toc-name">The Simple Pendulum</span></a><a class="toc-link" href="springs.html"><span class="toc-num">03</span><span class="toc-name">Mass on a Spring</span></a><a class="toc-link" href="orbits.html"><span class="toc-num">04</span><span class="toc-name">Kepler Orbits</span></a><a class="toc-link" href="double-pendulum.html"><span class="toc-num">05</span><span class="toc-name">The Double Pendulum</span></a><a class="toc-link" href="n-body.html"><span class="toc-num">06</span><span class="toc-name">N-Body Gravity</span></a><a class="toc-link" href="collisions.html"><span class="toc-num">07</span><span class="toc-name">Hard-Disk Collisions</span></a><a class="toc-link" href="rigid-body.html"><span class="toc-num">08</span><span class="toc-name">2D Rigid Body</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 2</span><span class="toc-part-l">Waves</span></div>
+          <a class="toc-link" href="mass-spring-chain.html"><span class="toc-num">09</span><span class="toc-name">The Mass-Spring Chain</span></a><a class="toc-link" href="fourier-modes.html"><span class="toc-num">10</span><span class="toc-name">The Fourier View</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 3</span><span class="toc-part-l">Electromagnetism</span></div>
+          <a class="toc-link" href="lorentz-force.html"><span class="toc-num">11</span><span class="toc-name">The Lorentz Force</span></a><a class="toc-link" href="electric-fields.html"><span class="toc-num">12</span><span class="toc-name">Electric Fields</span></a><a class="toc-link" href="maxwell-fdtd.html"><span class="toc-num">13</span><span class="toc-name">Maxwell FDTD</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 4</span><span class="toc-part-l">Thermal &amp; Statistical</span></div>
+          <a class="toc-link" href="gas-maxwell-boltzmann.html"><span class="toc-num">14</span><span class="toc-name">Gas in a Box</span></a><a class="toc-link" href="random-walk.html"><span class="toc-num">15</span><span class="toc-name">Random Walk &amp; Diffusion</span></a><a class="toc-link" href="ising-model.html"><span class="toc-num">16</span><span class="toc-name">The Ising Model</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 5</span><span class="toc-part-l">Quantum</span></div>
+          <a class="toc-link" href="schrodinger.html"><span class="toc-num">17</span><span class="toc-name">Schrödinger Wave Packets</span></a><a class="toc-link" href="eigenstates.html"><span class="toc-num">18</span><span class="toc-name">Quantum Eigenstates</span></a>
+        </div>
+        <div class="toc-part is-active">
+          <div class="toc-head"><span class="toc-part-n">Part 6</span><span class="toc-part-l">Relativity</span></div>
+          <a class="toc-link" href="kerr-grrt.html"><span class="toc-num">19</span><span class="toc-name">Kerr Black Hole Ray Tracer</span></a><a class="toc-link is-current" href="bh-research.html"><span class="toc-num">20</span><span class="toc-name">Black Hole Research Extensions</span></a>
+          <span class="toc-subs"><a class="toc-sub" href="#sec-0">One engine, eight frontiers</a><a class="toc-sub" href="#sec-1">Universal photon-ring structure</a><a class="toc-sub" href="#sec-2">From light to images to waves</a></span>
+        </div>
+      </nav>
+      <div class="toc-foot">
+        <a class="toc-cta" href="https://ibra-niang.com/blog.html">Companion blog &rarr;</a>
+        <a class="toc-cta ghost" href="https://ibra-niang.com">ibra-niang.com</a>
+      </div>
+    </div>
+  </aside>
   <main class="article">
     <div class="crumbs">
       <a href="index.html">Making Physics</a>
       <span class="sep">/</span>
       <a href="index.html#relativity">Relativity</a>
+      <span class="sep">/</span>
+      <span class="crumb-here">Black Hole Research Extensions</span>
     </div>
 
     <header class="article-head">
@@ -46,7 +85,7 @@
 
     <figure class="hero-fig reveal">
       <div class="fig-frame"><img class="zoomable" src="assets/bh_eht_riaf.png" alt="Black Hole Research Extensions — simulation render" /></div>
-      <figcaption>EHT synchrotron image: covariant radiative transfer of thermal synchrotron through a RIAF gives the asymmetric, Doppler-brightened photon-ring crescent — the M87*/Sgr A* morphology.</figcaption>
+      <figcaption><span class="fig-n">fig 1.</span> EHT synchrotron image: covariant radiative transfer of thermal synchrotron through a RIAF gives the asymmetric, Doppler-brightened photon-ring crescent — the M87*/Sgr A* morphology.</figcaption>
     </figure>
 
     <aside class="eqs reveal" aria-label="Key equations">
@@ -56,43 +95,43 @@
       </ul>
     </aside>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-0">
         <h2>One engine, eight frontiers</h2>
         <p>Because the geodesic right-hand side uses numerical metric derivatives, a new spacetime is one <code>metric()</code> override — so testing the Kerr hypothesis against charged Kerr-Newman, regular Bardeen, and Hayward black holes is nearly free. Each extension is a real, validated computation, with the two genuinely multi-week efforts (turbulent GRMHD, 3+1 numerical relativity) done at the standard reduced-but-rigorous level and labeled as such.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/bh_fig_shadow_spin.svg" alt="Shadow critical curves: the exact Bardeen analytic curve against the numerically" loading="lazy" /></div>
-        <figcaption>Shadow critical curves: the exact Bardeen analytic curve against the numerically traced boundary, agreeing to ~0.1%, flattening into a "D" as spin rises.</figcaption>
+        <figcaption><span class="fig-n">fig 2.</span> Shadow critical curves: the exact Bardeen analytic curve against the numerically traced boundary, agreeing to ~0.1%, flattening into a "D" as spin rises.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-1">
         <h2>Universal photon-ring structure</h2>
         <p>Equatorial photons wind by an angle that diverges near the critical impact parameter, and the subring spacing obeys <code>(b_n - b_c) ∝ e^{-γn}</code>. The fit gives γ = 3.143, matching the Schwarzschild value π to 0.03% — the universal photon-ring demagnification of Johnson et al. (2020), reproduced from a traced ray bundle.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/bh_fig_subrings.svg" alt="Photon subrings: successive rings are e^{-π} ≈ 0.043× closer to the critical cur" loading="lazy" /></div>
-        <figcaption>Photon subrings: successive rings are e^{-π} ≈ 0.043× closer to the critical curve. The fitted Lyapunov exponent γ = 3.143 matches π to 0.03%.</figcaption>
+        <figcaption><span class="fig-n">fig 3.</span> Photon subrings: successive rings are e^{-π} ≈ 0.043× closer to the critical curve. The fitted Lyapunov exponent γ = 3.143 matches π to 0.03%.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-2">
         <h2>From light to images to waves</h2>
         <p>Covariant radiative transfer of thermal synchrotron yields the EHT crescent; exact Penrose-Walker transport gives a polarized image with |m| ≈ 11%; a Fishbone-Moncrief torus closes the honest fluid-to-image chain at equilibrium. And a semi-analytic inspiral-merger-ringdown — PN chirp, NR-calibrated remnant (a_f = 0.687, 4.8% radiated), Kerr l=m=2 ringdown — reproduces the GW150914 numbers.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/bh_fig_polarization.svg" alt="Polarized image via exact Penrose-Walker transport: the electric-vector angles f" loading="lazy" /></div>
-        <figcaption>Polarized image via exact Penrose-Walker transport: the electric-vector angles form a coherent spiral, with image-integrated linear polarization |m| ≈ 11%.</figcaption>
+        <figcaption><span class="fig-n">fig 4.</span> Polarized image via exact Penrose-Walker transport: the electric-vector angles form a coherent spiral, with image-integrated linear polarization |m| ≈ 11%.</figcaption>
       </figure>      <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/bh_eht_torus.png" alt="A Fishbone-Moncrief equilibrium torus — the GR-hydro initial condition every GRM" loading="lazy" /></div>
-        <figcaption>A Fishbone-Moncrief equilibrium torus — the GR-hydro initial condition every GRMHD run starts from — built from its relativistic potential and imaged.</figcaption>
+        <figcaption><span class="fig-n">fig 5.</span> A Fishbone-Moncrief equilibrium torus — the GR-hydro initial condition every GRMHD run starts from — built from its relativistic potential and imaged.</figcaption>
       </figure>      <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/bh_fig_hotspot.svg" alt="An orbiting hotspot light curve flaring ×20 per orbit from Doppler boosting and " loading="lazy" /></div>
-        <figcaption>An orbiting hotspot light curve flaring ×20 per orbit from Doppler boosting and lensing, with light-travel-time delays — the Sgr A* flare model.</figcaption>
+        <figcaption><span class="fig-n">fig 6.</span> An orbiting hotspot light curve flaring ×20 per orbit from Doppler boosting and lensing, with light-travel-time delays — the Sgr A* flare model.</figcaption>
       </figure>      <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/bh_fig_gw.svg" alt="A binary-merger waveform: post-Newtonian chirp, NR-calibrated remnant, and Kerr " loading="lazy" /></div>
-        <figcaption>A binary-merger waveform: post-Newtonian chirp, NR-calibrated remnant, and Kerr ringdown. Scaled to 65 M_⊙ it gives a ~276 Hz ringdown — the GW150914 values.</figcaption>
+        <figcaption><span class="fig-n">fig 7.</span> A binary-merger waveform: post-Newtonian chirp, NR-calibrated remnant, and Kerr ringdown. Scaled to 65 M_⊙ it gives a ~276 Hz ringdown — the GW150914 values.</figcaption>
       </figure>
 
     <section class="cta">
@@ -105,6 +144,7 @@
       <span></span>
     </nav>
   </main>
+  </div>
   <footer class="foot">
     <div class="foot-top">
       <span>Making&nbsp;Physics</span>

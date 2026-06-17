@@ -25,11 +25,50 @@
     </nav>
   </header>
   <div class="progress" id="progress"></div>
+  <div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-controls="toc" aria-expanded="false">Contents</button>
+  <aside class="toc" id="toc">
+    <div class="toc-inner">
+      <nav class="toc-nav" aria-label="All chapters">
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 1</span><span class="toc-part-l">Mechanics</span></div>
+          <a class="toc-link" href="projectile-motion.html"><span class="toc-num">01</span><span class="toc-name">Projectile Motion</span></a><a class="toc-link" href="pendulum.html"><span class="toc-num">02</span><span class="toc-name">The Simple Pendulum</span></a><a class="toc-link" href="springs.html"><span class="toc-num">03</span><span class="toc-name">Mass on a Spring</span></a><a class="toc-link" href="orbits.html"><span class="toc-num">04</span><span class="toc-name">Kepler Orbits</span></a><a class="toc-link" href="double-pendulum.html"><span class="toc-num">05</span><span class="toc-name">The Double Pendulum</span></a><a class="toc-link" href="n-body.html"><span class="toc-num">06</span><span class="toc-name">N-Body Gravity</span></a><a class="toc-link" href="collisions.html"><span class="toc-num">07</span><span class="toc-name">Hard-Disk Collisions</span></a><a class="toc-link" href="rigid-body.html"><span class="toc-num">08</span><span class="toc-name">2D Rigid Body</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 2</span><span class="toc-part-l">Waves</span></div>
+          <a class="toc-link" href="mass-spring-chain.html"><span class="toc-num">09</span><span class="toc-name">The Mass-Spring Chain</span></a><a class="toc-link" href="fourier-modes.html"><span class="toc-num">10</span><span class="toc-name">The Fourier View</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 3</span><span class="toc-part-l">Electromagnetism</span></div>
+          <a class="toc-link" href="lorentz-force.html"><span class="toc-num">11</span><span class="toc-name">The Lorentz Force</span></a><a class="toc-link" href="electric-fields.html"><span class="toc-num">12</span><span class="toc-name">Electric Fields</span></a><a class="toc-link" href="maxwell-fdtd.html"><span class="toc-num">13</span><span class="toc-name">Maxwell FDTD</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 4</span><span class="toc-part-l">Thermal &amp; Statistical</span></div>
+          <a class="toc-link" href="gas-maxwell-boltzmann.html"><span class="toc-num">14</span><span class="toc-name">Gas in a Box</span></a><a class="toc-link" href="random-walk.html"><span class="toc-num">15</span><span class="toc-name">Random Walk &amp; Diffusion</span></a><a class="toc-link" href="ising-model.html"><span class="toc-num">16</span><span class="toc-name">The Ising Model</span></a>
+        </div>
+        <div class="toc-part is-active">
+          <div class="toc-head"><span class="toc-part-n">Part 5</span><span class="toc-part-l">Quantum</span></div>
+          <a class="toc-link is-current" href="schrodinger.html"><span class="toc-num">17</span><span class="toc-name">Schrödinger Wave Packets</span></a>
+          <span class="toc-subs"><a class="toc-sub" href="#sec-0">Evolving a wavefunction</a><a class="toc-sub" href="#sec-1">Unitarity demands Crank-Nicolson</a><a class="toc-sub" href="#sec-2">Three irreducibly quantum effects</a></span><a class="toc-link" href="eigenstates.html"><span class="toc-num">18</span><span class="toc-name">Quantum Eigenstates</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 6</span><span class="toc-part-l">Relativity</span></div>
+          <a class="toc-link" href="kerr-grrt.html"><span class="toc-num">19</span><span class="toc-name">Kerr Black Hole Ray Tracer</span></a><a class="toc-link" href="bh-research.html"><span class="toc-num">20</span><span class="toc-name">Black Hole Research Extensions</span></a>
+        </div>
+      </nav>
+      <div class="toc-foot">
+        <a class="toc-cta" href="https://ibra-niang.com/blog.html">Companion blog &rarr;</a>
+        <a class="toc-cta ghost" href="https://ibra-niang.com">ibra-niang.com</a>
+      </div>
+    </div>
+  </aside>
   <main class="article">
     <div class="crumbs">
       <a href="index.html">Making Physics</a>
       <span class="sep">/</span>
       <a href="index.html#quantum">Quantum</a>
+      <span class="sep">/</span>
+      <span class="crumb-here">Schrödinger Wave Packets</span>
     </div>
 
     <header class="article-head">
@@ -46,7 +85,7 @@
 
     <figure class="hero-fig reveal">
       <div class="fig-frame"><img class="zoomable" src="assets/schrodinger_barrier_tunneling_density.svg" alt="Schrödinger Wave Packets — simulation render" /></div>
-      <figcaption>Tunneling: a packet hits a barrier taller than its mean energy. Classically it would always bounce; quantum mechanically ~18% leaks through while ~82% reflects, with probability still summing to 1.</figcaption>
+      <figcaption><span class="fig-n">fig 1.</span> Tunneling: a packet hits a barrier taller than its mean energy. Classically it would always bounce; quantum mechanically ~18% leaks through while ~82% reflects, with probability still summing to 1.</figcaption>
     </figure>
 
     <aside class="eqs reveal" aria-label="Key equations">
@@ -56,34 +95,34 @@
       </ul>
     </aside>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-0">
         <h2>Evolving a wavefunction</h2>
         <p>The 1D time-dependent Schrödinger equation <code>i ∂ψ/∂t = Hψ</code> with <code>H = -½ ∂²/∂x² + V</code> is discretized on the same grid and three-point second difference as the wave-equation labs — but now the field is a complex probability amplitude, and <code>|ψ|²</code> is a probability density.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/schrodinger_free_packet_density.svg" alt="A free Gaussian packet spreads as it travels: different momentum components move" loading="lazy" /></div>
-        <figcaption>A free Gaussian packet spreads as it travels: different momentum components move at different speeds, so position uncertainty grows — quantum dispersion.</figcaption>
+        <figcaption><span class="fig-n">fig 2.</span> A free Gaussian packet spreads as it travels: different momentum components move at different speeds, so position uncertainty grows — quantum dispersion.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-1">
         <h2>Unitarity demands Crank-Nicolson</h2>
         <p>A quantum integrator must preserve total probability. Explicit Euler does not and the norm blows up. Crank-Nicolson averages the Hamiltonian over the step into a Cayley transform that is exactly unitary for any step size, so the norm — and, for static V, the energy — is conserved to round-off. The quantum echo of matching the integrator to the conserved structure.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/schrodinger_harmonic_coherent_density.svg" alt="A coherent state in a harmonic well oscillates as ⟨x⟩ = x₀cosωt without changing" loading="lazy" /></div>
-        <figcaption>A coherent state in a harmonic well oscillates as ⟨x⟩ = x₀cosωt without changing shape — the closest a quantum state comes to a classical oscillator.</figcaption>
+        <figcaption><span class="fig-n">fig 3.</span> A coherent state in a harmonic well oscillates as ⟨x⟩ = x₀cosωt without changing shape — the closest a quantum state comes to a classical oscillator.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-2">
         <h2>Three irreducibly quantum effects</h2>
         <p>A free packet disperses (<code>σ(t)</code> grows) because its momentum components travel at different speeds. A coherent state in a harmonic well oscillates without spreading. A packet tunnels through a barrier taller than its energy, splitting into reflected and transmitted parts whose probabilities still sum to 1 — with transmission falling exponentially in barrier width. And two superposed stationary states beat at their energy difference: the quantum origin of spectral lines.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/schrodinger_square_well_modes_density.svg" alt="Two stationary states superposed: the density beats side to side at the differen" loading="lazy" /></div>
-        <figcaption>Two stationary states superposed: the density beats side to side at the difference frequency E₂-E₁ — the quantum origin of spectral lines.</figcaption>
+        <figcaption><span class="fig-n">fig 4.</span> Two stationary states superposed: the density beats side to side at the difference frequency E₂-E₁ — the quantum origin of spectral lines.</figcaption>
       </figure>
 
     <section class="cta">
@@ -96,6 +135,7 @@
       <a class="pager-next" href="eigenstates.html"><span>Next &rarr;</span><strong>Quantum Eigenstates</strong></a>
     </nav>
   </main>
+  </div>
   <footer class="foot">
     <div class="foot-top">
       <span>Making&nbsp;Physics</span>

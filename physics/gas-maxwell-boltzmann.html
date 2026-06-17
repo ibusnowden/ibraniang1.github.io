@@ -25,11 +25,50 @@
     </nav>
   </header>
   <div class="progress" id="progress"></div>
+  <div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-controls="toc" aria-expanded="false">Contents</button>
+  <aside class="toc" id="toc">
+    <div class="toc-inner">
+      <nav class="toc-nav" aria-label="All chapters">
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 1</span><span class="toc-part-l">Mechanics</span></div>
+          <a class="toc-link" href="projectile-motion.html"><span class="toc-num">01</span><span class="toc-name">Projectile Motion</span></a><a class="toc-link" href="pendulum.html"><span class="toc-num">02</span><span class="toc-name">The Simple Pendulum</span></a><a class="toc-link" href="springs.html"><span class="toc-num">03</span><span class="toc-name">Mass on a Spring</span></a><a class="toc-link" href="orbits.html"><span class="toc-num">04</span><span class="toc-name">Kepler Orbits</span></a><a class="toc-link" href="double-pendulum.html"><span class="toc-num">05</span><span class="toc-name">The Double Pendulum</span></a><a class="toc-link" href="n-body.html"><span class="toc-num">06</span><span class="toc-name">N-Body Gravity</span></a><a class="toc-link" href="collisions.html"><span class="toc-num">07</span><span class="toc-name">Hard-Disk Collisions</span></a><a class="toc-link" href="rigid-body.html"><span class="toc-num">08</span><span class="toc-name">2D Rigid Body</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 2</span><span class="toc-part-l">Waves</span></div>
+          <a class="toc-link" href="mass-spring-chain.html"><span class="toc-num">09</span><span class="toc-name">The Mass-Spring Chain</span></a><a class="toc-link" href="fourier-modes.html"><span class="toc-num">10</span><span class="toc-name">The Fourier View</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 3</span><span class="toc-part-l">Electromagnetism</span></div>
+          <a class="toc-link" href="lorentz-force.html"><span class="toc-num">11</span><span class="toc-name">The Lorentz Force</span></a><a class="toc-link" href="electric-fields.html"><span class="toc-num">12</span><span class="toc-name">Electric Fields</span></a><a class="toc-link" href="maxwell-fdtd.html"><span class="toc-num">13</span><span class="toc-name">Maxwell FDTD</span></a>
+        </div>
+        <div class="toc-part is-active">
+          <div class="toc-head"><span class="toc-part-n">Part 4</span><span class="toc-part-l">Thermal &amp; Statistical</span></div>
+          <a class="toc-link is-current" href="gas-maxwell-boltzmann.html"><span class="toc-num">14</span><span class="toc-name">Gas in a Box</span></a>
+          <span class="toc-subs"><a class="toc-sub" href="#sec-0">Temperature is locked, sharing is not</a><a class="toc-sub" href="#sec-1">Maxwell-Boltzmann emerges</a><a class="toc-sub" href="#sec-2">The gas law, derived</a></span><a class="toc-link" href="random-walk.html"><span class="toc-num">15</span><span class="toc-name">Random Walk &amp; Diffusion</span></a><a class="toc-link" href="ising-model.html"><span class="toc-num">16</span><span class="toc-name">The Ising Model</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 5</span><span class="toc-part-l">Quantum</span></div>
+          <a class="toc-link" href="schrodinger.html"><span class="toc-num">17</span><span class="toc-name">Schrödinger Wave Packets</span></a><a class="toc-link" href="eigenstates.html"><span class="toc-num">18</span><span class="toc-name">Quantum Eigenstates</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 6</span><span class="toc-part-l">Relativity</span></div>
+          <a class="toc-link" href="kerr-grrt.html"><span class="toc-num">19</span><span class="toc-name">Kerr Black Hole Ray Tracer</span></a><a class="toc-link" href="bh-research.html"><span class="toc-num">20</span><span class="toc-name">Black Hole Research Extensions</span></a>
+        </div>
+      </nav>
+      <div class="toc-foot">
+        <a class="toc-cta" href="https://ibra-niang.com/blog.html">Companion blog &rarr;</a>
+        <a class="toc-cta ghost" href="https://ibra-niang.com">ibra-niang.com</a>
+      </div>
+    </div>
+  </aside>
   <main class="article">
     <div class="crumbs">
       <a href="index.html">Making Physics</a>
       <span class="sep">/</span>
       <a href="index.html#thermal">Thermal & Statistical</a>
+      <span class="sep">/</span>
+      <span class="crumb-here">Gas in a Box</span>
     </div>
 
     <header class="article-head">
@@ -46,7 +85,7 @@
 
     <figure class="hero-fig reveal">
       <div class="fig-frame"><img class="zoomable" src="assets/thermal_gas_relaxation_distribution.svg" alt="Gas in a Box — simulation render" /></div>
-      <figcaption>The speed distribution relaxes from an initial single-speed spike to the Maxwell-Boltzmann (Rayleigh) curve — equilibrium emerging from elastic collisions alone.</figcaption>
+      <figcaption><span class="fig-n">fig 1.</span> The speed distribution relaxes from an initial single-speed spike to the Maxwell-Boltzmann (Rayleigh) curve — equilibrium emerging from elastic collisions alone.</figcaption>
     </figure>
 
     <aside class="eqs reveal" aria-label="Key equations">
@@ -56,27 +95,27 @@
       </ul>
     </aside>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-0">
         <h2>Temperature is locked, sharing is not</h2>
         <p>Elastic collisions conserve total kinetic energy exactly, so the temperature <code>T = KE_total/Nk_B</code> is fixed from the very first step. What is not fixed is how that energy is shared — collisions shuffle it between particles until the speed distribution reaches the unique maximum-entropy form.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/thermal_gas_relaxation_diagnostics.svg" alt="Mean speed drops to √(πT/2m) while rms speed stays pinned at v₀ (conserved energ" loading="lazy" /></div>
-        <figcaption>Mean speed drops to √(πT/2m) while rms speed stays pinned at v₀ (conserved energy), and the wall-impulse pressure sits ~1.2× ideal — the van der Waals excluded-volume correction.</figcaption>
+        <figcaption><span class="fig-n">fig 2.</span> Mean speed drops to √(πT/2m) while rms speed stays pinned at v₀ (conserved energy), and the wall-impulse pressure sits ~1.2× ideal — the van der Waals excluded-volume correction.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-1">
         <h2>Maxwell-Boltzmann emerges</h2>
         <p>In 2D the equilibrium is the Rayleigh distribution <code>f(v) ∝ v exp(-mv²/2k_BT)</code>: zero at rest, peaked at the most-probable speed, with an exponential tail. The simulation starts as a delta spike at <code>v_rms</code> and spreads downward in mean while <code>v_rms</code> stays pinned — because rms speed is just a restatement of the conserved energy.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/thermal_gas_hot_distribution.svg" alt="Doubling the initial speed quadruples the temperature; the distribution stretche" loading="lazy" /></div>
-        <figcaption>Doubling the initial speed quadruples the temperature; the distribution stretches to higher speeds and the pressure quadruples with it.</figcaption>
+        <figcaption><span class="fig-n">fig 3.</span> Doubling the initial speed quadruples the temperature; the distribution stretches to higher speeds and the pressure quadruples with it.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-2">
         <h2>The gas law, derived</h2>
         <p>Pressure is the time-averaged momentum delivered to the walls. Summing those impulses gives <code>PA = Nk_BT</code> — the ideal gas law derived from nothing but elastic collisions. For finite-radius disks the measured pressure sits above ideal by <code>1 + 2πr²(N/A)</code>: the hard-disk second virial term, the microscopic origin of van der Waals' excluded volume, readable as a number off the plot.</p>
       </section>
@@ -93,6 +132,7 @@
       <a class="pager-next" href="random-walk.html"><span>Next &rarr;</span><strong>Random Walk &amp; Diffusion</strong></a>
     </nav>
   </main>
+  </div>
   <footer class="foot">
     <div class="foot-top">
       <span>Making&nbsp;Physics</span>

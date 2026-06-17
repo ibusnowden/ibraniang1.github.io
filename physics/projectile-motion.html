@@ -25,11 +25,50 @@
     </nav>
   </header>
   <div class="progress" id="progress"></div>
+  <div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-controls="toc" aria-expanded="false">Contents</button>
+  <aside class="toc" id="toc">
+    <div class="toc-inner">
+      <nav class="toc-nav" aria-label="All chapters">
+        <div class="toc-part is-active">
+          <div class="toc-head"><span class="toc-part-n">Part 1</span><span class="toc-part-l">Mechanics</span></div>
+          <a class="toc-link is-current" href="projectile-motion.html"><span class="toc-num">01</span><span class="toc-name">Projectile Motion</span></a>
+          <span class="toc-subs"><a class="toc-sub" href="#sec-0">The model</a><a class="toc-sub" href="#sec-1">Euler is not free</a><a class="toc-sub" href="#sec-2">Adding drag</a></span><a class="toc-link" href="pendulum.html"><span class="toc-num">02</span><span class="toc-name">The Simple Pendulum</span></a><a class="toc-link" href="springs.html"><span class="toc-num">03</span><span class="toc-name">Mass on a Spring</span></a><a class="toc-link" href="orbits.html"><span class="toc-num">04</span><span class="toc-name">Kepler Orbits</span></a><a class="toc-link" href="double-pendulum.html"><span class="toc-num">05</span><span class="toc-name">The Double Pendulum</span></a><a class="toc-link" href="n-body.html"><span class="toc-num">06</span><span class="toc-name">N-Body Gravity</span></a><a class="toc-link" href="collisions.html"><span class="toc-num">07</span><span class="toc-name">Hard-Disk Collisions</span></a><a class="toc-link" href="rigid-body.html"><span class="toc-num">08</span><span class="toc-name">2D Rigid Body</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 2</span><span class="toc-part-l">Waves</span></div>
+          <a class="toc-link" href="mass-spring-chain.html"><span class="toc-num">09</span><span class="toc-name">The Mass-Spring Chain</span></a><a class="toc-link" href="fourier-modes.html"><span class="toc-num">10</span><span class="toc-name">The Fourier View</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 3</span><span class="toc-part-l">Electromagnetism</span></div>
+          <a class="toc-link" href="lorentz-force.html"><span class="toc-num">11</span><span class="toc-name">The Lorentz Force</span></a><a class="toc-link" href="electric-fields.html"><span class="toc-num">12</span><span class="toc-name">Electric Fields</span></a><a class="toc-link" href="maxwell-fdtd.html"><span class="toc-num">13</span><span class="toc-name">Maxwell FDTD</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 4</span><span class="toc-part-l">Thermal &amp; Statistical</span></div>
+          <a class="toc-link" href="gas-maxwell-boltzmann.html"><span class="toc-num">14</span><span class="toc-name">Gas in a Box</span></a><a class="toc-link" href="random-walk.html"><span class="toc-num">15</span><span class="toc-name">Random Walk &amp; Diffusion</span></a><a class="toc-link" href="ising-model.html"><span class="toc-num">16</span><span class="toc-name">The Ising Model</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 5</span><span class="toc-part-l">Quantum</span></div>
+          <a class="toc-link" href="schrodinger.html"><span class="toc-num">17</span><span class="toc-name">Schrödinger Wave Packets</span></a><a class="toc-link" href="eigenstates.html"><span class="toc-num">18</span><span class="toc-name">Quantum Eigenstates</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 6</span><span class="toc-part-l">Relativity</span></div>
+          <a class="toc-link" href="kerr-grrt.html"><span class="toc-num">19</span><span class="toc-name">Kerr Black Hole Ray Tracer</span></a><a class="toc-link" href="bh-research.html"><span class="toc-num">20</span><span class="toc-name">Black Hole Research Extensions</span></a>
+        </div>
+      </nav>
+      <div class="toc-foot">
+        <a class="toc-cta" href="https://ibra-niang.com/blog.html">Companion blog &rarr;</a>
+        <a class="toc-cta ghost" href="https://ibra-niang.com">ibra-niang.com</a>
+      </div>
+    </div>
+  </aside>
   <main class="article">
     <div class="crumbs">
       <a href="index.html">Making Physics</a>
       <span class="sep">/</span>
       <a href="index.html#mechanics">Mechanics</a>
+      <span class="sep">/</span>
+      <span class="crumb-here">Projectile Motion</span>
     </div>
 
     <header class="article-head">
@@ -46,7 +85,7 @@
 
     <figure class="hero-fig reveal">
       <div class="fig-frame"><img class="zoomable" src="assets/projectile_trajectory.svg" alt="Projectile Motion — simulation render" /></div>
-      <figcaption>Ideal vs. drag trajectories. The no-drag arc is the analytic parabola; quadratic drag pulls the range in and tilts the descent steeper than the rise.</figcaption>
+      <figcaption><span class="fig-n">fig 1.</span> Ideal vs. drag trajectories. The no-drag arc is the analytic parabola; quadratic drag pulls the range in and tilts the descent steeper than the rise.</figcaption>
     </figure>
 
     <aside class="eqs reveal" aria-label="Key equations">
@@ -56,24 +95,24 @@
       </ul>
     </aside>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-0">
         <h2>The model</h2>
         <p>The state is a position and a velocity; the only acceleration is <code>(0, -g)</code>. With no drag the total mechanical energy <code>KE + mgh</code> should be exactly constant, so it becomes the first diagnostic: if the number drifts, the integrator — not the physics — is responsible.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/projectile_energy.svg" alt="Total mechanical energy. Flat with no drag (a conservation check on the integrat" loading="lazy" /></div>
-        <figcaption>Total mechanical energy. Flat with no drag (a conservation check on the integrator); monotonically falling once drag starts removing energy from the motion.</figcaption>
+        <figcaption><span class="fig-n">fig 2.</span> Total mechanical energy. Flat with no drag (a conservation check on the integrator); monotonically falling once drag starts removing energy from the motion.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-1">
         <h2>Euler is not free</h2>
         <p>Run the same launch with explicit Euler, semi-implicit (symplectic) Euler, and RK4 at timesteps of 1/10, 1/30, and 1/120 s. Explicit Euler injects energy and overshoots the analytic arc; semi-implicit Euler stays bounded; RK4 tracks the closed form <code>x(t) = x0 + v0 t + ½ a t²</code> to the width of the line. This is the project's recurring theme in miniature — match the integrator to the structure you care about.</p>
       </section>
 
 
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-2">
         <h2>Adding drag</h2>
         <p>Quadratic drag <code>F = -c |v| v</code> turns the symmetric parabola into a shorter, steeper-falling arc and makes the energy plot tip downward. There is no longer a closed form, so the simulation stops being a check and starts being the only answer.</p>
       </section>
@@ -90,6 +129,7 @@
       <a class="pager-next" href="pendulum.html"><span>Next &rarr;</span><strong>The Simple Pendulum</strong></a>
     </nav>
   </main>
+  </div>
   <footer class="foot">
     <div class="foot-top">
       <span>Making&nbsp;Physics</span>

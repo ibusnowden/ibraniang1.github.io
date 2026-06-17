@@ -97,6 +97,47 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
   }
 
+  // ── sidebar TOC: mobile drawer toggle ─────────────────────────────
+  var tocToggle = document.getElementById("tocToggle");
+  var toc = document.getElementById("toc");
+  if (tocToggle && toc) {
+    tocToggle.addEventListener("click", function () {
+      var open = toc.classList.toggle("open");
+      tocToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    // tapping a chapter/section link closes the drawer on mobile
+    toc.addEventListener("click", function (e) {
+      if (e.target.closest("a") && window.matchMedia("(max-width:960px)").matches) {
+        toc.classList.remove("open");
+        tocToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  // ── sidebar scroll-spy: light the section you're reading ───────────
+  var subLinks = toc ? toc.querySelectorAll(".toc-sub") : [];
+  if (subLinks.length && "IntersectionObserver" in window) {
+    var subMap = {};
+    subLinks.forEach(function (a) {
+      var id = a.getAttribute("href").slice(1);
+      if (id) subMap[id] = a;
+    });
+    var current = null;
+    var sio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          if (current) current.classList.remove("active");
+          current = subMap[e.target.id];
+          if (current) current.classList.add("active");
+        }
+      });
+    }, { rootMargin: "-20% 0px -70% 0px", threshold: 0 });
+    Object.keys(subMap).forEach(function (id) {
+      var sec = document.getElementById(id);
+      if (sec) sio.observe(sec);
+    });
+  }
+
   // ── back to top ────────────────────────────────────────────────────
   var top = document.getElementById("totop");
   if (top) {

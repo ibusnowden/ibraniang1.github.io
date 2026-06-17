@@ -25,11 +25,50 @@
     </nav>
   </header>
   <div class="progress" id="progress"></div>
+  <div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-controls="toc" aria-expanded="false">Contents</button>
+  <aside class="toc" id="toc">
+    <div class="toc-inner">
+      <nav class="toc-nav" aria-label="All chapters">
+        <div class="toc-part is-active">
+          <div class="toc-head"><span class="toc-part-n">Part 1</span><span class="toc-part-l">Mechanics</span></div>
+          <a class="toc-link" href="projectile-motion.html"><span class="toc-num">01</span><span class="toc-name">Projectile Motion</span></a><a class="toc-link is-current" href="pendulum.html"><span class="toc-num">02</span><span class="toc-name">The Simple Pendulum</span></a>
+          <span class="toc-subs"><a class="toc-sub" href="#sec-0">Two equations, one pendulum</a><a class="toc-sub" href="#sec-1">Where it breaks</a><a class="toc-sub" href="#sec-2">The energy check</a></span><a class="toc-link" href="springs.html"><span class="toc-num">03</span><span class="toc-name">Mass on a Spring</span></a><a class="toc-link" href="orbits.html"><span class="toc-num">04</span><span class="toc-name">Kepler Orbits</span></a><a class="toc-link" href="double-pendulum.html"><span class="toc-num">05</span><span class="toc-name">The Double Pendulum</span></a><a class="toc-link" href="n-body.html"><span class="toc-num">06</span><span class="toc-name">N-Body Gravity</span></a><a class="toc-link" href="collisions.html"><span class="toc-num">07</span><span class="toc-name">Hard-Disk Collisions</span></a><a class="toc-link" href="rigid-body.html"><span class="toc-num">08</span><span class="toc-name">2D Rigid Body</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 2</span><span class="toc-part-l">Waves</span></div>
+          <a class="toc-link" href="mass-spring-chain.html"><span class="toc-num">09</span><span class="toc-name">The Mass-Spring Chain</span></a><a class="toc-link" href="fourier-modes.html"><span class="toc-num">10</span><span class="toc-name">The Fourier View</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 3</span><span class="toc-part-l">Electromagnetism</span></div>
+          <a class="toc-link" href="lorentz-force.html"><span class="toc-num">11</span><span class="toc-name">The Lorentz Force</span></a><a class="toc-link" href="electric-fields.html"><span class="toc-num">12</span><span class="toc-name">Electric Fields</span></a><a class="toc-link" href="maxwell-fdtd.html"><span class="toc-num">13</span><span class="toc-name">Maxwell FDTD</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 4</span><span class="toc-part-l">Thermal &amp; Statistical</span></div>
+          <a class="toc-link" href="gas-maxwell-boltzmann.html"><span class="toc-num">14</span><span class="toc-name">Gas in a Box</span></a><a class="toc-link" href="random-walk.html"><span class="toc-num">15</span><span class="toc-name">Random Walk &amp; Diffusion</span></a><a class="toc-link" href="ising-model.html"><span class="toc-num">16</span><span class="toc-name">The Ising Model</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 5</span><span class="toc-part-l">Quantum</span></div>
+          <a class="toc-link" href="schrodinger.html"><span class="toc-num">17</span><span class="toc-name">Schrödinger Wave Packets</span></a><a class="toc-link" href="eigenstates.html"><span class="toc-num">18</span><span class="toc-name">Quantum Eigenstates</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 6</span><span class="toc-part-l">Relativity</span></div>
+          <a class="toc-link" href="kerr-grrt.html"><span class="toc-num">19</span><span class="toc-name">Kerr Black Hole Ray Tracer</span></a><a class="toc-link" href="bh-research.html"><span class="toc-num">20</span><span class="toc-name">Black Hole Research Extensions</span></a>
+        </div>
+      </nav>
+      <div class="toc-foot">
+        <a class="toc-cta" href="https://ibra-niang.com/blog.html">Companion blog &rarr;</a>
+        <a class="toc-cta ghost" href="https://ibra-niang.com">ibra-niang.com</a>
+      </div>
+    </div>
+  </aside>
   <main class="article">
     <div class="crumbs">
       <a href="index.html">Making Physics</a>
       <span class="sep">/</span>
       <a href="index.html#mechanics">Mechanics</a>
+      <span class="sep">/</span>
+      <span class="crumb-here">The Simple Pendulum</span>
     </div>
 
     <header class="article-head">
@@ -46,7 +85,7 @@
 
     <figure class="hero-fig reveal">
       <div class="fig-frame"><img class="zoomable" src="assets/pendulum_angle.svg" alt="The Simple Pendulum — simulation render" /></div>
-      <figcaption>Nonlinear `θ'' = -(g/L) sinθ` against the linearized `θ'' = -(g/L)θ`. At small amplitude the two curves overlap; as the start angle grows the true pendulum visibly slows and its period stretches.</figcaption>
+      <figcaption><span class="fig-n">fig 1.</span> Nonlinear `θ'' = -(g/L) sinθ` against the linearized `θ'' = -(g/L)θ`. At small amplitude the two curves overlap; as the start angle grows the true pendulum visibly slows and its period stretches.</figcaption>
     </figure>
 
     <aside class="eqs reveal" aria-label="Key equations">
@@ -56,24 +95,24 @@
       </ul>
     </aside>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-0">
         <h2>Two equations, one pendulum</h2>
         <p>The real pendulum obeys <code>θ'' = -(g/L) sinθ</code>; the textbook one replaces <code>sinθ</code> with <code>θ</code>. The approximation is only good while the amplitude is small enough that those two agree — and the lab is built to show you exactly where it breaks.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/pendulum_energy.svg" alt="Energy trace. A symplectic step keeps it flat; the gap between nonlinear and sma" loading="lazy" /></div>
-        <figcaption>Energy trace. A symplectic step keeps it flat; the gap between nonlinear and small-angle potential energy `mgL(1-cosθ)` vs `½mgLθ²` is the approximation made visible.</figcaption>
+        <figcaption><span class="fig-n">fig 2.</span> Energy trace. A symplectic step keeps it flat; the gap between nonlinear and small-angle potential energy `mgL(1-cosθ)` vs `½mgLθ²` is the approximation made visible.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-1">
         <h2>Where it breaks</h2>
         <p>Start at 0.1, 0.5, and 1.0 rad. At 0.1 rad the nonlinear and linear curves are indistinguishable. By 1.0 rad the true period is noticeably longer — the restoring torque saturates because <code>sinθ &lt; θ</code>, so a wide swing takes its time. The small-angle model never knows this; it ticks at a fixed frequency forever.</p>
       </section>
 
 
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-2">
         <h2>The energy check</h2>
         <p>Because the swing is conservative, total energy should be flat. Watching it under different integrators and timesteps is the same lesson as the projectile lab: a non-symplectic step slowly pumps or bleeds energy, and the pendulum's amplitude wanders as a result.</p>
       </section>
@@ -90,6 +129,7 @@
       <a class="pager-next" href="springs.html"><span>Next &rarr;</span><strong>Mass on a Spring</strong></a>
     </nav>
   </main>
+  </div>
   <footer class="foot">
     <div class="foot-top">
       <span>Making&nbsp;Physics</span>

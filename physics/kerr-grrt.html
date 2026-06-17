@@ -25,11 +25,50 @@
     </nav>
   </header>
   <div class="progress" id="progress"></div>
+  <div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-controls="toc" aria-expanded="false">Contents</button>
+  <aside class="toc" id="toc">
+    <div class="toc-inner">
+      <nav class="toc-nav" aria-label="All chapters">
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 1</span><span class="toc-part-l">Mechanics</span></div>
+          <a class="toc-link" href="projectile-motion.html"><span class="toc-num">01</span><span class="toc-name">Projectile Motion</span></a><a class="toc-link" href="pendulum.html"><span class="toc-num">02</span><span class="toc-name">The Simple Pendulum</span></a><a class="toc-link" href="springs.html"><span class="toc-num">03</span><span class="toc-name">Mass on a Spring</span></a><a class="toc-link" href="orbits.html"><span class="toc-num">04</span><span class="toc-name">Kepler Orbits</span></a><a class="toc-link" href="double-pendulum.html"><span class="toc-num">05</span><span class="toc-name">The Double Pendulum</span></a><a class="toc-link" href="n-body.html"><span class="toc-num">06</span><span class="toc-name">N-Body Gravity</span></a><a class="toc-link" href="collisions.html"><span class="toc-num">07</span><span class="toc-name">Hard-Disk Collisions</span></a><a class="toc-link" href="rigid-body.html"><span class="toc-num">08</span><span class="toc-name">2D Rigid Body</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 2</span><span class="toc-part-l">Waves</span></div>
+          <a class="toc-link" href="mass-spring-chain.html"><span class="toc-num">09</span><span class="toc-name">The Mass-Spring Chain</span></a><a class="toc-link" href="fourier-modes.html"><span class="toc-num">10</span><span class="toc-name">The Fourier View</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 3</span><span class="toc-part-l">Electromagnetism</span></div>
+          <a class="toc-link" href="lorentz-force.html"><span class="toc-num">11</span><span class="toc-name">The Lorentz Force</span></a><a class="toc-link" href="electric-fields.html"><span class="toc-num">12</span><span class="toc-name">Electric Fields</span></a><a class="toc-link" href="maxwell-fdtd.html"><span class="toc-num">13</span><span class="toc-name">Maxwell FDTD</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 4</span><span class="toc-part-l">Thermal &amp; Statistical</span></div>
+          <a class="toc-link" href="gas-maxwell-boltzmann.html"><span class="toc-num">14</span><span class="toc-name">Gas in a Box</span></a><a class="toc-link" href="random-walk.html"><span class="toc-num">15</span><span class="toc-name">Random Walk &amp; Diffusion</span></a><a class="toc-link" href="ising-model.html"><span class="toc-num">16</span><span class="toc-name">The Ising Model</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 5</span><span class="toc-part-l">Quantum</span></div>
+          <a class="toc-link" href="schrodinger.html"><span class="toc-num">17</span><span class="toc-name">Schrödinger Wave Packets</span></a><a class="toc-link" href="eigenstates.html"><span class="toc-num">18</span><span class="toc-name">Quantum Eigenstates</span></a>
+        </div>
+        <div class="toc-part is-active">
+          <div class="toc-head"><span class="toc-part-n">Part 6</span><span class="toc-part-l">Relativity</span></div>
+          <a class="toc-link is-current" href="kerr-grrt.html"><span class="toc-num">19</span><span class="toc-name">Kerr Black Hole Ray Tracer</span></a>
+          <span class="toc-subs"><a class="toc-sub" href="#sec-0">The same machinery as EHT codes</a><a class="toc-sub" href="#sec-1">How an image is made</a><a class="toc-sub" href="#sec-2">Validated, not fudged</a></span><a class="toc-link" href="bh-research.html"><span class="toc-num">20</span><span class="toc-name">Black Hole Research Extensions</span></a>
+        </div>
+      </nav>
+      <div class="toc-foot">
+        <a class="toc-cta" href="https://ibra-niang.com/blog.html">Companion blog &rarr;</a>
+        <a class="toc-cta ghost" href="https://ibra-niang.com">ibra-niang.com</a>
+      </div>
+    </div>
+  </aside>
   <main class="article">
     <div class="crumbs">
       <a href="index.html">Making Physics</a>
       <span class="sep">/</span>
       <a href="index.html#relativity">Relativity</a>
+      <span class="sep">/</span>
+      <span class="crumb-here">Kerr Black Hole Ray Tracer</span>
     </div>
 
     <header class="article-head">
@@ -46,7 +85,7 @@
 
     <figure class="hero-fig reveal">
       <div class="fig-frame"><img class="zoomable" src="assets/bh_image_a0998_i80.png" alt="Kerr Black Hole Ray Tracer — simulation render" /></div>
-      <figcaption>The hero image: an edge-on near-maximal Kerr disk (a=0.998, i=80°). The lensed far side wraps over and under the hole, the photon ring glows, and Doppler beaming brightens the approaching side — the Luminet / Interstellar "Gargantua" morphology.</figcaption>
+      <figcaption><span class="fig-n">fig 1.</span> The hero image: an edge-on near-maximal Kerr disk (a=0.998, i=80°). The lensed far side wraps over and under the hole, the photon ring glows, and Doppler beaming brightens the approaching side — the Luminet / Interstellar "Gargantua" morphology.</figcaption>
     </figure>
 
     <aside class="eqs reveal" aria-label="Key equations">
@@ -56,34 +95,34 @@
       </ul>
     </aside>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-0">
         <h2>The same machinery as EHT codes</h2>
         <p>Everything is in geometrized units <code>G = c = M = 1</code>. The lab implements the Kerr metric in Boyer-Lindquist coordinates and its closed-form inverse, then traces null geodesics via the Hamiltonian <code>H = ½ g^{μν} p_μ p_ν</code> with an adaptive Dormand-Prince 5(4) integrator and numerical metric derivatives — the same approach ipole, RAPTOR, and GYOTO are built on, written here in dependency-free C++.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/bh_image_a0_i80.png" alt="Schwarzschild (a=0) for comparison: a symmetric shadow with no frame-dragging of" loading="lazy" /></div>
-        <figcaption>Schwarzschild (a=0) for comparison: a symmetric shadow with no frame-dragging offset and a clean circular photon ring.</figcaption>
+        <figcaption><span class="fig-n">fig 2.</span> Schwarzschild (a=0) for comparison: a symmetric shadow with no frame-dragging offset and a clean circular photon ring.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-1">
         <h2>How an image is made</h2>
         <p>A ZAMO-tetrad pinhole camera launches one photon per pixel inward and traces it backward to the horizon, the disk, or infinity. Disk hits are shaded with the relativistic redshift <code>g = ν_obs/ν_em</code>, a Page-Thorne temperature, and the Lorentz-invariant <code>I_ν/ν³</code> — brightness <code>∝ g⁴T⁴</code>, color a Planck spectrum. HDR output plus Python tone mapping handles the enormous dynamic range once.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/bh_geodesics.svg" alt="Gravitational light bending: rays graze, spiral the photon sphere, or plunge, sp" loading="lazy" /></div>
-        <figcaption>Gravitational light bending: rays graze, spiral the photon sphere, or plunge, split by the critical impact parameter 3√3 M.</figcaption>
+        <figcaption><span class="fig-n">fig 3.</span> Gravitational light bending: rays graze, spiral the photon sphere, or plunge, split by the critical impact parameter 3√3 M.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-2">
         <h2>Validated, not fudged</h2>
         <p>The console asserts the answers against closed forms: horizon <code>r₊ = 2M</code> and ISCO <code>= 6M</code> at a=0, photon orbit at 3M, Schwarzschild shadow edge at 5.196M = 3√3, ray conservation of energy and angular momentum, the Carter constant to 1e-8. The broad-line red wing reaching <code>g ≈ 0.25</code> at a=0.998 versus <code>g ≈ 0.5</code> at a=0 is exactly the iron-Kα spin measurement used on real AGN like MCG-6-30-15.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/bh_line_profile.svg" alt="The relativistic broad iron line: higher spin pushes the inner disk edge deeper " loading="lazy" /></div>
-        <figcaption>The relativistic broad iron line: higher spin pushes the inner disk edge deeper into the well, stretching the red wing — this is the X-ray spin diagnostic.</figcaption>
+        <figcaption><span class="fig-n">fig 4.</span> The relativistic broad iron line: higher spin pushes the inner disk edge deeper into the well, stretching the red wing — this is the X-ray spin diagnostic.</figcaption>
       </figure>
 
     <section class="cta">
@@ -96,6 +135,7 @@
       <a class="pager-next" href="bh-research.html"><span>Next &rarr;</span><strong>Black Hole Research Extensions</strong></a>
     </nav>
   </main>
+  </div>
   <footer class="foot">
     <div class="foot-top">
       <span>Making&nbsp;Physics</span>

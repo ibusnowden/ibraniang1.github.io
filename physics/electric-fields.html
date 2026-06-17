@@ -25,11 +25,50 @@
     </nav>
   </header>
   <div class="progress" id="progress"></div>
+  <div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-controls="toc" aria-expanded="false">Contents</button>
+  <aside class="toc" id="toc">
+    <div class="toc-inner">
+      <nav class="toc-nav" aria-label="All chapters">
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 1</span><span class="toc-part-l">Mechanics</span></div>
+          <a class="toc-link" href="projectile-motion.html"><span class="toc-num">01</span><span class="toc-name">Projectile Motion</span></a><a class="toc-link" href="pendulum.html"><span class="toc-num">02</span><span class="toc-name">The Simple Pendulum</span></a><a class="toc-link" href="springs.html"><span class="toc-num">03</span><span class="toc-name">Mass on a Spring</span></a><a class="toc-link" href="orbits.html"><span class="toc-num">04</span><span class="toc-name">Kepler Orbits</span></a><a class="toc-link" href="double-pendulum.html"><span class="toc-num">05</span><span class="toc-name">The Double Pendulum</span></a><a class="toc-link" href="n-body.html"><span class="toc-num">06</span><span class="toc-name">N-Body Gravity</span></a><a class="toc-link" href="collisions.html"><span class="toc-num">07</span><span class="toc-name">Hard-Disk Collisions</span></a><a class="toc-link" href="rigid-body.html"><span class="toc-num">08</span><span class="toc-name">2D Rigid Body</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 2</span><span class="toc-part-l">Waves</span></div>
+          <a class="toc-link" href="mass-spring-chain.html"><span class="toc-num">09</span><span class="toc-name">The Mass-Spring Chain</span></a><a class="toc-link" href="fourier-modes.html"><span class="toc-num">10</span><span class="toc-name">The Fourier View</span></a>
+        </div>
+        <div class="toc-part is-active">
+          <div class="toc-head"><span class="toc-part-n">Part 3</span><span class="toc-part-l">Electromagnetism</span></div>
+          <a class="toc-link" href="lorentz-force.html"><span class="toc-num">11</span><span class="toc-name">The Lorentz Force</span></a><a class="toc-link is-current" href="electric-fields.html"><span class="toc-num">12</span><span class="toc-name">Electric Fields</span></a>
+          <span class="toc-subs"><a class="toc-sub" href="#sec-0">Superposition</a><a class="toc-sub" href="#sec-1">Conservative, so RK4 is enough</a><a class="toc-sub" href="#sec-2">Multipoles and a familiar cousin</a></span><a class="toc-link" href="maxwell-fdtd.html"><span class="toc-num">13</span><span class="toc-name">Maxwell FDTD</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 4</span><span class="toc-part-l">Thermal &amp; Statistical</span></div>
+          <a class="toc-link" href="gas-maxwell-boltzmann.html"><span class="toc-num">14</span><span class="toc-name">Gas in a Box</span></a><a class="toc-link" href="random-walk.html"><span class="toc-num">15</span><span class="toc-name">Random Walk &amp; Diffusion</span></a><a class="toc-link" href="ising-model.html"><span class="toc-num">16</span><span class="toc-name">The Ising Model</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 5</span><span class="toc-part-l">Quantum</span></div>
+          <a class="toc-link" href="schrodinger.html"><span class="toc-num">17</span><span class="toc-name">Schrödinger Wave Packets</span></a><a class="toc-link" href="eigenstates.html"><span class="toc-num">18</span><span class="toc-name">Quantum Eigenstates</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 6</span><span class="toc-part-l">Relativity</span></div>
+          <a class="toc-link" href="kerr-grrt.html"><span class="toc-num">19</span><span class="toc-name">Kerr Black Hole Ray Tracer</span></a><a class="toc-link" href="bh-research.html"><span class="toc-num">20</span><span class="toc-name">Black Hole Research Extensions</span></a>
+        </div>
+      </nav>
+      <div class="toc-foot">
+        <a class="toc-cta" href="https://ibra-niang.com/blog.html">Companion blog &rarr;</a>
+        <a class="toc-cta ghost" href="https://ibra-niang.com">ibra-niang.com</a>
+      </div>
+    </div>
+  </aside>
   <main class="article">
     <div class="crumbs">
       <a href="index.html">Making Physics</a>
       <span class="sep">/</span>
       <a href="index.html#em">Electromagnetism</a>
+      <span class="sep">/</span>
+      <span class="crumb-here">Electric Fields</span>
     </div>
 
     <header class="article-head">
@@ -46,7 +85,7 @@
 
     <figure class="hero-fig reveal">
       <div class="fig-frame"><img class="zoomable" src="assets/efield_dipole_field.svg" alt="Electric Fields — simulation render" /></div>
-      <figcaption>A dipole: equal and opposite charges. Field lines flow visibly from + to -, and the far field falls off as 1/r³ — faster than a single charge.</figcaption>
+      <figcaption><span class="fig-n">fig 1.</span> A dipole: equal and opposite charges. Field lines flow visibly from + to -, and the far field falls off as 1/r³ — faster than a single charge.</figcaption>
     </figure>
 
     <aside class="eqs reveal" aria-label="Key equations">
@@ -56,34 +95,34 @@
       </ul>
     </aside>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-0">
         <h2>Superposition</h2>
         <p>The field and potential at any point are sums over the charges: <code>E(r) = Σ k qᵢ (r-rᵢ)/|r-rᵢ|³</code>, with <code>E = -∇V</code>. The field is the downhill gradient of the potential — every picture in this lab is built from that one rule applied to a few point sources.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/efield_quadrupole_field.svg" alt="An alternating quadrupole on a square's corners: tightly curving short lines and" loading="lazy" /></div>
-        <figcaption>An alternating quadrupole on a square's corners: tightly curving short lines and a weak distant field (1/r⁴). The higher the multipole, the faster the field dies.</figcaption>
+        <figcaption><span class="fig-n">fig 2.</span> An alternating quadrupole on a square's corners: tightly curving short lines and a weak distant field (1/r⁴). The higher the multipole, the faster the field dies.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-1">
         <h2>Conservative, so RK4 is enough</h2>
         <p>Static charges make a conservative field, so a test particle's total energy <code>½m|v|² + qV</code> is exactly conserved and ordinary RK4 suffices — no Boris machinery. That contrast is the point of the EM track: a magnetic field rotates <code>v</code> and needs Boris; a static electric field is a gradient and conserves a Hamiltonian energy.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/efield_parallel_plates_field.svg" alt="Two opposite rows of charges: a nearly uniform interior field (the capacitor ide" loading="lazy" /></div>
-        <figcaption>Two opposite rows of charges: a nearly uniform interior field (the capacitor idealization) with visible fringing at the edges.</figcaption>
+        <figcaption><span class="fig-n">fig 3.</span> Two opposite rows of charges: a nearly uniform interior field (the capacitor idealization) with visible fringing at the edges.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-2">
         <h2>Multipoles and a familiar cousin</h2>
         <p>A single + charge with a - test charge is mathematically identical to the gravity orbit lab — an attractive 1/r² central force giving closed Kepler ellipses. Move to dipoles and quadrupoles and the far field falls off faster (1/r³, then 1/r⁴): the higher the multipole order, the more quickly the field dies with distance.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/efield_like_charges_field.svg" alt="Two like charges: the null point on the perpendicular bisector where the fields " loading="lazy" /></div>
-        <figcaption>Two like charges: the null point on the perpendicular bisector where the fields cancel, and the saddle topology around it.</figcaption>
+        <figcaption><span class="fig-n">fig 4.</span> Two like charges: the null point on the perpendicular bisector where the fields cancel, and the saddle topology around it.</figcaption>
       </figure>
 
     <section class="cta">
@@ -96,6 +135,7 @@
       <a class="pager-next" href="maxwell-fdtd.html"><span>Next &rarr;</span><strong>Maxwell FDTD</strong></a>
     </nav>
   </main>
+  </div>
   <footer class="foot">
     <div class="foot-top">
       <span>Making&nbsp;Physics</span>

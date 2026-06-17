@@ -25,11 +25,50 @@
     </nav>
   </header>
   <div class="progress" id="progress"></div>
+  <div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-controls="toc" aria-expanded="false">Contents</button>
+  <aside class="toc" id="toc">
+    <div class="toc-inner">
+      <nav class="toc-nav" aria-label="All chapters">
+        <div class="toc-part is-active">
+          <div class="toc-head"><span class="toc-part-n">Part 1</span><span class="toc-part-l">Mechanics</span></div>
+          <a class="toc-link" href="projectile-motion.html"><span class="toc-num">01</span><span class="toc-name">Projectile Motion</span></a><a class="toc-link" href="pendulum.html"><span class="toc-num">02</span><span class="toc-name">The Simple Pendulum</span></a><a class="toc-link" href="springs.html"><span class="toc-num">03</span><span class="toc-name">Mass on a Spring</span></a><a class="toc-link" href="orbits.html"><span class="toc-num">04</span><span class="toc-name">Kepler Orbits</span></a><a class="toc-link" href="double-pendulum.html"><span class="toc-num">05</span><span class="toc-name">The Double Pendulum</span></a><a class="toc-link is-current" href="n-body.html"><span class="toc-num">06</span><span class="toc-name">N-Body Gravity</span></a>
+          <span class="toc-subs"><a class="toc-sub" href="#sec-0">Newton's third law as a checksum</a><a class="toc-sub" href="#sec-1">Energy tells the real story</a><a class="toc-sub" href="#sec-2">Softening and the COM</a></span><a class="toc-link" href="collisions.html"><span class="toc-num">07</span><span class="toc-name">Hard-Disk Collisions</span></a><a class="toc-link" href="rigid-body.html"><span class="toc-num">08</span><span class="toc-name">2D Rigid Body</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 2</span><span class="toc-part-l">Waves</span></div>
+          <a class="toc-link" href="mass-spring-chain.html"><span class="toc-num">09</span><span class="toc-name">The Mass-Spring Chain</span></a><a class="toc-link" href="fourier-modes.html"><span class="toc-num">10</span><span class="toc-name">The Fourier View</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 3</span><span class="toc-part-l">Electromagnetism</span></div>
+          <a class="toc-link" href="lorentz-force.html"><span class="toc-num">11</span><span class="toc-name">The Lorentz Force</span></a><a class="toc-link" href="electric-fields.html"><span class="toc-num">12</span><span class="toc-name">Electric Fields</span></a><a class="toc-link" href="maxwell-fdtd.html"><span class="toc-num">13</span><span class="toc-name">Maxwell FDTD</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 4</span><span class="toc-part-l">Thermal &amp; Statistical</span></div>
+          <a class="toc-link" href="gas-maxwell-boltzmann.html"><span class="toc-num">14</span><span class="toc-name">Gas in a Box</span></a><a class="toc-link" href="random-walk.html"><span class="toc-num">15</span><span class="toc-name">Random Walk &amp; Diffusion</span></a><a class="toc-link" href="ising-model.html"><span class="toc-num">16</span><span class="toc-name">The Ising Model</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 5</span><span class="toc-part-l">Quantum</span></div>
+          <a class="toc-link" href="schrodinger.html"><span class="toc-num">17</span><span class="toc-name">Schrödinger Wave Packets</span></a><a class="toc-link" href="eigenstates.html"><span class="toc-num">18</span><span class="toc-name">Quantum Eigenstates</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 6</span><span class="toc-part-l">Relativity</span></div>
+          <a class="toc-link" href="kerr-grrt.html"><span class="toc-num">19</span><span class="toc-name">Kerr Black Hole Ray Tracer</span></a><a class="toc-link" href="bh-research.html"><span class="toc-num">20</span><span class="toc-name">Black Hole Research Extensions</span></a>
+        </div>
+      </nav>
+      <div class="toc-foot">
+        <a class="toc-cta" href="https://ibra-niang.com/blog.html">Companion blog &rarr;</a>
+        <a class="toc-cta ghost" href="https://ibra-niang.com">ibra-niang.com</a>
+      </div>
+    </div>
+  </aside>
   <main class="article">
     <div class="crumbs">
       <a href="index.html">Making Physics</a>
       <span class="sep">/</span>
       <a href="index.html#mechanics">Mechanics</a>
+      <span class="sep">/</span>
+      <span class="crumb-here">N-Body Gravity</span>
     </div>
 
     <header class="article-head">
@@ -46,7 +85,7 @@
 
     <figure class="hero-fig reveal">
       <div class="fig-frame"><img class="zoomable" src="assets/nbody_pythagorean_trajectory.svg" alt="N-Body Gravity — simulation render" /></div>
-      <figcaption>The Pythagorean three-body problem: masses 3-4-5 released from rest at the corners of a right triangle. A famously intricate dance of close encounters and ejections.</figcaption>
+      <figcaption><span class="fig-n">fig 1.</span> The Pythagorean three-body problem: masses 3-4-5 released from rest at the corners of a right triangle. A famously intricate dance of close encounters and ejections.</figcaption>
     </figure>
 
     <aside class="eqs reveal" aria-label="Key equations">
@@ -56,27 +95,27 @@
       </ul>
     </aside>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-0">
         <h2>Newton's third law as a checksum</h2>
         <p>With no external force, total linear momentum is conserved exactly — and so it is by the discrete scheme too: every velocity kick sums to <code>Σ Fᵢ dt = 0</code> by Newton's third law. Even RK4 holds it to ~1e-15. That makes momentum a far sharper correctness check than energy: any drift you see is roundoff, not algorithm.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/nbody_binary_trajectory.svg" alt="A two-body binary. With explicit Euler the orbit spirals out as energy grows, wh" loading="lazy" /></div>
-        <figcaption>A two-body binary. With explicit Euler the orbit spirals out as energy grows, while linear and angular momentum stay flat to floating point.</figcaption>
+        <figcaption><span class="fig-n">fig 2.</span> A two-body binary. With explicit Euler the orbit spirals out as energy grows, while linear and angular momentum stay flat to floating point.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-1">
         <h2>Energy tells the real story</h2>
         <p>Energy and angular momentum are the interesting diagnostics. Energy drifts under explicit Euler, oscillates under semi-implicit Euler and Verlet, and slowly creeps under RK4. The binary visibly spirals outward under Euler while its momentum sits perfectly still — two invariants, two completely different verdicts on the same run.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/nbody_pythagorean_conserved.svg" alt="Conserved quantities. Total momentum holds to machine precision regardless of in" loading="lazy" /></div>
-        <figcaption>Conserved quantities. Total momentum holds to machine precision regardless of integrator; energy and angular momentum reveal the algorithm's true quality.</figcaption>
+        <figcaption><span class="fig-n">fig 3.</span> Conserved quantities. Total momentum holds to machine precision regardless of integrator; energy and angular momentum reveal the algorithm's true quality.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-2">
         <h2>Softening and the COM</h2>
         <p>A softening length keeps close approaches finite. Boost every body by the same velocity and the center of mass drifts at exactly that speed while the relative motion is untouched — Galilean invariance you can read off the plot.</p>
       </section>
@@ -93,6 +132,7 @@
       <a class="pager-next" href="collisions.html"><span>Next &rarr;</span><strong>Hard-Disk Collisions</strong></a>
     </nav>
   </main>
+  </div>
   <footer class="foot">
     <div class="foot-top">
       <span>Making&nbsp;Physics</span>

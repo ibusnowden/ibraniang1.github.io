@@ -25,11 +25,50 @@
     </nav>
   </header>
   <div class="progress" id="progress"></div>
+  <div class="layout">
+  <button class="toc-toggle" id="tocToggle" aria-controls="toc" aria-expanded="false">Contents</button>
+  <aside class="toc" id="toc">
+    <div class="toc-inner">
+      <nav class="toc-nav" aria-label="All chapters">
+        <div class="toc-part is-active">
+          <div class="toc-head"><span class="toc-part-n">Part 1</span><span class="toc-part-l">Mechanics</span></div>
+          <a class="toc-link" href="projectile-motion.html"><span class="toc-num">01</span><span class="toc-name">Projectile Motion</span></a><a class="toc-link" href="pendulum.html"><span class="toc-num">02</span><span class="toc-name">The Simple Pendulum</span></a><a class="toc-link" href="springs.html"><span class="toc-num">03</span><span class="toc-name">Mass on a Spring</span></a><a class="toc-link" href="orbits.html"><span class="toc-num">04</span><span class="toc-name">Kepler Orbits</span></a><a class="toc-link" href="double-pendulum.html"><span class="toc-num">05</span><span class="toc-name">The Double Pendulum</span></a><a class="toc-link" href="n-body.html"><span class="toc-num">06</span><span class="toc-name">N-Body Gravity</span></a><a class="toc-link is-current" href="collisions.html"><span class="toc-num">07</span><span class="toc-name">Hard-Disk Collisions</span></a>
+          <span class="toc-subs"><a class="toc-sub" href="#sec-0">The impulse</a><a class="toc-sub" href="#sec-1">Momentum always, energy sometimes</a><a class="toc-sub" href="#sec-2">Two clean theorems</a></span><a class="toc-link" href="rigid-body.html"><span class="toc-num">08</span><span class="toc-name">2D Rigid Body</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 2</span><span class="toc-part-l">Waves</span></div>
+          <a class="toc-link" href="mass-spring-chain.html"><span class="toc-num">09</span><span class="toc-name">The Mass-Spring Chain</span></a><a class="toc-link" href="fourier-modes.html"><span class="toc-num">10</span><span class="toc-name">The Fourier View</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 3</span><span class="toc-part-l">Electromagnetism</span></div>
+          <a class="toc-link" href="lorentz-force.html"><span class="toc-num">11</span><span class="toc-name">The Lorentz Force</span></a><a class="toc-link" href="electric-fields.html"><span class="toc-num">12</span><span class="toc-name">Electric Fields</span></a><a class="toc-link" href="maxwell-fdtd.html"><span class="toc-num">13</span><span class="toc-name">Maxwell FDTD</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 4</span><span class="toc-part-l">Thermal &amp; Statistical</span></div>
+          <a class="toc-link" href="gas-maxwell-boltzmann.html"><span class="toc-num">14</span><span class="toc-name">Gas in a Box</span></a><a class="toc-link" href="random-walk.html"><span class="toc-num">15</span><span class="toc-name">Random Walk &amp; Diffusion</span></a><a class="toc-link" href="ising-model.html"><span class="toc-num">16</span><span class="toc-name">The Ising Model</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 5</span><span class="toc-part-l">Quantum</span></div>
+          <a class="toc-link" href="schrodinger.html"><span class="toc-num">17</span><span class="toc-name">Schrödinger Wave Packets</span></a><a class="toc-link" href="eigenstates.html"><span class="toc-num">18</span><span class="toc-name">Quantum Eigenstates</span></a>
+        </div>
+        <div class="toc-part">
+          <div class="toc-head"><span class="toc-part-n">Part 6</span><span class="toc-part-l">Relativity</span></div>
+          <a class="toc-link" href="kerr-grrt.html"><span class="toc-num">19</span><span class="toc-name">Kerr Black Hole Ray Tracer</span></a><a class="toc-link" href="bh-research.html"><span class="toc-num">20</span><span class="toc-name">Black Hole Research Extensions</span></a>
+        </div>
+      </nav>
+      <div class="toc-foot">
+        <a class="toc-cta" href="https://ibra-niang.com/blog.html">Companion blog &rarr;</a>
+        <a class="toc-cta ghost" href="https://ibra-niang.com">ibra-niang.com</a>
+      </div>
+    </div>
+  </aside>
   <main class="article">
     <div class="crumbs">
       <a href="index.html">Making Physics</a>
       <span class="sep">/</span>
       <a href="index.html#mechanics">Mechanics</a>
+      <span class="sep">/</span>
+      <span class="crumb-here">Hard-Disk Collisions</span>
     </div>
 
     <header class="article-head">
@@ -46,7 +85,7 @@
 
     <figure class="hero-fig reveal">
       <div class="fig-frame"><img class="zoomable" src="assets/collision_billiard_break_trajectory.svg" alt="Hard-Disk Collisions — simulation render" /></div>
-      <figcaption>A billiard break: a cue disk strikes a triangular rack, igniting a long elastic cascade off the walls. Momentum is broken by the walls, but total kinetic energy holds flat for the whole run.</figcaption>
+      <figcaption><span class="fig-n">fig 1.</span> A billiard break: a cue disk strikes a triangular rack, igniting a long elastic cascade off the walls. Momentum is broken by the walls, but total kinetic energy holds flat for the whole run.</figcaption>
     </figure>
 
     <aside class="eqs reveal" aria-label="Key equations">
@@ -56,27 +95,27 @@
       </ul>
     </aside>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-0">
         <h2>The impulse</h2>
         <p>On contact, an impulse acts along the line of centers: <code>j = -(1+e)(v_rel·n̂)/(1/mᵢ + 1/mⱼ)</code>. The coefficient of restitution <code>e</code> runs from 1 (fully elastic) to 0 (the disks move together afterward). The impulse fires only when the disks are approaching, so resting contacts produce no spurious kicks.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/collision_head_on_elastic_diagnostics.svg" alt="Head-on elastic collision of equal masses — the velocities swap exactly at the c" loading="lazy" /></div>
-        <figcaption>Head-on elastic collision of equal masses — the velocities swap exactly at the contact instant.</figcaption>
+        <figcaption><span class="fig-n">fig 2.</span> Head-on elastic collision of equal masses — the velocities swap exactly at the contact instant.</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-1">
         <h2>Momentum always, energy sometimes</h2>
         <p>Because the impulse is equal and opposite, momentum is conserved for any <code>e</code> — even a perfectly inelastic collision conserves momentum. Energy is what distinguishes the regimes: a collision removes exactly <code>½(1-e²)μ(v_rel·n̂)²</code>, so <code>e=1</code> removes nothing and <code>e=0</code> removes all of the normal relative kinetic energy.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/collision_inelastic_diagnostics.svg" alt="An inelastic head-on hit with e=0.5: kinetic energy drops to one quarter in a si" loading="lazy" /></div>
-        <figcaption>An inelastic head-on hit with e=0.5: kinetic energy drops to one quarter in a single step, matching the retained fraction e².</figcaption>
+        <figcaption><span class="fig-n">fig 3.</span> An inelastic head-on hit with e=0.5: kinetic energy drops to one quarter in a single step, matching the retained fraction e².</figcaption>
       </figure>
 
-      <section class="prose reveal">
+      <section class="prose reveal" id="sec-2">
         <h2>Two clean theorems</h2>
         <p>Equal-mass head-on elastic collisions swap velocities exactly. Equal-mass glancing elastic collisions send the two outgoing vectors off at exactly 90° — their dot product crossing zero is the thing to verify. Both fall straight out of the impulse rule.</p>
       </section>
@@ -93,6 +132,7 @@
       <a class="pager-next" href="rigid-body.html"><span>Next &rarr;</span><strong>2D Rigid Body</strong></a>
     </nav>
   </main>
+  </div>
   <footer class="foot">
     <div class="foot-top">
       <span>Making&nbsp;Physics</span>
