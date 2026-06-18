@@ -110,6 +110,61 @@
 
   function clear(s, bg) { s.ctx.fillStyle = bg || PAPER; s.ctx.fillRect(0, 0, s.W, s.H); }
 
+  // ── chart chrome: framed plot areas with gridlines + tick labels ───
+  var MONO = "'Space Mono', ui-monospace, monospace";
+  function fmtNum(v) {
+    var a = Math.abs(v);
+    if (a !== 0 && (a < 0.01 || a >= 10000)) return v.toExponential(0);
+    if (a >= 100) return v.toFixed(0);
+    if (a >= 1) return (Math.round(v * 10) / 10).toString();
+    return (Math.round(v * 100) / 100).toString();
+  }
+  // ~n "nice" round tick values spanning [lo, hi].
+  function niceTicks(lo, hi, n) {
+    var span = hi - lo;
+    if (!(span > 0)) return [lo];
+    var raw = span / n, mag = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10));
+    var norm = raw / mag, step = (norm < 1.5 ? 1 : norm < 3 ? 2 : norm < 7 ? 5 : 10) * mag;
+    var out = [], start = Math.ceil(lo / step - 1e-6) * step;
+    for (var v = start; v <= hi + step * 1e-6; v += step) out.push(Math.abs(v) < step * 1e-6 ? 0 : v);
+    return out;
+  }
+  // Draw a framed plot. opt: {x,y,w,h, xr,yr, xticks,yticks, fmtX,fmtY,
+  //   xlabel, ylabel, grid, bg}. Returns {x,y,w,h, X(v), Y(v)} mapping
+  // data coords -> pixels.
+  function chart(s, opt) {
+    var ctx = s.ctx;
+    var x0 = opt.x, y0 = opt.y, w = opt.w, h = opt.h, xr = opt.xr, yr = opt.yr;
+    function X(v) { return x0 + (v - xr[0]) / (xr[1] - xr[0]) * w; }
+    function Y(v) { return y0 + h - (v - yr[0]) / (yr[1] - yr[0]) * h; }
+    if (opt.bg !== false) { ctx.fillStyle = "#fff"; ctx.fillRect(x0, y0, w, h); }
+    ctx.font = "10px " + MONO;
+    var xt = opt.xticks || niceTicks(xr[0], xr[1], 6);
+    var yt = opt.yticks || niceTicks(yr[0], yr[1], 5);
+    if (opt.grid !== false) {
+      ctx.strokeStyle = "rgba(22,23,29,0.06)"; ctx.lineWidth = 1;
+      if (opt.fmtX !== false) xt.forEach(function (v) { var px = Math.round(X(v)) + 0.5; ctx.beginPath(); ctx.moveTo(px, y0); ctx.lineTo(px, y0 + h); ctx.stroke(); });
+      if (opt.fmtY !== false) yt.forEach(function (v) { var py = Math.round(Y(v)) + 0.5; ctx.beginPath(); ctx.moveTo(x0, py); ctx.lineTo(x0 + w, py); ctx.stroke(); });
+    }
+    // emphasised zero axes when the range straddles 0
+    ctx.strokeStyle = "rgba(22,23,29,0.20)"; ctx.lineWidth = 1;
+    if (yr[0] < 0 && yr[1] > 0) { var pz = Math.round(Y(0)) + 0.5; ctx.beginPath(); ctx.moveTo(x0, pz); ctx.lineTo(x0 + w, pz); ctx.stroke(); }
+    if (xr[0] < 0 && xr[1] > 0) { var pzx = Math.round(X(0)) + 0.5; ctx.beginPath(); ctx.moveTo(pzx, y0); ctx.lineTo(pzx, y0 + h); ctx.stroke(); }
+    // tick labels
+    ctx.fillStyle = SOFT;
+    if (opt.fmtX !== false) { ctx.textAlign = "center"; ctx.textBaseline = "top"; xt.forEach(function (v) { ctx.fillText((opt.fmtX || fmtNum)(v), X(v), y0 + h + 5); }); }
+    if (opt.fmtY !== false) { ctx.textAlign = "right"; ctx.textBaseline = "middle"; yt.forEach(function (v) { ctx.fillText((opt.fmtY || fmtNum)(v), x0 - 6, Y(v)); }); }
+    // frame
+    ctx.strokeStyle = LINE; ctx.lineWidth = 1; ctx.strokeRect(x0 + 0.5, y0 + 0.5, w, h);
+    // axis labels
+    if (opt.xlabel) { ctx.fillStyle = SOFT; ctx.textAlign = "right"; ctx.textBaseline = "top"; ctx.fillText(opt.xlabel, x0 + w, y0 + h + 17); }
+    if (opt.ylabel) { ctx.fillStyle = SOFT; ctx.textAlign = "left"; ctx.textBaseline = "bottom"; ctx.fillText(opt.ylabel, x0 + 1, y0 - 5); }
+    ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+    return { x: x0, y: y0, w: w, h: h, X: X, Y: Y };
+  }
+  // run fn with drawing clipped to a plot box so traces never spill out
+  function withClip(ctx, b, fn) { ctx.save(); ctx.beginPath(); ctx.rect(b.x, b.y, b.w, b.h); ctx.clip(); fn(); ctx.restore(); }
+
   // ===================================================================
   // PROJECTILE
   // ===================================================================
@@ -159,36 +214,33 @@
       simT += dt;
       if (simT > T + 0.7) simT = 0;
       // bounds
-      var maxX = 0, maxY = 0;
+      var maxX = 1, maxY = 1;
       for (var i = 0; i < path.length; i++) { if (path[i].x > maxX) maxX = path[i].x; if (path[i].y > maxY) maxY = path[i].y; }
-      maxX = Math.max(maxX, 1); maxY = Math.max(maxY, 1);
-      var padL = 34, padR = 18, padT = 22, padB = 30;
-      var sx = (s.W - padL - padR) / maxX;
-      var sy = (s.H - padT - padB) / maxY;
-      var k = Math.min(sx, sy);
-      function px(p) { return padL + p.x * k; }
-      function py(p) { return s.H - padB - p.y * k; }
       clear(s);
-      // ground
-      s.ctx.strokeStyle = LINE; s.ctx.lineWidth = 1;
-      s.ctx.beginPath(); s.ctx.moveTo(0, s.H - padB); s.ctx.lineTo(s.W, s.H - padB); s.ctx.stroke();
-      // full arc
-      s.ctx.strokeStyle = "rgba(47,73,224,0.28)"; s.ctx.lineWidth = 2;
-      s.ctx.beginPath();
-      for (var j = 0; j < path.length; j++) { var X = px(path[j]), Y = py(path[j]); j ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
-      s.ctx.stroke();
-      // marker (interp by time)
-      var idx = 0; while (idx < path.length - 1 && path[idx].t < Math.min(simT, T)) idx++;
-      var p = path[idx];
-      var mx = px(p), my = py(p);
-      // traced portion
-      s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 2.6;
-      s.ctx.beginPath();
-      for (var m = 0; m <= idx; m++) { var X2 = px(path[m]), Y2 = py(path[m]); m ? s.ctx.lineTo(X2, Y2) : s.ctx.moveTo(X2, Y2); }
-      s.ctx.stroke();
-      s.ctx.fillStyle = GOLD;
-      s.ctx.beginPath(); s.ctx.arc(mx, my, 6, 0, 7); s.ctx.fill();
-      s.ctx.strokeStyle = INK; s.ctx.lineWidth = 1.4; s.ctx.stroke();
+      var padL = 40, padR = 16, padT = 16, padB = 32;
+      var w = s.W - padL - padR, h = s.H - padT - padB;
+      // single scale -> equal aspect, then derive axis ranges from it
+      var k = Math.min(w / (maxX * 1.08), h / (maxY * 1.14));
+      var ch = chart(s, {
+        x: padL, y: padT, w: w, h: h, xr: [0, w / k], yr: [0, h / k],
+        xlabel: "x  (m)", ylabel: "y (m)"
+      });
+      withClip(s.ctx, ch, function () {
+        // full arc (faint)
+        s.ctx.strokeStyle = "rgba(47,73,224,0.28)"; s.ctx.lineWidth = 2;
+        s.ctx.beginPath();
+        for (var j = 0; j < path.length; j++) { var X = ch.X(path[j].x), Y = ch.Y(path[j].y); j ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
+        s.ctx.stroke();
+        // traced portion up to the marker
+        var idx = 0; while (idx < path.length - 1 && path[idx].t < Math.min(simT, T)) idx++;
+        s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 2.6;
+        s.ctx.beginPath();
+        for (var m = 0; m <= idx; m++) { var X2 = ch.X(path[m].x), Y2 = ch.Y(path[m].y); m ? s.ctx.lineTo(X2, Y2) : s.ctx.moveTo(X2, Y2); }
+        s.ctx.stroke();
+        var p = path[idx];
+        s.ctx.fillStyle = GOLD; s.ctx.beginPath(); s.ctx.arc(ch.X(p.x), ch.Y(p.y), 6, 0, 7); s.ctx.fill();
+        s.ctx.strokeStyle = INK; s.ctx.lineWidth = 1.4; s.ctx.stroke();
+      });
       rRange("≈ " + maxX.toFixed(1) + " m");
       rApex("≈ " + maxY.toFixed(1) + " m");
     });
@@ -542,23 +594,33 @@
         var k1 = f(x, v), k2 = f(x + k1[0] * h / 2, v + k1[1] * h / 2), k3 = f(x + k2[0] * h / 2, v + k2[1] * h / 2), k4 = f(x + k3[0] * h, v + k3[1] * h);
         x += h * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]) / 6; v += h * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]) / 6;
       }
-      trace.push(x); if (trace.length > Math.max(60, s.W - 90)) trace.shift();
+      trace.push(x); if (trace.length > Math.max(120, s.W)) trace.shift();
       clear(s);
-      var midY = s.H / 2, sc = 60, eqX = 120;
-      // equilibrium line
-      s.ctx.strokeStyle = "rgba(22,23,29,0.12)"; s.ctx.setLineDash([4, 4]);
-      s.ctx.beginPath(); s.ctx.moveTo(eqX, 16); s.ctx.lineTo(eqX, s.H - 16); s.ctx.stroke(); s.ctx.setLineDash([]);
-      // oscilloscope trace
-      s.ctx.strokeStyle = "rgba(47,73,224,0.5)"; s.ctx.lineWidth = 2; s.ctx.beginPath();
-      for (var t = 0; t < trace.length; t++) { var X = eqX + (s.W - eqX - 10) * t / Math.max(1, trace.length - 1); var Y = midY - trace[t] * sc; t ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
-      s.ctx.stroke();
-      // spring + mass on the left
-      var mx = 40 + (x + 1) * sc * 0.0 + eqX + x * sc; // mass position relative to eqX
-      mx = eqX + x * sc;
+      var midY = s.H / 2;
+      // ── oscilloscope chart on the right ──
+      var splitX = Math.min(170, s.W * 0.36);
+      var bx = splitX + 8, bw = s.W - 16 - bx, bh = s.H - 16 - 28;
+      var ch = chart(s, {
+        x: bx, y: 16, w: bw, h: bh, xr: [0, 1], yr: [-1.3, 1.3],
+        fmtX: false, yticks: [-1, 0, 1], xlabel: "time →", ylabel: "x(t)"
+      });
+      withClip(s.ctx, ch, function () {
+        s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 2; s.ctx.beginPath();
+        var n = trace.length;
+        for (var t = 0; t < n; t++) { var X = ch.X(t / Math.max(1, n - 1)), Y = ch.Y(trace[t]); t ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
+        s.ctx.stroke();
+      });
+      // ── spring + mass on the left ──
+      var sc = 42, eqX = Math.max(58, splitX * 0.52);
+      s.ctx.strokeStyle = "rgba(22,23,29,0.14)"; s.ctx.setLineDash([4, 4]);
+      s.ctx.beginPath(); s.ctx.moveTo(eqX, 18); s.ctx.lineTo(eqX, s.H - 18); s.ctx.stroke(); s.ctx.setLineDash([]);
+      s.ctx.fillStyle = SOFT; s.ctx.font = "10px " + MONO; s.ctx.textAlign = "center";
+      s.ctx.fillText("equilibrium", eqX, s.H - 6); s.ctx.textAlign = "left";
+      var mx = eqX + x * sc;
       s.ctx.strokeStyle = INK; s.ctx.lineWidth = 2;
-      drawSpringCoil(s.ctx, 20, midY, mx, 7, 16);
-      s.ctx.fillStyle = "rgba(22,23,29,0.5)"; s.ctx.fillRect(14, midY - 24, 6, 48); // wall
-      s.ctx.fillStyle = BLUE; s.ctx.beginPath(); s.ctx.arc(mx, midY, 15, 0, 7); s.ctx.fill();
+      drawSpringCoil(s.ctx, 20, midY, mx, 7, 14);
+      s.ctx.fillStyle = "rgba(22,23,29,0.5)"; s.ctx.fillRect(14, midY - 22, 6, 44); // wall
+      s.ctx.fillStyle = BLUE; s.ctx.beginPath(); s.ctx.arc(mx, midY, 14, 0, 7); s.ctx.fill();
       s.ctx.strokeStyle = INK; s.ctx.lineWidth = 1.5; s.ctx.stroke();
       var z = cc / (2 * Math.sqrt(m * k));
       rReg(z < 1e-3 ? "undamped" : z < 0.97 ? "underdamped" : z <= 1.03 ? "critical" : "overdamped");
@@ -720,12 +782,16 @@
         for (i = 0; i < N; i++) v[i] += 0.5 * (accel(u, i) - gamma * v[i]) * h;
       }
       clear(s);
-      var midY = s.H / 2, amp = s.H * 0.32;
-      s.ctx.strokeStyle = "rgba(22,23,29,0.10)"; s.ctx.beginPath(); s.ctx.moveTo(10, midY); s.ctx.lineTo(s.W - 10, midY); s.ctx.stroke();
-      s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 2.2; s.ctx.beginPath();
-      for (i = 0; i < N; i++) { var X = 14 + (s.W - 28) * i / (N - 1), Y = midY - u[i] * amp; i ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
-      s.ctx.stroke();
-      for (i = 0; i < N; i += 6) { var X2 = 14 + (s.W - 28) * i / (N - 1); s.ctx.fillStyle = GOLD; s.ctx.beginPath(); s.ctx.arc(X2, midY - u[i] * amp, 3, 0, 7); s.ctx.fill(); }
+      var ch = chart(s, {
+        x: 40, y: 16, w: s.W - 54, h: s.H - 16 - 30, xr: [0, N - 1], yr: [-1.3, 1.3],
+        fmtX: false, yticks: [-1, 0, 1], xlabel: "site n →", ylabel: "u"
+      });
+      withClip(s.ctx, ch, function () {
+        s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 2.2; s.ctx.beginPath();
+        for (i = 0; i < N; i++) { var X = ch.X(i), Y = ch.Y(u[i]); i ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
+        s.ctx.stroke();
+        for (i = 0; i < N; i += 6) { s.ctx.fillStyle = GOLD; s.ctx.beginPath(); s.ctx.arc(ch.X(i), ch.Y(u[i]), 3, 0, 7); s.ctx.fill(); }
+      });
     });
   }
 
@@ -757,24 +823,33 @@
         for (i = 0; i < N; i++) v[i] += 0.5 * accel(u, i) * h;
       }
       clear(s);
-      var topH = s.H * 0.42, midY = topH / 2, amp = topH * 0.4;
-      s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 2; s.ctx.beginPath();
-      for (i = 0; i < N; i++) { var X = 14 + (s.W - 28) * i / (N - 1), Y = midY - u[i] * amp; i ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
-      s.ctx.stroke();
-      s.ctx.strokeStyle = LINE; s.ctx.beginPath(); s.ctx.moveTo(10, topH); s.ctx.lineTo(s.W - 10, topH); s.ctx.stroke();
-      // mode energies
+      // ── top: the chain shape u(x) ──
+      var topB = chart(s, {
+        x: 40, y: 16, w: s.W - 54, h: s.H * 0.36, xr: [0, N - 1], yr: [-1.2, 1.2],
+        fmtX: false, yticks: [-1, 0, 1], ylabel: "u(x)"
+      });
+      withClip(s.ctx, topB, function () {
+        s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 2; s.ctx.beginPath();
+        for (i = 0; i < N; i++) { var X = topB.X(i), Y = topB.Y(u[i]); i ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
+        s.ctx.stroke();
+      });
+      // ── bottom: live mode-energy spectrum ──
       var E = [], Emax = 1e-9;
       for (var jm = 1; jm <= M; jm++) {
         var aj = 0, adj = 0, wj = 2 * Math.sqrt(k / m) * Math.sin(Math.PI * jm / (2 * (N - 1)));
         for (i = 0; i < N; i++) { var ph = Math.sqrt(2 / (N - 1)) * Math.sin(Math.PI * jm * i / (N - 1)); aj += u[i] * ph; adj += v[i] * ph; }
         var ej = 0.5 * m * (adj * adj + wj * wj * aj * aj); E.push(ej); if (ej > Emax) Emax = ej;
       }
-      var bw = (s.W - 28) / M, base = s.H - 24;
-      for (jm = 0; jm < M; jm++) {
-        var bh = (E[jm] / Emax) * (s.H * 0.42); var bx = 14 + jm * bw;
-        s.ctx.fillStyle = GOLD; s.ctx.fillRect(bx + 2, base - bh, bw - 5, bh);
-      }
-      s.ctx.fillStyle = SOFT; s.ctx.font = "11px monospace"; s.ctx.fillText("mode energy spectrum (j = 1 … " + M + ")", 16, base + 16);
+      var xt = []; for (var tk = 1; tk <= M; tk += 3) xt.push(tk);
+      var by = topB.y + topB.h + 34;
+      var botB = chart(s, {
+        x: 40, y: by, w: s.W - 54, h: s.H - by - 30, xr: [0.5, M + 0.5], yr: [0, 1.08],
+        fmtY: false, xticks: xt, fmtX: function (vv) { return vv.toFixed(0); }, xlabel: "mode j", ylabel: "energy"
+      });
+      withClip(s.ctx, botB, function () {
+        var cw = botB.w / M * 0.6;
+        for (jm = 0; jm < M; jm++) { var f = E[jm] / Emax, cx2 = botB.X(jm + 1); s.ctx.fillStyle = GOLD; s.ctx.fillRect(cx2 - cw / 2, botB.Y(f), cw, botB.y + botB.h - botB.Y(f)); }
+      });
     });
   }
 
@@ -886,13 +961,16 @@
         if (bc === "abs") Ez[N - 1] = e0; else Ez[N - 1] = 0;
       }
       clear(s);
-      var midY = s.H / 2, amp = s.H * 0.36;
-      if (slab) { var sx = 14 + (s.W - 28) * 0.6; s.ctx.fillStyle = "rgba(240,173,63,0.16)"; s.ctx.fillRect(sx, 8, s.W - 14 - sx, s.H - 16); }
-      s.ctx.strokeStyle = "rgba(22,23,29,0.10)"; s.ctx.beginPath(); s.ctx.moveTo(10, midY); s.ctx.lineTo(s.W - 10, midY); s.ctx.stroke();
-      s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 1.8; s.ctx.beginPath();
-      for (i = 0; i < N; i++) { var X = 14 + (s.W - 28) * i / (N - 1), Y = midY - Ez[i] * amp; i ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
-      s.ctx.stroke();
-      s.ctx.fillStyle = SOFT; s.ctx.font = "11px monospace"; s.ctx.fillText("Ez field", 16, 20);
+      var ch = chart(s, {
+        x: 40, y: 16, w: s.W - 54, h: s.H - 16 - 30, xr: [0, N - 1], yr: [-1.2, 1.2],
+        fmtX: false, yticks: [-1, 0, 1], xlabel: "x →", ylabel: "Ez"
+      });
+      withClip(s.ctx, ch, function () {
+        if (slab) { var sx = ch.X(N * 0.6); s.ctx.fillStyle = "rgba(240,173,63,0.16)"; s.ctx.fillRect(sx, ch.y, ch.x + ch.w - sx, ch.h); }
+        s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 1.8; s.ctx.beginPath();
+        for (i = 0; i < N; i++) { var X = ch.X(i), Y = ch.Y(Ez[i]); i ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
+        s.ctx.stroke();
+      });
     });
   }
 
@@ -916,17 +994,22 @@
       var KE = 0;
       ds.forEach(function (d) { KE += 0.5 * (d.v[0] * d.v[0] + d.v[1] * d.v[1]); s.ctx.fillStyle = BLUE; s.ctx.beginPath(); s.ctx.arc(d.p[0], d.p[1], d.r, 0, 7); s.ctx.fill(); });
       var T = KE / ds.length;
-      // histogram
-      var hx0 = boxW() + 14, hx1 = s.W - 12, hy1 = s.H - 28, hy0 = 24, bins = 22, hist = new Array(bins).fill(0), vmax = 420;
+      // ── speed histogram + Maxwell–Boltzmann curve on the right ──
+      var vmax = 420, bins = 22, hist = new Array(bins).fill(0);
       ds.forEach(function (d) { var sp = Math.hypot(d.v[0], d.v[1]); var bi = Math.min(bins - 1, (sp / vmax * bins) | 0); hist[bi]++; });
-      var hmax = Math.max.apply(null, hist) || 1, bw = (hx1 - hx0) / bins;
-      for (var i = 0; i < bins; i++) { var bh = hist[i] / hmax * (hy1 - hy0); s.ctx.fillStyle = "rgba(47,73,224,0.5)"; s.ctx.fillRect(hx0 + i * bw + 1, hy1 - bh, bw - 2, bh); }
-      // Maxwell-Boltzmann (Rayleigh) curve
-      s.ctx.strokeStyle = GOLD; s.ctx.lineWidth = 2.2; s.ctx.beginPath();
-      var norm = 0; for (i = 0; i < 200; i++) { var sp = i / 200 * vmax; norm = Math.max(norm, (sp / T) * Math.exp(-sp * sp / (2 * T))); }
-      for (i = 0; i <= 200; i++) { var sp2 = i / 200 * vmax; var f = (sp2 / T) * Math.exp(-sp2 * sp2 / (2 * T)) / norm; var X = hx0 + (sp2 / vmax) * (hx1 - hx0), Y = hy1 - f * (hy1 - hy0) * (hmax / hmax); i ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
-      s.ctx.stroke();
-      s.ctx.fillStyle = SOFT; s.ctx.font = "11px monospace"; s.ctx.fillText("speed distribution", hx0, 18);
+      var hmax = Math.max.apply(null, hist) || 1;
+      var ch = chart(s, {
+        x: boxW() + 40, y: 22, w: s.W - 14 - (boxW() + 40), h: s.H - 22 - 30,
+        xr: [0, vmax], yr: [0, 1.1], fmtY: false, xlabel: "speed", ylabel: "P(v)"
+      });
+      withClip(s.ctx, ch, function () {
+        var cw = ch.w / bins;
+        for (var i = 0; i < bins; i++) { var f = hist[i] / hmax, bx0 = ch.X(i / bins * vmax); s.ctx.fillStyle = "rgba(47,73,224,0.45)"; s.ctx.fillRect(bx0 + 1, ch.Y(f), cw - 2, ch.y + ch.h - ch.Y(f)); }
+        s.ctx.strokeStyle = GOLD; s.ctx.lineWidth = 2.2; s.ctx.beginPath();
+        var norm = 0; for (i = 0; i <= 200; i++) { var sp = i / 200 * vmax; norm = Math.max(norm, (sp / T) * Math.exp(-sp * sp / (2 * T))); }
+        for (i = 0; i <= 200; i++) { var sp2 = i / 200 * vmax, f2 = (sp2 / T) * Math.exp(-sp2 * sp2 / (2 * T)) / (norm || 1); var X = ch.X(sp2), Y = ch.Y(f2); i ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
+        s.ctx.stroke();
+      });
       rT(T.toExponential(1));
     });
   }
@@ -989,16 +1072,22 @@
         for (j = 1; j < N - 1; j++) I[j] -= dt * HR(R, j);
       }
       clear(s);
-      var midY = s.H * 0.82, amp = s.H * 0.62, bc = N * 0.6, bw = 26;
-      // barrier
-      s.ctx.fillStyle = "rgba(240,173,63,0.18)"; var bx0 = 14 + (s.W - 28) * (bc - bw) / (N - 1), bx1 = 14 + (s.W - 28) * (bc + bw) / (N - 1);
-      s.ctx.fillRect(bx0, midY - V0 * 320, bx1 - bx0, V0 * 320 + 4);
-      s.ctx.strokeStyle = "rgba(22,23,29,0.10)"; s.ctx.beginPath(); s.ctx.moveTo(10, midY); s.ctx.lineTo(s.W - 10, midY); s.ctx.stroke();
-      s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 1.8; s.ctx.beginPath();
+      var bc = N * 0.6, bw = 26;
+      var ch = chart(s, {
+        x: 40, y: 16, w: s.W - 54, h: s.H - 16 - 30, xr: [0, N - 1], yr: [0, 1.0],
+        fmtX: false, fmtY: false, xlabel: "x →", ylabel: "|ψ|²"
+      });
       var left = 0, right = 0;
-      for (j = 0; j < N; j++) { var dens = R[j] * R[j] + I[j] * I[j]; if (j < bc) left += dens; else right += dens; var X = 14 + (s.W - 28) * j / (N - 1), Y = midY - dens * amp; j ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
-      s.ctx.stroke();
-      s.ctx.fillStyle = SOFT; s.ctx.font = "11px monospace"; s.ctx.fillText("|ψ|²", 16, 18);
+      withClip(s.ctx, ch, function () {
+        // potential barrier (height ∝ V₀)
+        var bh = Math.min(0.95, V0 * 2);
+        s.ctx.fillStyle = "rgba(240,173,63,0.18)";
+        s.ctx.fillRect(ch.X(bc - bw), ch.Y(bh), ch.X(bc + bw) - ch.X(bc - bw), ch.y + ch.h - ch.Y(bh));
+        // probability density
+        s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 1.8; s.ctx.beginPath();
+        for (j = 0; j < N; j++) { var dens = R[j] * R[j] + I[j] * I[j]; if (j < bc) left += dens; else right += dens; var X = ch.X(j), Y = ch.Y(dens); j ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
+        s.ctx.stroke();
+      });
       rT((100 * right / (left + right)).toFixed(0) + "%");
     });
   }
@@ -1047,15 +1136,30 @@
       // energy = <psi|H|psi>
       var E = 0; for (j = 1; j < N - 1; j++) { var Hp = -0.5 * (psi[j + 1] - 2 * psi[j] + psi[j - 1]) + V[j] * psi[j]; E += psi[j] * Hp; }
       clear(s);
-      var midY = s.H * 0.62, amp = s.H * 0.5, Vsc = s.H * 0.22;
-      s.ctx.strokeStyle = "rgba(22,23,29,0.18)"; s.ctx.lineWidth = 1.5; s.ctx.beginPath();
-      for (j = 0; j < N; j++) { var X = 14 + (s.W - 28) * j / (N - 1), Y = midY + Vsc - Math.min(V[j], 4) * Vsc; j ? s.ctx.lineTo(X, Y) : s.ctx.moveTo(X, Y); }
-      s.ctx.stroke();
-      // already-converged states faint
-      for (var cc2 = 0; cc2 < converged.length; cc2++) { s.ctx.strokeStyle = "rgba(240,173,63,0.5)"; s.ctx.lineWidth = 1.4; s.ctx.beginPath(); for (j = 0; j < N; j++) { var X2 = 14 + (s.W - 28) * j / (N - 1), Y2 = midY - converged[cc2][j] * amp; j ? s.ctx.lineTo(X2, Y2) : s.ctx.moveTo(X2, Y2); } s.ctx.stroke(); }
-      s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 2.2; s.ctx.beginPath();
-      for (j = 0; j < N; j++) { var X3 = 14 + (s.W - 28) * j / (N - 1), Y3 = midY - psi[j] * amp; j ? s.ctx.lineTo(X3, Y3) : s.ctx.moveTo(X3, Y3); }
-      s.ctx.stroke();
+      var x0 = 40, y0 = 16, w = s.W - 54, h = s.H - 16 - 30;
+      s.ctx.fillStyle = "#fff"; s.ctx.fillRect(x0, y0, w, h);
+      var midY = s.H * 0.60, amp = s.H * 0.46, Vsc = s.H * 0.20;
+      function bX(j) { return x0 + w * j / (N - 1); }
+      withClip(s.ctx, { x: x0, y: y0, w: w, h: h }, function () {
+        // potential V(x)
+        s.ctx.strokeStyle = "rgba(22,23,29,0.18)"; s.ctx.lineWidth = 1.5; s.ctx.beginPath();
+        for (j = 0; j < N; j++) { var Y = midY + Vsc - Math.min(V[j], 4) * Vsc; j ? s.ctx.lineTo(bX(j), Y) : s.ctx.moveTo(bX(j), Y); }
+        s.ctx.stroke();
+        // zero baseline
+        s.ctx.strokeStyle = "rgba(22,23,29,0.20)"; s.ctx.lineWidth = 1; s.ctx.beginPath(); s.ctx.moveTo(x0, midY); s.ctx.lineTo(x0 + w, midY); s.ctx.stroke();
+        // already-converged states (faint gold)
+        for (var cc2 = 0; cc2 < converged.length; cc2++) { s.ctx.strokeStyle = "rgba(240,173,63,0.5)"; s.ctx.lineWidth = 1.4; s.ctx.beginPath(); for (j = 0; j < N; j++) { var Y2 = midY - converged[cc2][j] * amp; j ? s.ctx.lineTo(bX(j), Y2) : s.ctx.moveTo(bX(j), Y2); } s.ctx.stroke(); }
+        // current state
+        s.ctx.strokeStyle = BLUE; s.ctx.lineWidth = 2.2; s.ctx.beginPath();
+        for (j = 0; j < N; j++) { var Y3 = midY - psi[j] * amp; j ? s.ctx.lineTo(bX(j), Y3) : s.ctx.moveTo(bX(j), Y3); }
+        s.ctx.stroke();
+      });
+      // frame + axis labels
+      s.ctx.strokeStyle = LINE; s.ctx.lineWidth = 1; s.ctx.strokeRect(x0 + 0.5, y0 + 0.5, w, h);
+      s.ctx.fillStyle = SOFT; s.ctx.font = "10px " + MONO;
+      s.ctx.textAlign = "right"; s.ctx.textBaseline = "top"; s.ctx.fillText("x →", x0 + w, y0 + h + 6);
+      s.ctx.textAlign = "left"; s.ctx.textBaseline = "bottom"; s.ctx.fillText("φ, V(x)", x0 + 1, y0 - 5);
+      s.ctx.textAlign = "left"; s.ctx.textBaseline = "alphabetic";
       rE(E.toFixed(3)); rL("φ" + level);
     });
   }

@@ -1,5 +1,6 @@
 /* Making Physics — homage to makingsoftware.com
-   Warm paper, ink, electric blue. Mono labels, grotesk display, serif body. */
+   Warm paper, ink, electric blue. Mono labels, serif display + body
+   (Newsreader carries headings and prose; Space Mono carries all chrome). */
 
 :root{
   --paper:      #f3efe6;
@@ -83,9 +84,9 @@ main{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(18px,4vw,40px) 40px;
   margin:0 0 18px;
 }
 .hero-title{
-  font-family:var(--sans); font-weight:700;
-  font-size:clamp(40px,8vw,82px); line-height:1.0;
-  letter-spacing:-0.03em; margin:0 0 22px; color:var(--ink);
+  font-family:var(--serif); font-weight:500;
+  font-size:clamp(40px,8vw,82px); line-height:1.02;
+  letter-spacing:-0.012em; margin:0 0 22px; color:var(--ink);
 }
 .hero-lead{
   font-size:clamp(18px,2.4vw,22px); line-height:1.6;
@@ -108,8 +109,8 @@ main{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(18px,4vw,40px) 40px;
   text-transform:uppercase; color:var(--accent-ink); font-weight:700;
 }
 .group-title{
-  font-family:var(--sans); font-weight:600; font-size:clamp(26px,4vw,38px);
-  letter-spacing:-0.02em; line-height:1.1;
+  font-family:var(--serif); font-weight:500; font-size:clamp(26px,4vw,38px);
+  letter-spacing:-0.006em; line-height:1.12;
 }
 .group-blurb{ color:var(--ink-soft); font-size:17px; margin:10px 0 0; }
 
@@ -145,8 +146,8 @@ main{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(18px,4vw,40px) 40px;
   color:var(--accent); letter-spacing:0.08em;
 }
 .card-title{
-  font-family:var(--sans); font-weight:600; font-size:21px;
-  letter-spacing:-0.01em; margin:4px 0 8px; line-height:1.15;
+  font-family:var(--serif); font-weight:500; font-size:22px;
+  letter-spacing:0; margin:4px 0 8px; line-height:1.18;
 }
 .card-desc{ color:var(--ink-soft); font-size:15px; line-height:1.5; margin:0; }
 
@@ -190,8 +191,8 @@ main{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(18px,4vw,40px) 40px;
   letter-spacing:0.08em; color:var(--accent);
 }
 .ch-title{
-  font-family:var(--sans); font-weight:600; font-size:17px;
-  letter-spacing:-0.01em; line-height:1.18; color:var(--ink);
+  font-family:var(--serif); font-weight:600; font-size:18px;
+  letter-spacing:0; line-height:1.2; color:var(--ink);
 }
 .ch:hover .ch-title{ color:var(--accent-ink); }
 .ch-desc{
@@ -245,14 +246,14 @@ main{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(18px,4vw,40px) 40px;
   font-family:var(--mono); font-size:11px; font-weight:700; color:var(--muted);
   flex:none; width:18px; font-variant-numeric:tabular-nums;
 }
-.toc-name{ font-family:var(--sans); font-size:14px; letter-spacing:-0.005em; }
+.toc-name{ font-family:var(--serif); font-weight:500; font-size:15px; letter-spacing:0; }
 .toc-link.is-current{ background:rgba(47,73,224,0.08); color:var(--accent); }
 .toc-link.is-current .toc-num{ color:var(--accent); }
 .toc-link.is-current .toc-name{ font-weight:600; }
 .toc-subs{ display:flex; flex-direction:column; margin:3px 0 5px 36px; }
 .toc-sub{
-  font-family:var(--sans); font-size:12.5px; color:var(--muted);
-  padding:3px 0 3px 12px; border-left:2px solid var(--line); line-height:1.3;
+  font-family:var(--serif); font-size:13.5px; color:var(--muted);
+  padding:3px 0 3px 12px; border-left:2px solid var(--line); line-height:1.35;
 }
 .toc-sub:hover{ color:var(--accent); border-color:var(--accent); text-decoration:none; }
 .toc-sub.active{ color:var(--ink); border-color:var(--accent2); }
@@ -284,8 +285,8 @@ main{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(18px,4vw,40px) 40px;
   letter-spacing:0.14em; text-transform:uppercase; color:var(--accent-ink);
 }
 .article-title{
-  font-family:var(--sans); font-weight:700; font-size:clamp(34px,6vw,56px);
-  letter-spacing:-0.03em; line-height:1.04; margin:10px 0 16px;
+  font-family:var(--serif); font-weight:500; font-size:clamp(34px,6vw,56px);
+  letter-spacing:-0.012em; line-height:1.06; margin:10px 0 16px;
 }
 .article-lead{
   font-size:clamp(19px,2.6vw,23px); line-height:1.5; color:var(--ink-soft);
@@ -294,8 +295,8 @@ main{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(18px,4vw,40px) 40px;
 
 .prose{ margin:30px 0; scroll-margin-top:78px; }
 .prose h2{
-  font-family:var(--sans); font-weight:600; font-size:clamp(22px,3vw,28px);
-  letter-spacing:-0.015em; line-height:1.2; margin:0 0 12px;
+  font-family:var(--serif); font-weight:600; font-size:clamp(23px,3vw,29px);
+  letter-spacing:-0.005em; line-height:1.22; margin:0 0 12px;
 }
 .prose p{ margin:0 0 1.1rem; color:var(--ink-soft); }
 .prose p:last-child{ margin-bottom:0; }
@@ -346,7 +347,7 @@ figcaption{
 .pager a:hover{ border-color:var(--line-2); text-decoration:none; }
 .pager-next{ text-align:right; }
 .pager span{ font-family:var(--mono); font-size:11.5px; letter-spacing:0.06em; color:var(--muted); text-transform:uppercase; }
-.pager strong{ font-family:var(--sans); font-weight:600; font-size:17px; }
+.pager strong{ font-family:var(--serif); font-weight:500; font-size:18px; }
 
 /* ── footer ──────────────────────────────────────── */
 .foot{
