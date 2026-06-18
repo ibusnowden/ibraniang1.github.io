@@ -489,6 +489,16 @@ figcaption{
   .eq-list li{ grid-template-columns:1fr; gap:5px; }
 }
 
+/* ── inline math (KaTeX) in prose, captions, lists ───────────────── */
+.m .katex{ font-size:1em; color:var(--ink); }
+figcaption .m .katex{ color:var(--ink); }
+/* graceful fallback if KaTeX hasn't rendered: show raw TeX like code */
+.m:not([data-done]){
+  font-family:var(--mono); font-size:0.84em;
+  background:rgba(22,23,29,0.06); border:1px solid var(--line);
+  border-radius:6px; padding:1px 5px;
+}
+
 /* ── reveal animation ────────────────────────────── */
 .reveal, .card{
   opacity:0; transform:translateY(16px);

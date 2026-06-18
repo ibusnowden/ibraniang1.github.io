@@ -17,8 +17,18 @@
         el.dataset.done = "1";
       } catch (e) { /* leave the raw TeX visible on failure */ }
     });
+    // inline math in prose, captions and lists: <span class="m">TeX</span>
+    document.querySelectorAll(".m").forEach(function (el) {
+      if (el.dataset.done) return;
+      try {
+        katex.render(el.textContent, el, {
+          displayMode: false, throwOnError: false, output: "html"
+        });
+        el.dataset.done = "1";
+      } catch (e) { /* leave the raw TeX visible on failure */ }
+    });
   }
-  if (document.querySelector(".eq-tex")) {
+  if (document.querySelector(".eq-tex, .m")) {
     if (typeof katex !== "undefined") renderMath();
     else window.addEventListener("load", renderMath);
     // katex.min.js is deferred; also try once more after a tick

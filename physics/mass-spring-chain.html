@@ -97,7 +97,7 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>A discrete wave equation</h2>
-        <p>Each interior mass feels <code>m ü_n = k(u_{n+1} - 2u_n + u_{n-1}) - γ u̇_n</code>. That second difference is a discrete second spatial derivative, so in the long-wavelength limit the chain is exactly the 1D wave equation <code>u_tt = c² u_xx</code> with speed <code>c = a√(k/m)</code>: stiffer springs and lighter masses make faster waves.</p>
+        <p>Each interior mass feels <span class="m">m\,\ddot u_n = k(u_{n+1} - 2u_n + u_{n-1}) - \gamma\,\dot u_n</span>. That second difference is a discrete second spatial derivative, so in the long-wavelength limit the chain is exactly the 1D wave equation <span class="m">u_{tt} = c^2 u_{xx}</span> with speed <span class="m">c = a\sqrt{k/m}</span>: stiffer springs and lighter masses make faster waves.</p>
       </section>
 
       <figure class="fig reveal">
@@ -117,7 +117,7 @@
 
       <section class="prose reveal" id="sec-2">
         <h2>Lattice dispersion is real</h2>
-        <p>A fixed-fixed chain of N nodes has N-2 standing modes with <code>ω_j = 2√(k/m) sin(πj/2(N-1))</code>. For long wavelengths this is the familiar evenly-spaced harmonic series; for short wavelengths the sine saturates and modes travel slower than the wave equation predicts. That gap is numerical dispersion — and it is a genuine, physical feature of any discrete medium, not a bug.</p>
+        <p>A fixed-fixed chain of N nodes has N-2 standing modes with <span class="m">\omega_j = 2\sqrt{k/m}\,\sin\!\big(\pi j/2(N-1)\big)</span>. For long wavelengths this is the familiar evenly-spaced harmonic series; for short wavelengths the sine saturates and modes travel slower than the wave equation predicts. That gap is numerical dispersion — and it is a genuine, physical feature of any discrete medium, not a bug.</p>
       </section>
 
       <figure class="fig reveal">

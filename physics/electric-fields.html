@@ -97,7 +97,7 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>Superposition</h2>
-        <p>The field and potential at any point are sums over the charges: <code>E(r) = Σ k qᵢ (r-rᵢ)/|r-rᵢ|³</code>, with <code>E = -∇V</code>. The field is the downhill gradient of the potential — every picture in this lab is built from that one rule applied to a few point sources.</p>
+        <p>The field and potential at any point are sums over the charges: <span class="m">E(r) = \sum_i k\,q_i\,\frac{r-r_i}{|r-r_i|^3}</span>, with <span class="m">E = -\nabla V</span>. The field is the downhill gradient of the potential — every picture in this lab is built from that one rule applied to a few point sources.</p>
       </section>
 
       <figure class="fig reveal">
@@ -107,7 +107,7 @@
 
       <section class="prose reveal" id="sec-1">
         <h2>Conservative, so RK4 is enough</h2>
-        <p>Static charges make a conservative field, so a test particle's total energy <code>½m|v|² + qV</code> is exactly conserved and ordinary RK4 suffices — no Boris machinery. That contrast is the point of the EM track: a magnetic field rotates <code>v</code> and needs Boris; a static electric field is a gradient and conserves a Hamiltonian energy.</p>
+        <p>Static charges make a conservative field, so a test particle's total energy <span class="m">\tfrac12 m|v|^2 + qV</span> is exactly conserved and ordinary RK4 suffices — no Boris machinery. That contrast is the point of the EM track: a magnetic field rotates <span class="m">v</span> and needs Boris; a static electric field is a gradient and conserves a Hamiltonian energy.</p>
       </section>
 
       <figure class="fig reveal">

@@ -97,7 +97,7 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>Rotate time into the imaginary axis</h2>
-        <p>Substitute <code>t = -iτ</code> into the Schrödinger equation and it becomes a diffusion equation <code>∂ψ/∂τ = -Hψ</code>. Every energy component decays as <code>exp(-E_n τ)</code>, but the lowest decays slowest. Renormalize after each step and any starting state relaxes onto the ground state — no matrix diagonalization, just the same tridiagonal Hamiltonian from the previous lab.</p>
+        <p>Substitute <span class="m">t = -i\tau</span> into the Schrödinger equation and it becomes a diffusion equation <span class="m">\partial\psi/\partial\tau = -H\psi</span>. Every energy component decays as <span class="m">\exp(-E_n\tau)</span>, but the lowest decays slowest. Renormalize after each step and any starting state relaxes onto the ground state — no matrix diagonalization, just the same tridiagonal Hamiltonian from the previous lab.</p>
       </section>
 
       <figure class="fig reveal">
@@ -117,7 +117,7 @@
 
       <section class="prose reveal" id="sec-2">
         <h2>Backward Euler, not Crank-Nicolson</h2>
-        <p>CN's amplification factor tends to -1 for high-energy lattice modes, so the relaxation gets stuck on the spurious zigzag mode. Backward Euler's factor <code>1/(1+ΔτE)</code> decreases monotonically with energy — high modes damped hardest — and the energy is read off as an exact Rayleigh quotient regardless of step accuracy. The double well's tunneling doublets are the payoff: the toy model behind molecular inversion lines and bonding pairs.</p>
+        <p>CN's amplification factor tends to -1 for high-energy lattice modes, so the relaxation gets stuck on the spurious zigzag mode. Backward Euler's factor <span class="m">1/(1+\Delta\tau\,E)</span> decreases monotonically with energy — high modes damped hardest — and the energy is read off as an exact Rayleigh quotient regardless of step accuracy. The double well's tunneling doublets are the payoff: the toy model behind molecular inversion lines and bonding pairs.</p>
       </section>
 
       <figure class="fig reveal">

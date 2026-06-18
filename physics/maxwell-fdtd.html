@@ -97,7 +97,7 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>Two curls feeding each other</h2>
-        <p>In 1D, <code>dH/dt = -dE/dx</code> and <code>dE/dt = -(1/ε_r) dH/dx</code>. Each spatial slope drives the other field in time; combine them and you recover the wave equation with speed <code>c/√ε_r</code>. The permittivity dividing the E update is the microscopic origin of the refractive index <code>n = √ε_r</code>.</p>
+        <p>In 1D, <span class="m">dH/dt = -dE/dx</span> and <span class="m">dE/dt = -(1/\varepsilon_r)\,dH/dx</span>. Each spatial slope drives the other field in time; combine them and you recover the wave equation with speed <span class="m">c/\sqrt{\varepsilon_r}</span>. The permittivity dividing the E update is the microscopic origin of the refractive index <span class="m">n = \sqrt{\varepsilon_r}</span>.</p>
       </section>
 
       <figure class="fig reveal">
@@ -107,7 +107,7 @@
 
       <section class="prose reveal" id="sec-1">
         <h2>The Yee leapfrog</h2>
-        <p>Stagger E on integer points and H on the half-points between them, and step them alternately. Both updates become centered second-order differences, and in vacuum at Courant number <code>S ≤ 1</code> the scheme is non-dissipative — energy sloshes between E and H without decaying. It is to Maxwell what the mass-spring chain was to the scalar wave equation.</p>
+        <p>Stagger E on integer points and H on the half-points between them, and step them alternately. Both updates become centered second-order differences, and in vacuum at Courant number <span class="m">S \le 1</span> the scheme is non-dissipative — energy sloshes between E and H without decaying. It is to Maxwell what the mass-spring chain was to the scalar wave equation.</p>
       </section>
 
       <figure class="fig reveal">
@@ -117,7 +117,7 @@
 
       <section class="prose reveal" id="sec-2">
         <h2>Reflection, refraction, resonance</h2>
-        <p>Absorbing (Mur) boundaries let a pulse leave the grid; a perfect conductor mirrors it with inversion. A dielectric interface splits a pulse with the exact Fresnel reflectance <code>((n₁-n₂)/(n₁+n₂))²</code>, and two conductors turn a continuous source into a standing-wave cavity — the electromagnetic echo of the fixed-fixed string.</p>
+        <p>Absorbing (Mur) boundaries let a pulse leave the grid; a perfect conductor mirrors it with inversion. A dielectric interface splits a pulse with the exact Fresnel reflectance <span class="m">\big((n_1-n_2)/(n_1+n_2)\big)^2</span>, and two conductors turn a continuous source into a standing-wave cavity — the electromagnetic echo of the fixed-fixed string.</p>
       </section>
 
       <figure class="fig reveal">

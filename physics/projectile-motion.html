@@ -97,7 +97,7 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>The model</h2>
-        <p>The state is a position and a velocity; the only acceleration is <code>(0, -g)</code>. With no drag the total mechanical energy <code>KE + mgh</code> should be exactly constant, so it becomes the first diagnostic: if the number drifts, the integrator — not the physics — is responsible.</p>
+        <p>The state is a position and a velocity; the only acceleration is <span class="m">(0,\,-g)</span>. With no drag the total mechanical energy <span class="m">KE + mgh</span> should be exactly constant, so it becomes the first diagnostic: if the number drifts, the integrator — not the physics — is responsible.</p>
       </section>
 
       <figure class="fig reveal">
@@ -107,14 +107,14 @@
 
       <section class="prose reveal" id="sec-1">
         <h2>Euler is not free</h2>
-        <p>Run the same launch with explicit Euler, semi-implicit (symplectic) Euler, and RK4 at timesteps of 1/10, 1/30, and 1/120 s. Explicit Euler injects energy and overshoots the analytic arc; semi-implicit Euler stays bounded; RK4 tracks the closed form <code>x(t) = x0 + v0 t + ½ a t²</code> to the width of the line. This is the project's recurring theme in miniature — match the integrator to the structure you care about.</p>
+        <p>Run the same launch with explicit Euler, semi-implicit (symplectic) Euler, and RK4 at timesteps of 1/10, 1/30, and 1/120 s. Explicit Euler injects energy and overshoots the analytic arc; semi-implicit Euler stays bounded; RK4 tracks the closed form <span class="m">x(t) = x_0 + v_0 t + \tfrac12 a t^2</span> to the width of the line. This is the project's recurring theme in miniature — match the integrator to the structure you care about.</p>
       </section>
 
 
 
       <section class="prose reveal" id="sec-2">
         <h2>Adding drag</h2>
-        <p>Quadratic drag <code>F = -c |v| v</code> turns the symmetric parabola into a shorter, steeper-falling arc and makes the energy plot tip downward. There is no longer a closed form, so the simulation stops being a check and starts being the only answer.</p>
+        <p>Quadratic drag <span class="m">F = -c\,|v|\,v</span> turns the symmetric parabola into a shorter, steeper-falling arc and makes the energy plot tip downward. There is no longer a closed form, so the simulation stops being a check and starts being the only answer.</p>
       </section>
 
 

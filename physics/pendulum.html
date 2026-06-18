@@ -85,7 +85,7 @@
 
     <figure class="hero-fig reveal">
       <div class="fig-frame"><img class="zoomable" src="assets/pendulum_angle.svg" alt="The Simple Pendulum — simulation render" /></div>
-      <figcaption><span class="fig-n">fig 1.</span> Nonlinear `θ'' = -(g/L) sinθ` against the linearized `θ'' = -(g/L)θ`. At small amplitude the two curves overlap; as the start angle grows the true pendulum visibly slows and its period stretches.</figcaption>
+      <figcaption><span class="fig-n">fig 1.</span> Nonlinear <span class="m">\ddot\theta = -\tfrac{g}{L}\sin\theta</span> against the linearized <span class="m">\ddot\theta = -\tfrac{g}{L}\theta</span>. At small amplitude the two curves overlap; as the start angle grows the true pendulum visibly slows and its period stretches.</figcaption>
     </figure>
 
     <aside class="eqs reveal" aria-label="Key equations">
@@ -97,17 +97,17 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>Two equations, one pendulum</h2>
-        <p>The real pendulum obeys <code>θ'' = -(g/L) sinθ</code>; the textbook one replaces <code>sinθ</code> with <code>θ</code>. The approximation is only good while the amplitude is small enough that those two agree — and the lab is built to show you exactly where it breaks.</p>
+        <p>The real pendulum obeys <span class="m">\ddot\theta = -\tfrac{g}{L}\sin\theta</span>; the textbook one replaces <span class="m">\sin\theta</span> with <span class="m">\theta</span>. The approximation is only good while the amplitude is small enough that those two agree — and the lab is built to show you exactly where it breaks.</p>
       </section>
 
       <figure class="fig reveal">
         <div class="fig-frame"><img class="zoomable" src="assets/pendulum_energy.svg" alt="Energy trace. A symplectic step keeps it flat; the gap between nonlinear and sma" loading="lazy" /></div>
-        <figcaption><span class="fig-n">fig 2.</span> Energy trace. A symplectic step keeps it flat; the gap between nonlinear and small-angle potential energy `mgL(1-cosθ)` vs `½mgLθ²` is the approximation made visible.</figcaption>
+        <figcaption><span class="fig-n">fig 2.</span> Energy trace. A symplectic step keeps it flat; the gap between nonlinear and small-angle potential energy <span class="m">mgL(1-\cos\theta)</span> vs <span class="m">\tfrac12 mgL\theta^2</span> is the approximation made visible.</figcaption>
       </figure>
 
       <section class="prose reveal" id="sec-1">
         <h2>Where it breaks</h2>
-        <p>Start at 0.1, 0.5, and 1.0 rad. At 0.1 rad the nonlinear and linear curves are indistinguishable. By 1.0 rad the true period is noticeably longer — the restoring torque saturates because <code>sinθ &lt; θ</code>, so a wide swing takes its time. The small-angle model never knows this; it ticks at a fixed frequency forever.</p>
+        <p>Start at 0.1, 0.5, and 1.0 rad. At 0.1 rad the nonlinear and linear curves are indistinguishable. By 1.0 rad the true period is noticeably longer — the restoring torque saturates because <span class="m">\sin\theta \lt \theta</span>, so a wide swing takes its time. The small-angle model never knows this; it ticks at a fixed frequency forever.</p>
       </section>
 
 

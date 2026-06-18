@@ -97,7 +97,7 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>Hooke plus a dashpot</h2>
-        <p><code>x'' = -(k/m)x - (c/m)v</code>. Two numbers organize everything: the natural frequency <code>ω = √(k/m)</code> and the damping ratio <code>ζ = c / (2√(mk))</code>. <code>ζ = 0</code> is undamped, <code>0 &lt; ζ &lt; 1</code> underdamped, <code>ζ = 1</code> critically damped, <code>ζ &gt; 1</code> overdamped.</p>
+        <p><span class="m">x'' = -(k/m)x - (c/m)v</span>. Two numbers organize everything: the natural frequency <span class="m">\omega = \sqrt{k/m}</span> and the damping ratio <span class="m">\zeta = c/(2\sqrt{mk})</span>. <span class="m">\zeta = 0</span> is undamped, <span class="m">0 \lt \zeta \lt 1</span> underdamped, <span class="m">\zeta = 1</span> critically damped, <span class="m">\zeta \gt 1</span> overdamped.</p>
       </section>
 
       <figure class="fig reveal">
@@ -107,14 +107,14 @@
 
       <section class="prose reveal" id="sec-1">
         <h2>Critical damping</h2>
-        <p>The interesting threshold is <code>ζ = 1</code>: the system returns to equilibrium as fast as possible without overshooting — the regime every door-closer and galvanometer is tuned to. Sweep <code>c</code> from 0 through <code>2√(mk)</code> and watch the phase plot collapse from a closed loop to a single inward swoop.</p>
+        <p>The interesting threshold is <span class="m">\zeta = 1</span>: the system returns to equilibrium as fast as possible without overshooting — the regime every door-closer and galvanometer is tuned to. Sweep <span class="m">c</span> from 0 through <span class="m">2\sqrt{mk}</span> and watch the phase plot collapse from a closed loop to a single inward swoop.</p>
       </section>
 
 
 
       <section class="prose reveal" id="sec-2">
         <h2>Reading ω off the data</h2>
-        <p>With no damping there is a closed form, <code>x(t) = x0 cosωt + (v0/ω) sinωt</code>. Measuring the time between zero-crossings in the CSV and comparing to <code>√(k/m)</code> is a satisfying way to confirm the simulation is telling the truth.</p>
+        <p>With no damping there is a closed form, <span class="m">x(t) = x_0\cos\omega t + (v_0/\omega)\sin\omega t</span>. Measuring the time between zero-crossings in the CSV and comparing to <span class="m">\sqrt{k/m}</span> is a satisfying way to confirm the simulation is telling the truth.</p>
       </section>
 
 

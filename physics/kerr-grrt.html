@@ -97,7 +97,7 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>The same machinery as EHT codes</h2>
-        <p>Everything is in geometrized units <code>G = c = M = 1</code>. The lab implements the Kerr metric in Boyer-Lindquist coordinates and its closed-form inverse, then traces null geodesics via the Hamiltonian <code>H = ½ g^{μν} p_μ p_ν</code> with an adaptive Dormand-Prince 5(4) integrator and numerical metric derivatives — the same approach ipole, RAPTOR, and GYOTO are built on, written here in dependency-free C++.</p>
+        <p>Everything is in geometrized units <span class="m">G = c = M = 1</span>. The lab implements the Kerr metric in Boyer-Lindquist coordinates and its closed-form inverse, then traces null geodesics via the Hamiltonian <span class="m">H = \tfrac12\,g^{\mu\nu} p_\mu p_\nu</span> with an adaptive Dormand-Prince 5(4) integrator and numerical metric derivatives — the same approach ipole, RAPTOR, and GYOTO are built on, written here in dependency-free C++.</p>
       </section>
 
       <figure class="fig reveal">
@@ -107,7 +107,7 @@
 
       <section class="prose reveal" id="sec-1">
         <h2>How an image is made</h2>
-        <p>A ZAMO-tetrad pinhole camera launches one photon per pixel inward and traces it backward to the horizon, the disk, or infinity. Disk hits are shaded with the relativistic redshift <code>g = ν_obs/ν_em</code>, a Page-Thorne temperature, and the Lorentz-invariant <code>I_ν/ν³</code> — brightness <code>∝ g⁴T⁴</code>, color a Planck spectrum. HDR output plus Python tone mapping handles the enormous dynamic range once.</p>
+        <p>A ZAMO-tetrad pinhole camera launches one photon per pixel inward and traces it backward to the horizon, the disk, or infinity. Disk hits are shaded with the relativistic redshift <span class="m">g = \nu_{\text{obs}}/\nu_{\text{em}}</span>, a Page-Thorne temperature, and the Lorentz-invariant <span class="m">I_\nu/\nu^3</span> — brightness <span class="m">\propto g^4 T^4</span>, color a Planck spectrum. HDR output plus Python tone mapping handles the enormous dynamic range once.</p>
       </section>
 
       <figure class="fig reveal">
@@ -117,7 +117,7 @@
 
       <section class="prose reveal" id="sec-2">
         <h2>Validated, not fudged</h2>
-        <p>The console asserts the answers against closed forms: horizon <code>r₊ = 2M</code> and ISCO <code>= 6M</code> at a=0, photon orbit at 3M, Schwarzschild shadow edge at 5.196M = 3√3, ray conservation of energy and angular momentum, the Carter constant to 1e-8. The broad-line red wing reaching <code>g ≈ 0.25</code> at a=0.998 versus <code>g ≈ 0.5</code> at a=0 is exactly the iron-Kα spin measurement used on real AGN like MCG-6-30-15.</p>
+        <p>The console asserts the answers against closed forms: horizon <span class="m">r_+ = 2M</span> and ISCO <span class="m">= 6M</span> at a=0, photon orbit at 3M, Schwarzschild shadow edge at 5.196M = 3√3, ray conservation of energy and angular momentum, the Carter constant to 1e-8. The broad-line red wing reaching <span class="m">g \approx 0.25</span> at a=0.998 versus <span class="m">g \approx 0.5</span> at a=0 is exactly the iron-Kα spin measurement used on real AGN like MCG-6-30-15.</p>
       </section>
 
       <figure class="fig reveal">

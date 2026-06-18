@@ -97,7 +97,7 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>Neighbors prefer to agree</h2>
-        <p>A square lattice of spins <code>s = ±1</code> with energy <code>E = -J Σ sᵢsⱼ</code>. Aligned neighbors lower the energy. That is the entire microscopic rule — and yet it produces a sharp, qualitative change in collective behavior at a critical temperature, exactly like a magnet losing its magnetism.</p>
+        <p>A square lattice of spins <span class="m">s = \pm 1</span> with energy <span class="m">E = -J\sum s_i s_j</span>. Aligned neighbors lower the energy. That is the entire microscopic rule — and yet it produces a sharp, qualitative change in collective behavior at a critical temperature, exactly like a magnet losing its magnetism.</p>
       </section>
 
       <figure class="fig reveal">
@@ -107,7 +107,7 @@
 
       <section class="prose reveal" id="sec-1">
         <h2>Never compute Z</h2>
-        <p>The partition function has 2^N terms, so direct evaluation is hopeless. The Metropolis algorithm samples the Boltzmann distribution anyway, using only energy differences: flip a spin if it lowers the energy, otherwise accept with probability <code>exp(-ΔE/T)</code>. After enough sweeps the configurations are drawn from the correct thermal ensemble — the central trick of computational statistical mechanics.</p>
+        <p>The partition function has 2^N terms, so direct evaluation is hopeless. The Metropolis algorithm samples the Boltzmann distribution anyway, using only energy differences: flip a spin if it lowers the energy, otherwise accept with probability <span class="m">\exp(-\Delta E/T)</span>. After enough sweeps the configurations are drawn from the correct thermal ensemble — the central trick of computational statistical mechanics.</p>
       </section>
 
       <figure class="fig reveal">
@@ -117,7 +117,7 @@
 
       <section class="prose reveal" id="sec-2">
         <h2>The transition and its fingerprints</h2>
-        <p>Sweep temperature and the magnetization holds near 1, then collapses through <code>T_c = 2J/ln(1+√2) ≈ 2.269</code> — Onsager's exact result, reproduced on a 48×48 grid. The sharper fingerprints are the fluctuations: susceptibility and specific heat both peak at T_c, because the system poised between order and disorder responds enormously to tiny perturbations.</p>
+        <p>Sweep temperature and the magnetization holds near 1, then collapses through <span class="m">T_c = 2J/\ln(1+\sqrt2) \approx 2.269</span> — Onsager's exact result, reproduced on a 48×48 grid. The sharper fingerprints are the fluctuations: susceptibility and specific heat both peak at T_c, because the system poised between order and disorder responds enormously to tiny perturbations.</p>
       </section>
 
       <figure class="fig reveal">

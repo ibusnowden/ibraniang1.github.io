@@ -97,7 +97,7 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>Temperature is locked, sharing is not</h2>
-        <p>Elastic collisions conserve total kinetic energy exactly, so the temperature <code>T = KE_total/Nk_B</code> is fixed from the very first step. What is not fixed is how that energy is shared — collisions shuffle it between particles until the speed distribution reaches the unique maximum-entropy form.</p>
+        <p>Elastic collisions conserve total kinetic energy exactly, so the temperature <span class="m">T = KE_{\text{total}}/N k_B</span> is fixed from the very first step. What is not fixed is how that energy is shared — collisions shuffle it between particles until the speed distribution reaches the unique maximum-entropy form.</p>
       </section>
 
       <figure class="fig reveal">
@@ -107,7 +107,7 @@
 
       <section class="prose reveal" id="sec-1">
         <h2>Maxwell-Boltzmann emerges</h2>
-        <p>In 2D the equilibrium is the Rayleigh distribution <code>f(v) ∝ v exp(-mv²/2k_BT)</code>: zero at rest, peaked at the most-probable speed, with an exponential tail. The simulation starts as a delta spike at <code>v_rms</code> and spreads downward in mean while <code>v_rms</code> stays pinned — because rms speed is just a restatement of the conserved energy.</p>
+        <p>In 2D the equilibrium is the Rayleigh distribution <span class="m">f(v) \propto v\,\exp(-mv^2/2k_B T)</span>: zero at rest, peaked at the most-probable speed, with an exponential tail. The simulation starts as a delta spike at <span class="m">v_{\text{rms}}</span> and spreads downward in mean while <span class="m">v_{\text{rms}}</span> stays pinned — because rms speed is just a restatement of the conserved energy.</p>
       </section>
 
       <figure class="fig reveal">
@@ -117,7 +117,7 @@
 
       <section class="prose reveal" id="sec-2">
         <h2>The gas law, derived</h2>
-        <p>Pressure is the time-averaged momentum delivered to the walls. Summing those impulses gives <code>PA = Nk_BT</code> — the ideal gas law derived from nothing but elastic collisions. For finite-radius disks the measured pressure sits above ideal by <code>1 + 2πr²(N/A)</code>: the hard-disk second virial term, the microscopic origin of van der Waals' excluded volume, readable as a number off the plot.</p>
+        <p>Pressure is the time-averaged momentum delivered to the walls. Summing those impulses gives <span class="m">PA = N k_B T</span> — the ideal gas law derived from nothing but elastic collisions. For finite-radius disks the measured pressure sits above ideal by <span class="m">1 + 2\pi r^2 (N/A)</span>: the hard-disk second virial term, the microscopic origin of van der Waals' excluded volume, readable as a number off the plot.</p>
       </section>
 
 

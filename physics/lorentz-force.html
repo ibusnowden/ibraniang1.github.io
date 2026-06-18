@@ -97,7 +97,7 @@
 
       <section class="prose reveal" id="sec-0">
         <h2>A force that does no work</h2>
-        <p><code>m dv/dt = q(E + v×B)</code>. The magnetic term is always perpendicular to <code>v</code>, so it turns the velocity without changing its magnitude. In a pure B field, speed — and kinetic energy — is an exact invariant of the continuous motion, and the orbit is a circle of radius <code>r = mv⊥/|q|B</code> at frequency <code>ω_c = |q|B/m</code>.</p>
+        <p><span class="m">m\,\frac{dv}{dt} = q(E + v\times B)</span>. The magnetic term is always perpendicular to <span class="m">v</span>, so it turns the velocity without changing its magnitude. In a pure B field, speed — and kinetic energy — is an exact invariant of the continuous motion, and the orbit is a circle of radius <span class="m">r = m v_\perp/|q|B</span> at frequency <span class="m">\omega_c = |q|B/m</span>.</p>
       </section>
 
       <figure class="fig reveal">
@@ -107,7 +107,7 @@
 
       <section class="prose reveal" id="sec-1">
         <h2>The Boris pusher</h2>
-        <p>A naive integrator destroys that invariant: explicit Euler rotates <code>v</code> and lengthens it every step, so the orbit spirals out. The Boris pusher splits each step into a half electric kick, an exact magnetic rotation, and a second half kick. The rotation preserves <code>|v|</code> to machine precision — the magnetic analogue of choosing velocity-Verlet for Hamiltonian mechanics.</p>
+        <p>A naive integrator destroys that invariant: explicit Euler rotates <span class="m">v</span> and lengthens it every step, so the orbit spirals out. The Boris pusher splits each step into a half electric kick, an exact magnetic rotation, and a second half kick. The rotation preserves <span class="m">|v|</span> to machine precision — the magnetic analogue of choosing velocity-Verlet for Hamiltonian mechanics.</p>
       </section>
 
       <figure class="fig reveal">
@@ -117,7 +117,7 @@
 
       <section class="prose reveal" id="sec-2">
         <h2>The E×B drift</h2>
-        <p>Add a steady E perpendicular to B and the particle does not accelerate along E. Instead its gyration develops a steady drift <code>(E×B)/|B|²</code>, perpendicular to both fields, at a speed independent of charge or mass. Flip the charge and the drift direction is unchanged — both the gyration sense and v×B flip together.</p>
+        <p>Add a steady E perpendicular to B and the particle does not accelerate along E. Instead its gyration develops a steady drift <span class="m">(E\times B)/|B|^2</span>, perpendicular to both fields, at a speed independent of charge or mass. Flip the charge and the drift direction is unchanged — both the gyration sense and v×B flip together.</p>
       </section>
 
 
