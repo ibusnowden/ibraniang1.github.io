@@ -65,6 +65,11 @@
 
       <p>The corners fall out immediately: <code>(&alpha;=0, &lambda;=1, &pi;_T=data)</code> is SFT; <code>(&alpha;=1, &lambda;=0)</code> is outcome RL (GRPO and friends); <code>(&alpha;=1, &lambda;=1, &pi;_T=bigger sibling)</code> is OPD. Everything at <code>0&lt;&lambda;&lt;1</code> is interior nobody had mapped. I used the <a href="https://allenai.org/olmo" target="_blank" rel="noreferrer">OLMo-2 family</a> precisely because AllenAI shipped the intermediate post-training checkpoints, so I get same-base 7B teachers that differ <em>only</em> in recipe (SFT, +DPO, +RLVR), with one shared tokenizer. The task is <code>gsm_symbolic</code> (GSM8K-style math with a clean verifier), plus <code>simple_equations</code> as a never-trained cross-task probe.</p>
 
+      <figure>
+        <img src="assets/opd_alpha_lambda_plane.png" alt="A 2D plane with axis lambda (teacher reverse-KL fraction) and alpha (how on-policy). SFT, RL/GRPO, and OPD/OPSD sit at three corners; the only live interior is a small clipped low-lambda band at alpha=1, lambda in [0.05,0.20], with the best recipe starred at lambda=0.10." />
+        <figcaption class="muted">The space this work maps. SFT, RL, and OPD/OPSD are corners; vanilla OPD (top-right) is dead at this gap. The only live interior is a narrow clipped low-&lambda; band, and the best recipe sits inside it at <code>(&alpha;=1, &lambda;=0.10, clip=1.0)</code>.</figcaption>
+      </figure>
+
       <h2>Finding 1: The teacher's recipe is not the variable</h2>
 
       <p>The first experiment was the one I expected to be the headline: does an RL-trained teacher distill better than an SFT-only teacher? At this gap, the answer is that it barely matters, because <em>all of them fail</em>. Same-base SFT, DPO, and Instruct 7B teachers each drive vanilla OPD (<code>&lambda;=1</code>) to a held-out pass@1 of about <strong>0.01</strong>, while plain GRPO on the same student reaches <strong>~0.69</strong>. Teacher novelty is off the critical path. Something more basic is wrong with vanilla on-policy distillation here.</p>
@@ -83,6 +88,11 @@
           <tr><td>off-policy SFT</td><td>teacher traces</td><td>cross-entropy</td><td><strong>0.297&ndash;0.388</strong></td></tr>
         </tbody>
       </table>
+
+      <figure>
+        <img src="assets/opd_headline_reversal.png" alt="Bar chart of pass@1: on-policy pure OPD 0.008, off-policy reverse-KD 0.298, off-policy SFT 0.300, GRPO reference 0.690. An arrow marks the ~38x gap between on-policy OPD and off-policy reverse-KD." />
+        <figcaption class="muted">Holding the teacher and the reverse-KL objective fixed and changing only the states: moving off the student's own trajectories onto the teacher's coherent traces lifts pass@1 ~38&times;. The post's headline inverts at this gap.</figcaption>
+      </figure>
 
       <p>Training on the teacher's own coherent traces beats correcting the student on its own states by roughly <strong>38&ndash;72&times;</strong>, holding teacher and KL direction fixed. A correctness filter on the off-policy data adds only +0.09; it is not the driver. And warm-starting from a <em>competent</em> student (pass@1 0.383, whose on-policy rollouts are already 50% correct) does not save on-policy OPD either; it collapses that init back to 0.003. So this is not a cold-start or initial-coherence problem. It is a <strong>dynamical instability of the on-policy reverse-KL signal itself</strong>: when the student's trajectories never reach answer-shaped regions, a dense per-token teacher signal on those lost trajectories actively destroys the model. At a large skill gap, the post's headline inverts.</p>
 
