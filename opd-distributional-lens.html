@@ -122,9 +122,19 @@
 
       <p>Every result above is 1B&larr;7B, so the obvious objection is scale. I ran the key contrast natively at 7B (student) &larr; 7B-Instruct (teacher), and again at 7B &larr; 13B-Instruct. The unclipped on-policy collapse <em>reproduces at every scale</em> (pass@1 ~0.01 at 1B&larr;7B, 7B&larr;7B, and 7B&larr;13B), with a delayed, more oscillatory onset, but the same dead zone. What scale changes is who wins, not what collapses: the clip alone now rescues pure on-policy OPD (0.009 &rarr; 0.32&ndash;0.40), the gap between on- and off-policy shrinks from ~40&times; to ~1.3&times;, and a more capable 13B teacher <em>lifts the stable clipped recipes</em> (the low-&lambda; arm reaches <strong>0.746</strong>, the best of any run) while leaving the unstable unclipped arm dead. Teacher capability pays off only once the clip stabilizes the signal. &ldquo;On-policy is a liability&rdquo; turns out to be a small-student / large-gap artifact, conditional on the clip.</p>
 
+      <figure>
+        <img src="assets/opd_scale.png" alt="Grouped bar chart across 1B<-7B, 7B<-7B, 7B<-13B: unclipped on-policy OPD stays near 0.01 at every scale, while the clipped low-lambda best arm reaches 0.693, 0.661, 0.746." />
+        <figcaption class="muted">Unclipped on-policy OPD stays dead (~0.01) at every scale; the clip rescues it everywhere. A more capable 13B teacher <em>lifts</em> the clipped recipes but cannot save the unclipped arm. (1B uses the 7B-SFT teacher; the 7B rows are within-teacher.)</figcaption>
+      </figure>
+
       <h2>Finding 6: The teacher interface carries privileged information, or nothing</h2>
 
       <p>If vanilla OPD is dead, what <em>does</em> rescue it from the teacher side? Conditioning the teacher on the ground-truth answer (OPSD) works: it moves the <em>teacher's</em> distribution onto reachable, answer-shaped states and lifts pure OPD from 0.029 to 0.252. But that is per-problem privileged information: the teacher sees the label. So I asked whether a cheaper, non-privileged stand-in works: a single fixed, task-level hint (the same string for every problem), found by a GEPA-style search that rewards making the teacher correct without inflating the KL tail. It does not. The searched, task-relevant hint (0.206) does not beat a task-irrelevant placebo tone hint (0.192). Whatever a fixed string buys comes from appending <em>any</em> string, not from the string being relevant. The OPSD rescue is per-problem privilege, and task-level hint engineering is a dead end at <code>&lambda;=1</code>.</p>
+
+      <figure>
+        <img src="assets/opd_interface.png" alt="Bar chart: pure OPD 0.029, OPSD answer-conditioned 0.252, searched task-level hint 0.206, placebo tone hint 0.192. Answer-conditioning rescues OPD; the searched hint roughly equals the placebo." />
+        <figcaption class="muted">Answer-conditioning the teacher (OPSD) rescues pure OPD; a searched, non-privileged task-level hint does not beat a task-irrelevant placebo. What carries the rescue is per-problem privileged information, not a clever prompt.</figcaption>
+      </figure>
 
       <h2>The frontier</h2>
 
