@@ -40,117 +40,184 @@
     </nav>
   </header>
 
-  <main id="content" class="container">
+  <main id="content" class="container post-wide">
     <article class="doc reading">
-      <a class="back-link" href="blog.html">&larr; all writing</a>
+      <div class="post-intro">
+        <a class="back-link" href="blog.html">&larr; all writing</a>
 
-      <h1>On-Policy Distillation Through a Distributional Lens</h1>
-      <p class="lead">SFT, RL, and on-policy distillation are not three recipes. They are three corners of one space. I built the trainer that reaches the interior, ran eight experiments, and found the single scalar that separates a recipe that works from one that quietly collapses.</p>
+        <h1>On-Policy Distillation Through a Distributional Lens</h1>
+        <p class="lead">SFT, RL, and on-policy distillation are not three recipes. They are three corners of one space. I built the trainer that reaches the interior, ran eight experiments, and found the single scalar that separates a recipe that works from one that quietly collapses.</p>
 
-      <p class="byline">Ibra Niang &middot; June 2026 &middot; <a href="https://github.com/ibusnowden/opd" target="_blank" rel="noreferrer">code &amp; full writeup on GitHub &#8599;</a></p>
+        <p class="byline">Ibra Niang &middot; June 2026 &middot; <a href="https://github.com/ibusnowden/opd" target="_blank" rel="noreferrer">code &amp; full writeup on GitHub &#8599;</a></p>
 
-      <p>There are three ways to learn to cook. You can read a cookbook: every page is correct, but none of it is about the dish <em>you</em> just burned. You can cook and taste only the finished plate, honest but one bit of feedback for an hour of work. Or you can cook while a chef tastes every bite as you go. That last one, dense feedback on the states you actually visit, is <strong>on-policy distillation</strong> (OPD), and on paper it looks like the best of both worlds. That is exactly why it is worth taking apart.</p>
+        <p>There are three ways to learn to cook. You can read a cookbook: every page is correct, but none of it is about the dish <em>you</em> just burned. You can cook and taste only the finished plate, honest but one bit of feedback for an hour of work. Or you can cook while a chef tastes every bite as you go. That last one, dense feedback on the states you actually visit, is <strong>on-policy distillation</strong> (OPD), and on paper it looks like the best of both worlds. That is exactly why it is worth taking apart.</p>
 
-      <p>This work follows the framing in Thinking Machines' <a href="https://thinkingmachines.ai/blog/on-policy-distillation/" target="_blank" rel="noreferrer">&ldquo;On-Policy Distillation&rdquo;</a> and the companion distributional-lens note (Brown &amp; Claude, 2026): supervised fine-tuning (SFT), reinforcement learning (RL), and OPD are all the <em>same</em> token-level policy gradient with the knobs set differently. I took that literally, built one trainer that can reach every setting through a single code path, and used it to map the space at a 1B-student / 7B-teacher skill gap (then scaled the key finding to 7B&larr;7B and 7B&larr;13B). The short version: at a large skill gap, a chef correcting every bite of a dish you were never going to plate is <em>worse</em> than re-reading the cookbook, and one blunt rule about how loudly the chef is allowed to shout is what keeps the whole thing from collapsing.</p>
+        <p>This work follows the framing in Thinking Machines' <a href="https://thinkingmachines.ai/blog/on-policy-distillation/" target="_blank" rel="noreferrer">&ldquo;On-Policy Distillation&rdquo;</a> [1] and the companion distributional-lens note: supervised fine-tuning (SFT), reinforcement learning (RL), and OPD are all the <em>same</em> token-level policy gradient with the knobs set differently. I took that literally, built one trainer that can reach every setting through a single code path, and used it to map the space at a 1B-student / 7B-teacher skill gap (then scaled the key finding to 7B&larr;7B and 7B&larr;13B). The short version: at a large skill gap, a chef correcting every bite of a dish you were never going to plate is <em>worse</em> than re-reading the cookbook, and one blunt rule about how loudly the chef is allowed to shout is what keeps the whole thing from collapsing.</p>
+      </div>
 
-      <h2>One knob set, not three recipes</h2>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Framing</span>
+          <h2>One knob set, not three recipes</h2>
+          <p class="finding-lead">SFT, RL, OPD, and OPSD are four corners of one (&alpha;, &lambda;, &pi;<sub>T</sub>) trainer, not four algorithms.</p>
+        </div>
+        <div class="finding-body">
+          <p>Write the update as a single per-token policy gradient with three knobs:</p>
+          <ul>
+            <li><strong>&alpha;</strong>: how on-policy the data is. <code>&alpha;=1</code> samples from the current student; <code>&alpha;=0</code> uses a fixed/off-policy buffer.</li>
+            <li><strong>&lambda;</strong>: how much of each token's advantage is the <em>teacher reverse-KL</em> term <code>log &pi;_T &minus; log &pi;_&theta;</code> versus the sequence-level <em>outcome reward</em>.</li>
+            <li><strong>&pi;_T</strong>: <em>which</em> teacher. A dataset (&rarr; SFT), none (&rarr; RL), a bigger same-family checkpoint (&rarr; OPD), or the model conditioned on the answer (&rarr; OPSD).</li>
+          </ul>
+          <p>The corners fall out immediately: <code>(&alpha;=0, &lambda;=1, &pi;_T=data)</code> is SFT; <code>(&alpha;=1, &lambda;=0)</code> is outcome RL (GRPO and friends); <code>(&alpha;=1, &lambda;=1, &pi;_T=bigger sibling)</code> is OPD. Everything at <code>0&lt;&lambda;&lt;1</code> is interior nobody had mapped. I used the <a href="https://allenai.org/olmo" target="_blank" rel="noreferrer">OLMo-2 family</a> [2] precisely because AllenAI shipped the intermediate post-training checkpoints, so I get same-base 7B teachers that differ <em>only</em> in recipe (SFT, +DPO, +RLVR), with one shared tokenizer. The task is <code>gsm_symbolic</code> (GSM8K-style math with a clean verifier), plus <code>simple_equations</code> as a never-trained cross-task probe.</p>
+          <figure>
+            <img src="assets/opd_alpha_lambda_plane.png" alt="A 2D plane with axis lambda (teacher reverse-KL fraction) and alpha (how on-policy). SFT, RL/GRPO, and OPD/OPSD sit at three corners; the only live interior is a small clipped low-lambda band at alpha=1, lambda in [0.05,0.20], with the best recipe starred at lambda=0.10." />
+            <figcaption class="muted"><strong>Figure 1.</strong> The space this work maps. SFT, RL, and OPD/OPSD are corners; vanilla OPD (top-right) is dead at this gap. The only live interior is a narrow clipped low-&lambda; band, and the best recipe sits inside it at <code>(&alpha;=1, &lambda;=0.10, clip=1.0)</code>.</figcaption>
+          </figure>
+        </div>
+      </section>
 
-      <p>Write the update as a single per-token policy gradient with three knobs:</p>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Finding 1</span>
+          <h2>The teacher's recipe is not the variable</h2>
+          <p class="finding-lead">Same-base SFT, DPO, and Instruct teachers all drive vanilla OPD to &approx;1%. Teacher recipe is off the critical path.</p>
+        </div>
+        <div class="finding-body">
+          <p>The first experiment was the one I expected to be the headline: does an RL-trained teacher distill better than an SFT-only teacher? At this gap, the answer is that it barely matters, because <em>all of them fail</em>. Same-base SFT, DPO, and Instruct 7B teachers each drive vanilla OPD (<code>&lambda;=1</code>) to a held-out pass@1 of about <strong>0.01</strong>, while plain GRPO on the same student reaches <strong>~0.69</strong>. Teacher novelty is off the critical path. Something more basic is wrong with vanilla on-policy distillation here.</p>
+        </div>
+      </section>
 
-      <ul>
-        <li><strong>&alpha;</strong>: how on-policy the data is. <code>&alpha;=1</code> samples from the current student; <code>&alpha;=0</code> uses a fixed/off-policy buffer.</li>
-        <li><strong>&lambda;</strong>: how much of each token's advantage is the <em>teacher reverse-KL</em> term <code>log &pi;_T &minus; log &pi;_&theta;</code> versus the sequence-level <em>outcome reward</em>.</li>
-        <li><strong>&pi;_T</strong>: <em>which</em> teacher. A dataset (&rarr; SFT), none (&rarr; RL), a bigger same-family checkpoint (&rarr; OPD), or the model conditioned on the answer (&rarr; OPSD).</li>
-      </ul>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Finding 2</span>
+          <h2>On-policy coverage isn't load-bearing, and the central claim reverses</h2>
+          <p class="finding-lead">With teacher and objective held fixed, training off-policy on the teacher's traces beats on-policy OPD ~38&times;.</p>
+        </div>
+        <div class="finding-body">
+          <p>The post's strongest intuition is that on-policy data matters <em>because</em> it trains on student-visited states instead of fixed teacher traces. So I isolated exactly that. Hold the teacher fixed (7B-Instruct) and the objective fixed (reverse-KL), and change <em>only</em> where the loss lands:</p>
+          <table class="doc-table">
+            <thead>
+              <tr><th>arm</th><th>states</th><th>objective</th><th>pass@1</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>on-policy pure OPD</td><td>student-sampled</td><td>reverse-KL</td><td>0.008</td></tr>
+              <tr><td>off-policy reverse-KD</td><td>teacher traces</td><td>reverse-KL</td><td><strong>0.298</strong></td></tr>
+              <tr><td>off-policy SFT</td><td>teacher traces</td><td>cross-entropy</td><td><strong>0.297&ndash;0.388</strong></td></tr>
+            </tbody>
+          </table>
+          <figure>
+            <img src="assets/opd_headline_reversal.png" alt="Bar chart of pass@1: on-policy pure OPD 0.008, off-policy reverse-KD 0.298, off-policy SFT 0.300, GRPO reference 0.690. An arrow marks the ~38x gap between on-policy OPD and off-policy reverse-KD." />
+            <figcaption class="muted"><strong>Figure 2.</strong> Holding the teacher and the reverse-KL objective fixed and changing only the states: moving off the student's own trajectories onto the teacher's coherent traces lifts pass@1 ~38&times;. The post's headline inverts at this gap.</figcaption>
+          </figure>
+          <p>Training on the teacher's own coherent traces beats correcting the student on its own states by roughly <strong>38&ndash;72&times;</strong>, holding teacher and KL direction fixed. A correctness filter on the off-policy data adds only +0.09; it is not the driver. And warm-starting from a <em>competent</em> student (pass@1 0.383, whose on-policy rollouts are already 50% correct) does not save on-policy OPD either; it collapses that init back to 0.003. So this is not a cold-start or initial-coherence problem. It is a <strong>dynamical instability of the on-policy reverse-KL signal itself</strong>: when the student's trajectories never reach answer-shaped regions, a dense per-token teacher signal on those lost trajectories actively destroys the model. At a large skill gap, the post's headline inverts.</p>
+        </div>
+      </section>
 
-      <p>The corners fall out immediately: <code>(&alpha;=0, &lambda;=1, &pi;_T=data)</code> is SFT; <code>(&alpha;=1, &lambda;=0)</code> is outcome RL (GRPO and friends); <code>(&alpha;=1, &lambda;=1, &pi;_T=bigger sibling)</code> is OPD. Everything at <code>0&lt;&lambda;&lt;1</code> is interior nobody had mapped. I used the <a href="https://allenai.org/olmo" target="_blank" rel="noreferrer">OLMo-2 family</a> precisely because AllenAI shipped the intermediate post-training checkpoints, so I get same-base 7B teachers that differ <em>only</em> in recipe (SFT, +DPO, +RLVR), with one shared tokenizer. The task is <code>gsm_symbolic</code> (GSM8K-style math with a clean verifier), plus <code>simple_equations</code> as a never-trained cross-task probe.</p>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Finding 3</span>
+          <h2>One scalar separates collapse from the best recipe</h2>
+          <p class="finding-lead">A single per-token KL clip turns the collapse into the study's best recipe.</p>
+        </div>
+        <div class="finding-body">
+          <p>Why does the dense teacher term detonate? Look at the per-token KL push. Unclipped, the 99th-percentile per-token KL climbs steadily over training, and right as it crosses ~2 the rollout accuracy falls off a cliff around step 100&ndash;150. Bound that tail with a single hard clip at <code>|kl| &le; 1</code> and the collapse turns into a recovery.</p>
+          <figure>
+            <img src="assets/opd_kl_signal_mechanism.png" alt="Four-panel figure: unclipped per-token KL p99 climbs above 1 and rollout accuracy collapses to zero around step 100; clipped KL stays bounded and accuracy recovers to ~0.7." />
+            <figcaption class="muted"><strong>Figure 3.</strong> Unclipped (top), the per-token KL tail climbs and accuracy collapses around step 100. Clipped at <code>|kl|&le;1</code> (bottom), the tail stays bounded and accuracy recovers to ~0.7. Same teacher, same &lambda;, one scalar of difference.</figcaption>
+          </figure>
+          <p>That single scalar, <code>per_token_kl_clip=1.0</code>, is not an ad-hoc trick. It is a <em>structural stabilizer</em>: without it the low-&lambda; interior is bimodal and seed-fragile; with it the seeds collapse into a tight band that matches GRPO. With the clip in place, the best recipe in the entire study is the <strong>clipped low-&lambda; interior, <code>(&alpha;=1, &lambda;=0.10, clip=1.0)</code></strong>: dense, on-policy, and outcome-aligned. It edges GRPO in-distribution (pass@1 0.693 vs 0.687, 4-seed means) and <em>dominates</em> it at high pass@k off-task. Crucially, you cannot replace the blunt clip with a cleverer importance reweight: a mass-preserving reweight <em>concentrates</em> the very tail the clip exists to bound, and collapses harder.</p>
+        </div>
+      </section>
 
-      <figure>
-        <img src="assets/opd_alpha_lambda_plane.png" alt="A 2D plane with axis lambda (teacher reverse-KL fraction) and alpha (how on-policy). SFT, RL/GRPO, and OPD/OPSD sit at three corners; the only live interior is a small clipped low-lambda band at alpha=1, lambda in [0.05,0.20], with the best recipe starred at lambda=0.10." />
-        <figcaption class="muted">The space this work maps. SFT, RL, and OPD/OPSD are corners; vanilla OPD (top-right) is dead at this gap. The only live interior is a narrow clipped low-&lambda; band, and the best recipe sits inside it at <code>(&alpha;=1, &lambda;=0.10, clip=1.0)</code>.</figcaption>
-      </figure>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Finding 4</span>
+          <h2>Update geometry tracks the loss, not the teacher</h2>
+          <p class="finding-lead">Every on-policy trainer writes a sparse, RL-shaped update; the teacher's recipe doesn't change the geometry.</p>
+        </div>
+        <div class="finding-body">
+          <p>A tempting story is that OPD inherits its update geometry from the teacher's recipe: distill from an SFT teacher and you get an SFT-shaped (dense) update. That is false here. Every <code>&alpha;=1</code> trainer writes an RL-shaped <em>sparse</em> update regardless of teacher dose; SFT-from-rollouts is the sparsest of all. What varies is <em>which subnetwork</em> the update lives in, not whether it is sparse. The cleanest tell is what happens when you prune the smallest weight changes and revert them to base:</p>
+          <figure>
+            <img src="assets/opd_prune_curves.png" alt="Prune-degradation curves: GRPO degrades gradually, the broader-tier arms have a sharp cliff around 85-90% pruning, and pure OPD's accuracy IMPROVES as its smallest changes are reverted, reaching 5x its unpruned value." />
+            <figcaption class="muted"><strong>Figure 4.</strong> Reverting the bottom-p% of weight changes to base. GRPO degrades gracefully; the broader-tier arms fall off a cliff near 85&ndash;90%. Pure OPD <em>improves</em> with pruning, reaching 5&times; its unpruned pass@1, because its moves are mistargeted: undoing them undoes harm.</figcaption>
+          </figure>
+          <p>Pure OPD is broad and rank-additive at attention, but mistargeted: reverting its smallest changes makes it <em>better</em>. The geometry tracks how many forces the trainer is balancing (the loss structure), not the teacher's identity.</p>
+        </div>
+      </section>
 
-      <h2>Finding 1: The teacher's recipe is not the variable</h2>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Finding 5</span>
+          <h2>The collapse is scale-robust; the gap is not</h2>
+          <p class="finding-lead">The collapse reproduces from 1B&larr;7B to 7B&larr;13B; the clip rescues it at every scale.</p>
+        </div>
+        <div class="finding-body">
+          <p>Every result above is 1B&larr;7B, so the obvious objection is scale. I ran the key contrast natively at 7B (student) &larr; 7B-Instruct (teacher), and again at 7B &larr; 13B-Instruct. The unclipped on-policy collapse <em>reproduces at every scale</em> (pass@1 ~0.01 at 1B&larr;7B, 7B&larr;7B, and 7B&larr;13B), with a delayed, more oscillatory onset, but the same dead zone. What scale changes is who wins, not what collapses: the clip alone now rescues pure on-policy OPD (0.009 &rarr; 0.32&ndash;0.40), the gap between on- and off-policy shrinks from ~40&times; to ~1.3&times;, and a more capable 13B teacher <em>lifts the stable clipped recipes</em> (the low-&lambda; arm reaches <strong>0.746</strong>, the best of any run) while leaving the unstable unclipped arm dead. Teacher capability pays off only once the clip stabilizes the signal. &ldquo;On-policy is a liability&rdquo; turns out to be a small-student / large-gap artifact, conditional on the clip.</p>
+          <figure>
+            <img src="assets/opd_scale.png" alt="Grouped bar chart across 1B<-7B, 7B<-7B, 7B<-13B: unclipped on-policy OPD stays near 0.01 at every scale, while the clipped low-lambda best arm reaches 0.693, 0.661, 0.746." />
+            <figcaption class="muted"><strong>Figure 5.</strong> Unclipped on-policy OPD stays dead (~0.01) at every scale; the clip rescues it everywhere. A more capable 13B teacher <em>lifts</em> the clipped recipes but cannot save the unclipped arm. (1B uses the 7B-SFT teacher; the 7B rows are within-teacher.)</figcaption>
+          </figure>
+        </div>
+      </section>
 
-      <p>The first experiment was the one I expected to be the headline: does an RL-trained teacher distill better than an SFT-only teacher? At this gap, the answer is that it barely matters, because <em>all of them fail</em>. Same-base SFT, DPO, and Instruct 7B teachers each drive vanilla OPD (<code>&lambda;=1</code>) to a held-out pass@1 of about <strong>0.01</strong>, while plain GRPO on the same student reaches <strong>~0.69</strong>. Teacher novelty is off the critical path. Something more basic is wrong with vanilla on-policy distillation here.</p>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Finding 6</span>
+          <h2>The teacher interface carries privileged information, or nothing</h2>
+          <p class="finding-lead">Answer-conditioning rescues OPD; a non-privileged task-level hint does not beat a placebo.</p>
+        </div>
+        <div class="finding-body">
+          <p>If vanilla OPD is dead, what <em>does</em> rescue it from the teacher side? Conditioning the teacher on the ground-truth answer (OPSD) works: it moves the <em>teacher's</em> distribution onto reachable, answer-shaped states and lifts pure OPD from 0.029 to 0.252. But that is per-problem privileged information: the teacher sees the label. So I asked whether a cheaper, non-privileged stand-in works: a single fixed, task-level hint (the same string for every problem), found by a GEPA-style search [3] that rewards making the teacher correct without inflating the KL tail. It does not. The searched, task-relevant hint (0.206) does not beat a task-irrelevant placebo tone hint (0.192). Whatever a fixed string buys comes from appending <em>any</em> string, not from the string being relevant. The OPSD rescue is per-problem privilege, and task-level hint engineering is a dead end at <code>&lambda;=1</code>.</p>
+          <figure>
+            <img src="assets/opd_interface.png" alt="Bar chart: pure OPD 0.029, OPSD answer-conditioned 0.252, searched task-level hint 0.206, placebo tone hint 0.192. Answer-conditioning rescues OPD; the searched hint roughly equals the placebo." />
+            <figcaption class="muted"><strong>Figure 6.</strong> Answer-conditioning the teacher (OPSD) rescues pure OPD; a searched, non-privileged task-level hint does not beat a task-irrelevant placebo. What carries the rescue is per-problem privileged information, not a clever prompt.</figcaption>
+          </figure>
+        </div>
+      </section>
 
-      <h2>Finding 2: On-policy state coverage isn't load-bearing, and the central claim reverses</h2>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Open problem</span>
+          <h2>The frontier</h2>
+          <p class="finding-lead">Dense, on-policy, <em>and</em> outcome-aligned supervision, with no privileged crutch, is still open.</p>
+        </div>
+        <div class="finding-body">
+          <p>One sentence holds the whole study together. The interesting question is no longer &ldquo;OPD versus RL.&rdquo; It is: <strong>how do you get dense, on-policy, <em>and</em> outcome-aligned supervision without collapsing to brittle local imitation?</strong> The clipped low-&lambda; blend approximates the answer by importing unbiasedness from the outcome branch. OPSD approximates it by spending unbiasedness on privileged information. A self-referential importance reweight failed to reach it natively. The frontier object (a teacher that is itself dense <em>and</em> itself reward-correlated, with no privileged crutch) is still open. The most promising next probe is a separately-trained step-level process reward model [4] as the teacher (the scaffolding is in the repo).</p>
+          <blockquote>
+            <strong>The five things I'd carry forward.</strong> (1) Teacher recipe is not the variable. (2) On-policy coverage is not load-bearing at a large gap; it can be a liability. (3) A single per-token KL clip is a structural stabilizer, and the clipped low-&lambda; interior is the best recipe. (4) Update geometry tracks the loss, not the teacher. (5) The collapse is scale-robust; what the teacher interface really buys is privileged, per-problem information.
+          </blockquote>
+        </div>
+      </section>
 
-      <p>The post's strongest intuition is that on-policy data matters <em>because</em> it trains on student-visited states instead of fixed teacher traces. So I isolated exactly that. Hold the teacher fixed (7B-Instruct) and the objective fixed (reverse-KL), and change <em>only</em> where the loss lands:</p>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Resources</span>
+          <h2>Code and full writeup</h2>
+          <p class="finding-lead">Trainer, configs, measured outputs, figures, and the full writeup, in one repo.</p>
+        </div>
+        <div class="finding-body">
+          <p>The unified trainer, every config and SLURM launcher, the measured JSONs behind every number, the figures, and the ~200-page <code>RESULTS.md</code> are all in one self-contained repository:</p>
+          <p><a href="https://github.com/ibusnowden/opd" target="_blank" rel="noreferrer"><strong>github.com/ibusnowden/opd</strong> &#8599;</a></p>
+          <p class="muted" style="font-size:14px;">Replicates and extends the distributional-lens framing of SFT, RL, and on-policy distillation; writeup format after Thinking Machines, &ldquo;On-Policy Distillation.&rdquo; The vendored RL/PG reference is by Zafir Stojanovski (Apache-2.0).</p>
+        </div>
+      </section>
 
-      <table class="doc-table">
-        <thead>
-          <tr><th>arm</th><th>states</th><th>objective</th><th>pass@1</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>on-policy pure OPD</td><td>student-sampled</td><td>reverse-KL</td><td>0.008</td></tr>
-          <tr><td>off-policy reverse-KD</td><td>teacher traces</td><td>reverse-KL</td><td><strong>0.298</strong></td></tr>
-          <tr><td>off-policy SFT</td><td>teacher traces</td><td>cross-entropy</td><td><strong>0.297&ndash;0.388</strong></td></tr>
-        </tbody>
-      </table>
-
-      <figure>
-        <img src="assets/opd_headline_reversal.png" alt="Bar chart of pass@1: on-policy pure OPD 0.008, off-policy reverse-KD 0.298, off-policy SFT 0.300, GRPO reference 0.690. An arrow marks the ~38x gap between on-policy OPD and off-policy reverse-KD." />
-        <figcaption class="muted">Holding the teacher and the reverse-KL objective fixed and changing only the states: moving off the student's own trajectories onto the teacher's coherent traces lifts pass@1 ~38&times;. The post's headline inverts at this gap.</figcaption>
-      </figure>
-
-      <p>Training on the teacher's own coherent traces beats correcting the student on its own states by roughly <strong>38&ndash;72&times;</strong>, holding teacher and KL direction fixed. A correctness filter on the off-policy data adds only +0.09; it is not the driver. And warm-starting from a <em>competent</em> student (pass@1 0.383, whose on-policy rollouts are already 50% correct) does not save on-policy OPD either; it collapses that init back to 0.003. So this is not a cold-start or initial-coherence problem. It is a <strong>dynamical instability of the on-policy reverse-KL signal itself</strong>: when the student's trajectories never reach answer-shaped regions, a dense per-token teacher signal on those lost trajectories actively destroys the model. At a large skill gap, the post's headline inverts.</p>
-
-      <h2>Finding 3: One scalar separates collapse from the best recipe</h2>
-
-      <p>Why does the dense teacher term detonate? Look at the per-token KL push. Unclipped, the 99th-percentile per-token KL climbs steadily over training, and right as it crosses ~2 the rollout accuracy falls off a cliff around step 100&ndash;150. Bound that tail with a single hard clip at <code>|kl| &le; 1</code> and the collapse turns into a recovery.</p>
-
-      <figure>
-        <img src="assets/opd_kl_signal_mechanism.png" alt="Four-panel figure: unclipped per-token KL p99 climbs above 1 and rollout accuracy collapses to zero around step 100; clipped KL stays bounded and accuracy recovers to ~0.7." />
-        <figcaption class="muted">Unclipped (top), the per-token KL tail climbs and accuracy collapses around step 100. Clipped at <code>|kl|&le;1</code> (bottom), the tail stays bounded and accuracy recovers to ~0.7. Same teacher, same &lambda;, one scalar of difference.</figcaption>
-      </figure>
-
-      <p>That single scalar, <code>per_token_kl_clip=1.0</code>, is not an ad-hoc trick. It is a <em>structural stabilizer</em>: without it the low-&lambda; interior is bimodal and seed-fragile; with it the seeds collapse into a tight band that matches GRPO. With the clip in place, the best recipe in the entire study is the <strong>clipped low-&lambda; interior, <code>(&alpha;=1, &lambda;=0.10, clip=1.0)</code></strong>: dense, on-policy, and outcome-aligned. It edges GRPO in-distribution (pass@1 0.693 vs 0.687, 4-seed means) and <em>dominates</em> it at high pass@k off-task. Crucially, you cannot replace the blunt clip with a cleverer importance reweight: a mass-preserving reweight <em>concentrates</em> the very tail the clip exists to bound, and collapses harder.</p>
-
-      <h2>Finding 4: Update geometry tracks the loss, not the teacher</h2>
-
-      <p>A tempting story is that OPD inherits its update geometry from the teacher's recipe: distill from an SFT teacher and you get an SFT-shaped (dense) update. That is false here. Every <code>&alpha;=1</code> trainer writes an RL-shaped <em>sparse</em> update regardless of teacher dose; SFT-from-rollouts is the sparsest of all. What varies is <em>which subnetwork</em> the update lives in, not whether it is sparse. The cleanest tell is what happens when you prune the smallest weight changes and revert them to base:</p>
-
-      <figure>
-        <img src="assets/opd_prune_curves.png" alt="Prune-degradation curves: GRPO degrades gradually, the broader-tier arms have a sharp cliff around 85-90% pruning, and pure OPD's accuracy IMPROVES as its smallest changes are reverted, reaching 5x its unpruned value." />
-        <figcaption class="muted">Reverting the bottom-p% of weight changes to base. GRPO degrades gracefully; the broader-tier arms fall off a cliff near 85&ndash;90%. Pure OPD <em>improves</em> with pruning, reaching 5&times; its unpruned pass@1, because its moves are mistargeted: undoing them undoes harm.</figcaption>
-      </figure>
-
-      <p>Pure OPD is broad and rank-additive at attention, but mistargeted: reverting its smallest changes makes it <em>better</em>. The geometry tracks how many forces the trainer is balancing (the loss structure), not the teacher's identity.</p>
-
-      <h2>Finding 5: The collapse is scale-robust; the gap is not</h2>
-
-      <p>Every result above is 1B&larr;7B, so the obvious objection is scale. I ran the key contrast natively at 7B (student) &larr; 7B-Instruct (teacher), and again at 7B &larr; 13B-Instruct. The unclipped on-policy collapse <em>reproduces at every scale</em> (pass@1 ~0.01 at 1B&larr;7B, 7B&larr;7B, and 7B&larr;13B), with a delayed, more oscillatory onset, but the same dead zone. What scale changes is who wins, not what collapses: the clip alone now rescues pure on-policy OPD (0.009 &rarr; 0.32&ndash;0.40), the gap between on- and off-policy shrinks from ~40&times; to ~1.3&times;, and a more capable 13B teacher <em>lifts the stable clipped recipes</em> (the low-&lambda; arm reaches <strong>0.746</strong>, the best of any run) while leaving the unstable unclipped arm dead. Teacher capability pays off only once the clip stabilizes the signal. &ldquo;On-policy is a liability&rdquo; turns out to be a small-student / large-gap artifact, conditional on the clip.</p>
-
-      <figure>
-        <img src="assets/opd_scale.png" alt="Grouped bar chart across 1B<-7B, 7B<-7B, 7B<-13B: unclipped on-policy OPD stays near 0.01 at every scale, while the clipped low-lambda best arm reaches 0.693, 0.661, 0.746." />
-        <figcaption class="muted">Unclipped on-policy OPD stays dead (~0.01) at every scale; the clip rescues it everywhere. A more capable 13B teacher <em>lifts</em> the clipped recipes but cannot save the unclipped arm. (1B uses the 7B-SFT teacher; the 7B rows are within-teacher.)</figcaption>
-      </figure>
-
-      <h2>Finding 6: The teacher interface carries privileged information, or nothing</h2>
-
-      <p>If vanilla OPD is dead, what <em>does</em> rescue it from the teacher side? Conditioning the teacher on the ground-truth answer (OPSD) works: it moves the <em>teacher's</em> distribution onto reachable, answer-shaped states and lifts pure OPD from 0.029 to 0.252. But that is per-problem privileged information: the teacher sees the label. So I asked whether a cheaper, non-privileged stand-in works: a single fixed, task-level hint (the same string for every problem), found by a GEPA-style search that rewards making the teacher correct without inflating the KL tail. It does not. The searched, task-relevant hint (0.206) does not beat a task-irrelevant placebo tone hint (0.192). Whatever a fixed string buys comes from appending <em>any</em> string, not from the string being relevant. The OPSD rescue is per-problem privilege, and task-level hint engineering is a dead end at <code>&lambda;=1</code>.</p>
-
-      <figure>
-        <img src="assets/opd_interface.png" alt="Bar chart: pure OPD 0.029, OPSD answer-conditioned 0.252, searched task-level hint 0.206, placebo tone hint 0.192. Answer-conditioning rescues OPD; the searched hint roughly equals the placebo." />
-        <figcaption class="muted">Answer-conditioning the teacher (OPSD) rescues pure OPD; a searched, non-privileged task-level hint does not beat a task-irrelevant placebo. What carries the rescue is per-problem privileged information, not a clever prompt.</figcaption>
-      </figure>
-
-      <h2>The frontier</h2>
-
-      <p>One sentence holds the whole study together. The interesting question is no longer &ldquo;OPD versus RL.&rdquo; It is: <strong>how do you get dense, on-policy, <em>and</em> outcome-aligned supervision without collapsing to brittle local imitation?</strong> The clipped low-&lambda; blend approximates the answer by importing unbiasedness from the outcome branch. OPSD approximates it by spending unbiasedness on privileged information. A self-referential importance reweight failed to reach it natively. The frontier object (a teacher that is itself dense <em>and</em> itself reward-correlated, with no privileged crutch) is still open. The most promising next probe is a separately-trained step-level process reward model as the teacher (the scaffolding is in the repo).</p>
-
-      <blockquote>
-        <strong>The five things I'd carry forward.</strong> (1) Teacher recipe is not the variable. (2) On-policy coverage is not load-bearing at a large gap; it can be a liability. (3) A single per-token KL clip is a structural stabilizer, and the clipped low-&lambda; interior is the best recipe. (4) Update geometry tracks the loss, not the teacher. (5) The collapse is scale-robust; what the teacher interface really buys is privileged, per-problem information.
-      </blockquote>
-
-      <h2>Code and full writeup</h2>
-
-      <p>The unified trainer, every config and SLURM launcher, the measured JSONs behind every number, the figures, and the ~200-page <code>RESULTS.md</code> are all in one self-contained repository:</p>
-
-      <p><a href="https://github.com/ibusnowden/opd" target="_blank" rel="noreferrer"><strong>github.com/ibusnowden/opd</strong> &#8599;</a></p>
-
-      <p class="muted" style="font-size:14px;">Replicates and extends Brown &amp; Claude, &ldquo;SFT, RL, and On-Policy Distillation Through a Distributional Lens&rdquo; (2026); writeup format after Thinking Machines, &ldquo;On-Policy Distillation.&rdquo; The vendored RL/PG reference is by Zafir Stojanovski (Apache-2.0).</p>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">References</span>
+          <h2>References</h2>
+        </div>
+        <div class="finding-body">
+          <ol class="refs">
+            <li>Thinking Machines Lab. &ldquo;On-Policy Distillation.&rdquo; 2026. <a href="https://thinkingmachines.ai/blog/on-policy-distillation/" target="_blank" rel="noreferrer">thinkingmachines.ai/blog/on-policy-distillation</a></li>
+            <li>OLMo Team, Allen Institute for AI. &ldquo;OLMo 2.&rdquo; 2024&ndash;2025. <a href="https://allenai.org/olmo" target="_blank" rel="noreferrer">allenai.org/olmo</a></li>
+            <li>Agrawal et al. &ldquo;GEPA: Reflective Prompt Evolution.&rdquo; 2025. <a href="https://arxiv.org/abs/2507.19457" target="_blank" rel="noreferrer">arXiv:2507.19457</a></li>
+            <li>Lightman et al. &ldquo;Let's Verify Step by Step.&rdquo; 2023. <a href="https://arxiv.org/abs/2305.20050" target="_blank" rel="noreferrer">arXiv:2305.20050</a></li>
+            <li>Agarwal et al. &ldquo;On-Policy Distillation of Language Models (GKD).&rdquo; 2023. <a href="https://arxiv.org/abs/2306.13649" target="_blank" rel="noreferrer">arXiv:2306.13649</a></li>
+            <li>Ibra Niang. &ldquo;On-Policy Distillation Through a Distributional Lens&rdquo; (code &amp; full writeup). 2026. <a href="https://github.com/ibusnowden/opd" target="_blank" rel="noreferrer">github.com/ibusnowden/opd</a></li>
+          </ol>
+        </div>
+      </section>
     </article>
 
     <footer class="footer">

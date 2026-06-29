@@ -780,3 +780,69 @@ figcaption code{
 .entry-list li a:hover{
   text-decoration: none;
 }
+
+/* ── Long-form post: TM-style margin-heading layout ──────────── */
+.container.post-wide{ max-width: 1060px; }
+.post-intro{ max-width: 720px; }
+
+.finding{
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  gap: 52px;
+  align-items: start;
+  margin: 0;
+  padding: 2.6em 0;
+  border-top: 1px solid var(--faint);
+}
+.finding-aside{
+  position: sticky;
+  top: 88px;
+}
+.finding-kicker{
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--link);
+}
+.reading .finding-aside h2{
+  font-family: var(--font-serif);
+  font-size: 1.32rem;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 10px 0 0;
+}
+.finding-lead{
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 12px 0 0;
+}
+.finding-body{ max-width: 680px; }
+.finding-body > *:first-child{ margin-top: 0; }
+.finding-body figure{ margin: 1.6rem 0; }
+
+.refs{
+  margin: 0;
+  padding-left: 22px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.refs li{ margin: 0 0 10px; color: var(--fg); }
+
+@media (max-width: 900px){
+  .container.post-wide{ max-width: 720px; }
+  .finding{
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 2em 0;
+  }
+  .finding-aside{ position: static; }
+  .reading .finding-aside h2{ font-size: 1.4rem; }
+  .finding-lead{ font-size: 14px; }
+}
