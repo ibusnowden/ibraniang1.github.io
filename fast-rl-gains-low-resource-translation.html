@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>From ~0.15 to ~0.60 Reward - Ibra Niang</title>
-  <meta name="color-scheme" content="light" />
+  <title>From ~0.15 to ~0.60 Reward · Ibra Niang</title>
+  <meta name="description" content="Fast RL gains on low-resource translation: how curriculum, reward shaping, and decoding stability moved reward from ~0.15 to ~0.60 with small, practical tweaks." />
+  <meta name="color-scheme" content="light dark" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="From ~0.15 to ~0.60 Reward: Fast RL Gains on Low-Resource Translation" />
+  <meta property="og:description" content="Curriculum, reward shaping, and decoding stability moved reward quickly, no architecture overhaul required." />
 
   <script>
     (function(){
@@ -17,7 +22,6 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 
@@ -35,67 +39,93 @@
     </nav>
   </header>
 
-  <main id="content" class="container">
-    <section class="section">
-      <div class="post-meta">Jan 30, 2026</div>
-      <h2>From ~0.15 to ~0.60 Reward: Fast RL Gains on Low-Resource Translation with Small Tweaks</h2>
+  <main id="content" class="container post-wide">
+    <article class="doc reading">
+      <div class="post-intro">
+        <a class="back-link" href="blog.html">&larr; all writing</a>
 
-      <div class="prose">
-        <p>
-          Low-resource language translation is one of the clearest places where modern LLMs still underperform.
-          For many communities, that gap is not academic - it affects access to information, education, and public services.
-        </p>
-        <p>
-          In this project, we built a low-resource translation environment with Prime Intellect Verifiers and trained on Hosted Training.
-          The interesting part: we got a large reward jump with a handful of practical changes, not a huge architecture overhaul.
-        </p>
+        <h1>From ~0.15 to ~0.60 Reward: Fast RL Gains on Low-Resource Translation</h1>
+        <p class="lead">A handful of practical changes, curriculum, reward shaping, and decoding stability, roughly quadrupled reward on a low-resource translation task, no architecture overhaul required.</p>
 
-        <h3>Why this problem matters</h3>
-        <p>
-          Most model pretraining data is heavily skewed toward high-resource languages.
-          That creates a quality cliff for low-resource languages like Yoruba, Swahili, and Welsh, especially for faithful translation under strict format constraints.
-        </p>
-        <p>We wanted a setup that is measurable, reproducible, and easy to iterate in RL.</p>
+        <p class="byline">Ibra Niang &middot; January 2026</p>
 
-        <h3>Environment setup (Verifiers + Hosted Training)</h3>
-        <p>We implemented a custom Verifiers environment: <strong>low-resource-translation</strong>.</p>
-        <p>
-          Environment link:
-          <a href="https://app.primeintellect.ai/dashboard/environments/ibra-niang/low-resource-translation" target="_blank" rel="noreferrer">
-            Prime Intellect Environment Dashboard
-          </a>
-        </p>
-        <p><strong>Environment reward rubric (dense + practical):</strong></p>
+        <p>Low-resource language translation is one of the clearest places where modern LLMs still underperform. For many communities, that gap is not academic: it affects access to information, education, and public services.</p>
+
+        <p>In this project, we built a low-resource translation environment with Prime Intellect Verifiers and trained on Hosted Training. The interesting part: we got a large reward jump with a handful of practical changes, not a huge architecture overhaul.</p>
+      </div>
+
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Motivation</span>
+          <h2>Why this problem matters</h2>
+          <p class="finding-lead">Pretraining data skews to high-resource languages, leaving a quality cliff for the rest.</p>
+        </div>
+        <div class="finding-body">
+          <p>Most model pretraining data is heavily skewed toward high-resource languages. That creates a quality cliff for low-resource languages like Yoruba, Swahili, and Welsh, especially for faithful translation under strict format constraints.</p>
+          <p>We wanted a setup that is measurable, reproducible, and easy to iterate on in RL.</p>
+        </div>
+      </section>
+
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Setup</span>
+          <h2>Environment (Verifiers + Hosted Training)</h2>
+          <p class="finding-lead">A custom Verifiers env with a dense, practical reward rubric over FLORES-200.</p>
+        </div>
+        <div class="finding-body">
+          <p>We implemented a custom Verifiers environment: <strong>low-resource-translation</strong>.</p>
+          <p>Environment link: <a href="https://app.primeintellect.ai/dashboard/environments/ibra-niang/low-resource-translation" target="_blank" rel="noreferrer">Prime Intellect Environment Dashboard</a></p>
+          <p><strong>Environment reward rubric (dense + practical):</strong></p>
 <pre><code>rubric = vf.Rubric(
     funcs=[chrf_score, threshold_bonus, format_length_reward],
     weights=[0.85, 0.15, 0.05],
 )
 </code></pre>
-        <p><strong>Dataset</strong></p>
-        <ul>
-          <li>FLORES-200 sentence files</li>
-          <li>English-pivoted translation directions:</li>
-          <li>from_english (English -&gt; low-resource)</li>
-          <li>to_english (low-resource -&gt; English)</li>
-        </ul>
+          <p><strong>Dataset</strong></p>
+          <ul>
+            <li>FLORES-200 sentence files</li>
+            <li>English-pivoted translation directions:</li>
+            <li>from_english (English &rarr; low-resource)</li>
+            <li>to_english (low-resource &rarr; English)</li>
+          </ul>
+        </div>
+      </section>
 
-        <h3>Why this implementation detail mattered</h3>
-        <p>
-          The Hugging Face <strong>facebook/flores</strong> loader script is not compatible with <strong>datasets==4.x</strong> script loading behavior.
-          So we moved to a script-free loader path: direct FLORES sentence files + caching.
-          That made training and eval stable in our runtime.
-        </p>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Gotcha</span>
+          <h2>The implementation detail that mattered</h2>
+          <p class="finding-lead">The FLORES loader breaks on datasets==4.x; a script-free loader fixed stability.</p>
+        </div>
+        <div class="finding-body">
+          <p>The Hugging Face <strong>facebook/flores</strong> loader script is not compatible with <strong>datasets==4.x</strong> script-loading behavior. So we moved to a script-free loader path: direct FLORES sentence files + caching. That made training and eval stable in our runtime.</p>
+        </div>
+      </section>
 
-        <h3>Reward design (current)</h3>
-        <p>We designed reward signals with three simple pieces:</p>
-        <ul>
-          <li><strong>chrf_score:</strong> dense continuous translation-quality signal.</li>
-          <li><strong>threshold_bonus:</strong> extra reward when output crosses a target quality bar.</li>
-          <li><strong>format_length_reward:</strong> small auxiliary term to discourage rambling and formatting drift.</li>
-        </ul>
-        <p>We also keep metrics like length_ratio, exact_match, and num_turns for diagnosis.</p>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Reward</span>
+          <h2>Reward design</h2>
+          <p class="finding-lead">Three pieces: a dense chrF signal, a threshold bonus, and a small format/length term.</p>
+        </div>
+        <div class="finding-body">
+          <p>We designed reward signals with three simple pieces:</p>
+          <ul>
+            <li><strong>chrf_score:</strong> dense continuous translation-quality signal.</li>
+            <li><strong>threshold_bonus:</strong> extra reward when output crosses a target quality bar.</li>
+            <li><strong>format_length_reward:</strong> small auxiliary term to discourage rambling and formatting drift.</li>
+          </ul>
+          <p>We also keep metrics like length_ratio, exact_match, and num_turns for diagnosis.</p>
+        </div>
+      </section>
 
-        <h3>Model and training config (example)</h3>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Config</span>
+          <h2>Model and training config</h2>
+          <p class="finding-lead">Qwen3-30B-A3B-Instruct, 200 steps, batch 64, two rollouts per example.</p>
+        </div>
+        <div class="finding-body">
 <pre><code>model = "Qwen/Qwen3-30B-A3B-Instruct-2507"
 max_steps = 200
 batch_size = 64
@@ -105,63 +135,76 @@ rollouts_per_example = 2
 # lora_alpha = 16
 # env_file = ["secrets.env"]
 </code></pre>
+        </div>
+      </section>
 
-        <h3>Run 1 (baseline): reward moved ~0.15 -&gt; ~0.30</h3>
-        <p>
-          In the first run, reward started near 0.15 and trended up to roughly 0.30 by the end of training.
-          That was a good "it learns" signal, but still noisy, with broad reward spread and many low-quality outputs.
-        </p>
-        <figure>
-          <img src="assets/convo.png" alt="Low-resource translation conversation example output" style="width:100%; border:1px solid rgba(233,233,234,0.12); border-radius:14px;" />
-          <figcaption class="muted">Translation example from the environment.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/run1.png" alt="Run 1 dashboard showing reward around 0.15 to 0.30" style="width:100%; border:1px solid rgba(233,233,234,0.12); border-radius:14px;" />
-          <figcaption class="muted">Run 1 dashboard (baseline).</figcaption>
-        </figure>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Run 1</span>
+          <h2>Baseline: reward moved ~0.15 &rarr; ~0.30</h2>
+          <p class="finding-lead">It learns, but noisy: broad reward spread and many low-quality outputs.</p>
+        </div>
+        <div class="finding-body">
+          <p>In the first run, reward started near 0.15 and trended up to roughly 0.30 by the end of training. That was a good &ldquo;it learns&rdquo; signal, but still noisy, with broad reward spread and many low-quality outputs.</p>
+          <figure>
+            <img src="assets/convo.png" alt="Low-resource translation conversation example output" />
+            <figcaption class="muted"><strong>Figure 1.</strong> A translation example from the environment.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/run1.png" alt="Run 1 dashboard showing reward around 0.15 to 0.30" />
+            <figcaption class="muted"><strong>Figure 2.</strong> Run 1 dashboard (baseline): reward trending ~0.15 &rarr; ~0.30.</figcaption>
+          </figure>
+        </div>
+      </section>
 
-        <h3>Run 2 (after small tweaks): reward stabilized around ~0.59-0.60</h3>
-        <p>
-          After targeted changes, the second run shifted reward upward and much more consistently, with values clustering around 0.59-0.60
-          (and occasional higher bins).
-        </p>
-        <figure>
-          <img src="assets/run2.png" alt="Run 2 dashboard showing reward stabilized around 0.59 to 0.60" style="width:100%; border:1px solid rgba(233,233,234,0.12); border-radius:14px;" />
-          <figcaption class="muted">Run 2 dashboard (after small tweaks).</figcaption>
-        </figure>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Run 2</span>
+          <h2>After small tweaks: reward stabilized ~0.59&ndash;0.60</h2>
+          <p class="finding-lead">Reward shifted up and clustered tightly around 0.59&ndash;0.60.</p>
+        </div>
+        <div class="finding-body">
+          <p>After targeted changes, the second run shifted reward upward and much more consistently, with values clustering around 0.59&ndash;0.60 (and occasional higher bins).</p>
+          <figure>
+            <img src="assets/run2.png" alt="Run 2 dashboard showing reward stabilized around 0.59 to 0.60" />
+            <figcaption class="muted"><strong>Figure 3.</strong> Run 2 dashboard (after small tweaks): reward clustered around 0.59&ndash;0.60.</figcaption>
+          </figure>
+        </div>
+      </section>
 
-        <h3>The tweaks that moved reward quickly</h3>
-        <ul>
-          <li>
-            <strong>Start with easier curriculum first:</strong> train <strong>direction="to_english"</strong> first (Yoruba/Swahili), then add from_english.
-            This gives a cleaner supervision signal early and improves stability.
-          </li>
-          <li>
-            <strong>Make reward denser:</strong> shifted from sparse-ish weighting to a more continuous emphasis:
-            <strong>0.7/0.3 -&gt; 0.85/0.15</strong> (chrf_score / threshold_bonus), plus a small format/length auxiliary reward.
-          </li>
-          <li>
-            <strong>Lower threshold initially:</strong> chrf_threshold from 0.25 down to 0.18-0.22 for early learning.
-            Later, we can raise it once the model stabilizes.
-          </li>
-          <li>
-            <strong>Stabilize decoding:</strong> low temperature (~0.2) and tighter max tokens (128-192).
-            This reduced noisy outputs and improved reward consistency.
-          </li>
-          <li>
-            <strong>Reward output hygiene:</strong> the format/length reward helped reduce rambling and keep outputs closer to clean translation form.
-          </li>
-        </ul>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">What moved it</span>
+          <h2>The tweaks that moved reward quickly</h2>
+          <p class="finding-lead">Curriculum, a denser reward, a lower early threshold, and stable decoding.</p>
+        </div>
+        <div class="finding-body">
+          <ul>
+            <li><strong>Start with an easier curriculum:</strong> train <strong>direction="to_english"</strong> first (Yoruba/Swahili), then add from_english. This gives a cleaner supervision signal early and improves stability.</li>
+            <li><strong>Make reward denser:</strong> shifted from sparse-ish weighting to a more continuous emphasis, <strong>0.7/0.3 &rarr; 0.85/0.15</strong> (chrf_score / threshold_bonus), plus a small format/length auxiliary reward.</li>
+            <li><strong>Lower the threshold initially:</strong> chrf_threshold from 0.25 down to 0.18&ndash;0.22 for early learning, raised later once the model stabilizes.</li>
+            <li><strong>Stabilize decoding:</strong> low temperature (~0.2) and tighter max tokens (128&ndash;192). This reduced noisy outputs and improved reward consistency.</li>
+            <li><strong>Reward output hygiene:</strong> the format/length reward helped reduce rambling and keep outputs closer to clean translation form.</li>
+          </ul>
+        </div>
+      </section>
 
-        <h3>What we learned</h3>
-        <ul>
-          <li>Small reward-shaping and curriculum changes can dominate early RL gains.</li>
-          <li>Direction matters: to_english is often an easier starting curriculum.</li>
-          <li>Output discipline matters: decoding + format reward can materially improve training signal quality.</li>
-          <li>Infrastructure details matter too: data-loading compatibility can be the hidden blocker before model quality.</li>
-        </ul>
-      </div>
-    </section>
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Takeaways</span>
+          <h2>What we learned</h2>
+          <p class="finding-lead">Small reward-shaping and curriculum changes dominate early RL gains.</p>
+        </div>
+        <div class="finding-body">
+          <ul>
+            <li>Small reward-shaping and curriculum changes can dominate early RL gains.</li>
+            <li>Direction matters: to_english is often an easier starting curriculum.</li>
+            <li>Output discipline matters: decoding + format reward can materially improve training-signal quality.</li>
+            <li>Infrastructure details matter too: data-loading compatibility can be the hidden blocker before model quality.</li>
+          </ul>
+        </div>
+      </section>
+    </article>
 
     <footer class="footer">
       <div class="footer-row primary">
