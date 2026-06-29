@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scaling Laws for jaxchat: a Chinchilla IsoFLOP Sweep on One Node · Ibra Niang</title>
+
+  <meta name="description" content="A Chinchilla-style IsoFLOP sweep run end to end on a single 8x RTX 6000 node: 30 runs across four compute budgets recover textbook compute-optimal exponents, and a depth miniseries places a from-scratch JAX stack on the CORE-versus-compute trend against GPT-2 and GPT-3." />
+  <meta name="color-scheme" content="light dark" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Scaling Laws for jaxchat: a Chinchilla IsoFLOP Sweep on One Node" />
+  <meta property="og:description" content="30 runs, four compute budgets, one node. Textbook Chinchilla exponents and a depth miniseries against GPT-2 and GPT-3 references." />
+
+  <script>
+    (function(){
+      try{
+        var t = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', t);
+      }catch(e){}
+    })();
+  </script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="top-nav" aria-label="Primary">
+      <a class="top-link" href="index.html">home</a>
+      <a class="top-link" href="projects.html">projects</a>
+      <a class="top-link is-active" href="blog.html">blog</a>
+      <a class="top-link" href="reading.html">reading list</a>
+      <a class="top-link" href="school.html">school</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span class="theme-toggle-thumb"></span></button>
+    </nav>
+  </header>
+
+  <main id="content" class="container post-wide">
+    <article class="doc reading">
+      <div class="post-intro">
+        <a class="back-link" href="blog.html">&larr; all writing</a>
+
+        <h1>Scaling Laws for jaxchat: a Chinchilla IsoFLOP Sweep on One Node</h1>
+        <p class="lead">Before you pick a model size you should know the shape of the curve you are climbing. I ran a Chinchilla-style IsoFLOP sweep end to end on one 8x RTX 6000 node, recovered the textbook compute-optimal exponents, and placed a from-scratch JAX stack on the CORE-versus-compute trend against GPT-2 and GPT-3.</p>
+
+        <p class="byline">Ibra Niang &middot; June 2026 &middot; <a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">code on GitHub &#8599;</a></p>
+
+        <p>jaxchat is an end-to-end LLM training pipeline written from scratch in JAX, inspired by Karpathy's nanochat: tokenizer, pretraining, midtraining, SFT, RL with GRPO, and inference, ending in a web UI you can actually chat with. One repo, one 8x RTX 6000 node, the whole stack. This post is about the part that comes before any of that pays off: how big a model should you train, and on how many tokens, for a fixed amount of compute.</p>
+
+        <p>That question has a known shape. Kaplan et al. [1] showed loss falls as a power law in model size, data, and compute; Hoffmann et al. (Chinchilla) [2] sharpened it into a compute-optimal recipe where parameters and tokens should grow together, roughly as the square root of compute each. Lilian Weng's scaling-laws note [3] is the cleanest single walk through the modern version of this story. None of that tells you whether your own training stack is on the curve. The only way to know is to fit the laws on your own runs, so that is what I did.</p>
+      </div>
+
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Setup</span>
+          <h2>Thirty runs, four budgets, one node</h2>
+          <p class="finding-lead">An IsoFLOP study sweeps model size at each fixed compute budget, then reads the optimum off the bottom of each curve.</p>
+        </div>
+        <div class="finding-body">
+          <p>The IsoFLOP design is simple. Pick a set of compute budgets. At each budget, train a range of model sizes for exactly that many FLOPs, so a smaller model sees more tokens and a larger model sees fewer. Plot validation loss against model size and you get a U-shaped curve per budget: too small underfits, too large is undertrained, and the bottom is the compute-optimal size for that budget. I used four budgets, C in {1e17, 3e17, 1e18, 1.5e18} FLOPs, and trained a depth range at each, for 30 runs in total on a single 8x RTX 6000 Ada node. Every run is the same <code>124m-modern</code> preset, so the only thing that changes within a budget is width and depth, with <code>d_model = depth times 64</code>.</p>
+          <p>For each budget I fit a parabola in <code>log10(N)</code> to the validation loss, read off the minimum as the compute-optimal size <code>N*</code>, and set the matching token count from the compute identity <code>D* = C / (6 N*)</code>. Four budgets give four <code>(N*, D*)</code> points, and the scaling exponents are the slopes of those points in log space.</p>
+        </div>
+      </section>
+
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Result 1</span>
+          <h2>Textbook Chinchilla exponents</h2>
+          <p class="finding-lead">Both compute-optimal size and tokens scale as C to the 0.50, matching Hoffmann et al.</p>
+        </div>
+        <div class="finding-body">
+          <p>The four IsoFLOP curves are clean parabolas, and their minima march to the right as the budget grows: more compute wants a bigger model and more tokens, in step. Fitting power laws across the four budgets gives the headline:</p>
+          <blockquote><strong>N* &prop; C<sup>0.50</sup> and D* &prop; C<sup>0.50</sup></strong>, textbook Chinchilla. Hoffmann et al. report 0.49 and 0.51.</blockquote>
+          <p>The square-root law on both axes is the whole point of Chinchilla: when you get more compute, you should spend it about evenly on a bigger model and on more tokens, not pour it all into size. Recovering 0.50 on both axes from a from-scratch JAX stack, on one node, says the training loop and the FLOP accounting are honest.</p>
+          <figure>
+            <img src="assets/jaxchat_isoflop.png" alt="Three panels. Left: four U-shaped IsoFLOP curves of validation loss in bits per byte versus effective parameters, one per compute budget (1e17, 3e17, 1e18, 1.5e18 FLOPs), each with a star at its minimum, the minima shifting right and down as budget grows. Middle: optimal parameters versus FLOPs, four points on a red dashed line labeled N proportional to C to the 0.50. Right: optimal training tokens versus FLOPs, four points on a red dashed line labeled D proportional to C to the 0.50." />
+            <figcaption class="muted"><strong>Figure 1.</strong> The IsoFLOP sweep. Left: validation loss against model size at four compute budgets; stars mark the compute-optimal size at the bottom of each curve. Middle and right: those optima, fit across budgets, give <code>N* &prop; C<sup>0.50</sup></code> and <code>D* &prop; C<sup>0.50</sup></code>, the textbook Chinchilla slopes.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Result 2</span>
+          <h2>A depth miniseries, and the family's best model</h2>
+          <p class="finding-lead">Across d10 to d20, depth 16 at 327M parameters reaches the family's best validation bits per byte of 0.7626.</p>
+        </div>
+        <div class="finding-body">
+          <p>The IsoFLOP fit tells you the optimum but not what a real training curve looks like at each size, so I also ran a depth miniseries: six models from d10 to d20, 137M to 530M parameters, each trained on 1.31B tokens of FineWeb. Plotting validation bits per byte against total training FLOPs shows the expected ordering. At any fixed FLOP budget the shallower models are ahead, since they have done more passes per parameter, and each deeper model overtakes only once it has been given enough compute. The lowest point of the whole family belongs to depth 16 at 327M parameters, with a validation bits per byte of <strong>0.7626</strong>.</p>
+          <figure>
+            <img src="assets/jaxchat_miniseries_loss.png" alt="Six descending curves of validation bits per byte versus total training FLOPs on a log x-axis, labeled d10 137M, d12 189M, d14 248M, d16 327M, d18 414M, and d20 530M. Shallower models lead at low FLOPs; the curves cross as compute grows, and depth 16 reaches the lowest endpoint near 0.76." />
+            <figcaption class="muted"><strong>Figure 2.</strong> The depth miniseries, validation bits per byte against total training FLOPs. Shallower models lead at a fixed budget; deeper models overtake with more compute. Depth 16 (327M) reaches the family's best val_bpb at 0.7626.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Result 3</span>
+          <h2>Where the family sits against GPT-2 and GPT-3</h2>
+          <p class="finding-lead">On a CORE-style eval the miniseries lands on a clean compute trend, and the same fit reads against published GPT-2 and GPT-3 reference scores.</p>
+        </div>
+        <div class="finding-body">
+          <p>Loss is internal; to compare against other models you need a downstream eval. I scored each miniseries checkpoint on a four-task CORE-style suite (ARC-Easy, ARC-Challenge, HellaSwag, PIQA) and plotted CORE against both training FLOPs and wall-clock training time. The miniseries points fall on a tight line, and a fit on the d&ge;12 models, extrapolated, sits in the same plane as the GPT-2 and GPT-3 reference scores drawn in as horizontal lines. It is the nanochat-style picture: a small, honest family on a straight compute trend, with the larger commercial models as the dashed horizons above it.</p>
+          <figure>
+            <img src="assets/jaxchat_core_scaling.png" alt="Two panels sharing a y-axis of CORE score. Left: CORE versus training FLOPs on a log x-axis, with the jaxchat miniseries points d10 through d20 rising along a green fit line, against horizontal dashed reference lines for GPT-2 124M through 1.6B and GPT-3 125M through 175B. Right: the same CORE scores versus training time in hours on 8x H100, with the same fit and reference lines." />
+            <figcaption class="muted"><strong>Figure 3.</strong> CORE against training FLOPs (left) and training time (right). The miniseries (d10 to d20) traces a clean compute trend; the fit on d&ge;12, extrapolated, is read against GPT-2 and GPT-3 reference scores. The right panel reports the same trend in wall-clock hours on 8x H100.</figcaption>
+          </figure>
+          <blockquote><strong>What I carry forward.</strong> (1) The stack is on the curve: a from-scratch JAX training loop recovers C<sup>0.50</sup> on both Chinchilla axes. (2) Compute-optimal means growing model and tokens together, not just adding parameters. (3) At a fixed budget the shallower model wins, but depth 16 is the family's best once each model has its compute, at val_bpb 0.7626. (4) On a CORE-style eval the family lands on a clean trend that reads sensibly against GPT-2 and GPT-3.</blockquote>
+        </div>
+      </section>
+
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">Resources</span>
+          <h2>Code and the full stack</h2>
+          <p class="finding-lead">The sweep driver, the fit script, and the whole end-to-end pipeline are in one repo.</p>
+        </div>
+        <div class="finding-body">
+          <p>The IsoFLOP sweep, the depth miniseries, the parabola and power-law fits, and the rest of the end-to-end pipeline (tokenizer, pretraining, midtraining, SFT, GRPO, inference, and a chat UI) are all in one repository. The sweep reproduces with <code>runs/rtx_8gpu_chinchilla_isoflop.sh</code> and the fits and plots with <code>scripts/fit_chinchilla.py</code>.</p>
+          <p><a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer"><strong>github.com/ibusnowden/jaxchat</strong> &#8599;</a></p>
+          <p class="muted" style="font-size:14px;">An end-to-end LLM training pipeline written from scratch in JAX, inspired by Karpathy's nanochat. One repo, one 8x RTX 6000 node, the whole stack.</p>
+        </div>
+      </section>
+
+      <section class="finding">
+        <div class="finding-aside">
+          <span class="finding-kicker">References</span>
+          <h2>References</h2>
+        </div>
+        <div class="finding-body">
+          <ol class="refs">
+            <li>Kaplan et al. &ldquo;Scaling Laws for Neural Language Models.&rdquo; 2020. <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noreferrer">arXiv:2001.08361</a></li>
+            <li>Hoffmann et al. &ldquo;Training Compute-Optimal Large Language Models&rdquo; (Chinchilla). 2022. <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noreferrer">arXiv:2203.15556</a></li>
+            <li>Lilian Weng. &ldquo;Scaling Laws.&rdquo; 2026. <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noreferrer">lilianweng.github.io/posts/2026-06-24-scaling-laws</a></li>
+            <li>Andrej Karpathy. &ldquo;nanochat.&rdquo; 2025. <a href="https://github.com/karpathy/nanochat" target="_blank" rel="noreferrer">github.com/karpathy/nanochat</a></li>
+            <li>Ibra Niang. &ldquo;jaxchat&rdquo; (code). 2026. <a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">github.com/ibusnowden/jaxchat</a></li>
+          </ol>
+        </div>
+      </section>
+    </article>
+
+    <footer class="footer">
+      <div class="footer-row primary">
+        <span>Memphis, TN</span>
+        <span class="dot">·</span>
+        <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a>
+        <span class="dot">·</span>
+        <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">github</a>
+        <span class="dot">·</span>
+        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">linkedin</a>
+        <span class="dot">·</span>
+        <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">twitter</a>
+      </div>
+      <div class="footer-row secondary">© 2026 Ibra Niang</div>
+    </footer>
+  </main>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
