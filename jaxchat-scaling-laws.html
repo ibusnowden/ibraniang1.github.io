@@ -24,6 +24,29 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+  <style>
+    /* Right-margin citations, Thinking-Machines / Tufte style. The inline
+       marker links straight to the source; the note floats into the right
+       margin on wide screens and collapses inline on mobile. */
+    .cite{
+      font-size: 0.72em; vertical-align: super; line-height: 0;
+      font-weight: 600; text-decoration: none; padding: 0 1px;
+    }
+    .cite:hover{ text-decoration: underline; }
+    .sidenote{
+      float: right; clear: right;
+      width: 40%; max-width: 250px;
+      margin: 0.2rem 0 0.9rem 1.4rem;
+      padding-left: 0.9rem;
+      border-left: 2px solid var(--border, #e5e2db);
+      font-size: 12.5px; line-height: 1.5; color: var(--muted, #6b6b6b);
+    }
+    .sidenote a{ word-break: break-word; }
+    @media (max-width: 680px){
+      .sidenote{ float: none; width: auto; max-width: none; margin-left: 0; }
+    }
+  </style>
 </head>
 
 <body>
@@ -50,9 +73,9 @@
 
         <p class="byline">Ibra Niang &middot; June 2026 &middot; <a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">code on GitHub &#8599;</a></p>
 
-        <p>jaxchat is an end-to-end LLM training pipeline written from scratch in JAX, inspired by Karpathy's nanochat: tokenizer, pretraining, midtraining, SFT, RL with GRPO, and inference, ending in a web UI you can actually chat with. One repo, one 8x RTX 6000 node, the whole stack. This post is about the part that comes before any of that pays off: how big a model should you train, and on how many tokens, for a fixed amount of compute.</p>
+        <p>jaxchat is an end-to-end LLM training pipeline written from scratch in JAX, inspired by Karpathy's nanochat<a class="cite" href="https://github.com/karpathy/nanochat" target="_blank" rel="noreferrer">[4]</a><span class="sidenote">[4] Andrej Karpathy. &ldquo;nanochat.&rdquo; 2025. <a href="https://github.com/karpathy/nanochat" target="_blank" rel="noreferrer">github.com/karpathy/nanochat &#8599;</a></span>: tokenizer, pretraining, midtraining, SFT, RL with GRPO, and inference, ending in a web UI you can actually chat with. One repo, one 8x RTX 6000 node, the whole stack. This post is about the part that comes before any of that pays off: how big a model should you train, and on how many tokens, for a fixed amount of compute.</p>
 
-        <p>That question has a known shape. Kaplan et al. [1] showed loss falls as a power law in model size, data, and compute; Hoffmann et al. (Chinchilla) [2] sharpened it into a compute-optimal recipe where parameters and tokens should grow together, roughly as the square root of compute each. Lilian Weng's scaling-laws note [3] is the cleanest single walk through the modern version of this story. None of that tells you whether your own training stack is on the curve. The only way to know is to fit the laws on your own runs, so that is what I did.</p>
+        <p>That question has a known shape. Kaplan et al.<a class="cite" href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noreferrer">[1]</a><span class="sidenote">[1] Kaplan et al. &ldquo;Scaling Laws for Neural Language Models.&rdquo; 2020. <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noreferrer">arXiv:2001.08361 &#8599;</a></span> showed loss falls as a power law in model size, data, and compute; Hoffmann et al. (Chinchilla)<a class="cite" href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noreferrer">[2]</a><span class="sidenote">[2] Hoffmann et al. &ldquo;Training Compute-Optimal Large Language Models&rdquo; (Chinchilla). 2022. <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noreferrer">arXiv:2203.15556 &#8599;</a></span> sharpened it into a compute-optimal recipe where parameters and tokens should grow together, roughly as the square root of compute each. Lilian Weng's scaling-laws note<a class="cite" href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noreferrer">[3]</a><span class="sidenote">[3] Lilian Weng. &ldquo;Scaling Laws.&rdquo; 2026. <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noreferrer">lilianweng.github.io &#8599;</a></span> is the cleanest single walk through the modern version of this story. None of that tells you whether your own training stack is on the curve. The only way to know is to fit the laws on your own runs, so that is what I did.</p>
       </div>
 
       <section class="finding">
@@ -103,15 +126,15 @@
         <div class="finding-aside">
           <span class="finding-kicker">Result 3</span>
           <h2>Where the family sits against GPT-2 and GPT-3</h2>
-          <p class="finding-lead">On a CORE-style eval the miniseries lands on a clean compute trend, and the same fit reads against published GPT-2 and GPT-3 reference scores.</p>
+          <p class="finding-lead">On a chance-centered four-task CORE the miniseries sits below the GPT-2 124M reference, with a roughly flat fit at this scale.</p>
         </div>
         <div class="finding-body">
-          <p>Loss is internal; to compare against other models you need a downstream eval. I scored each miniseries checkpoint on a four-task CORE-style suite (ARC-Easy, ARC-Challenge, HellaSwag, PIQA) and plotted CORE against both training FLOPs and wall-clock training time. The miniseries points fall on a tight line, and a fit on the d&ge;12 models, extrapolated, sits in the same plane as the GPT-2 and GPT-3 reference scores drawn in as horizontal lines. It is the nanochat-style picture: a small, honest family on a straight compute trend, with the larger commercial models as the dashed horizons above it.</p>
+          <p>Loss is internal; to compare against other models you need a downstream eval. I scored each miniseries checkpoint on a chance-centered four-task CORE suite (ARC-Easy, ARC-Challenge, HellaSwag, PIQA) and plotted CORE against both training FLOPs and wall-clock training time, with the GPT-2 and GPT-3 reference scores drawn in as horizontal lines on the same metric. The honest picture is that the whole family lands around 0.05 to 0.08, below even the GPT-2 124M and GPT-3 125M reference lines, and the fit over the d&ge;12 models is roughly flat. That is expected, not disappointing: these are 137M to 530M models trained on about 1.3B tokens, deep in the data-limited regime, and the chance-centered four-task score is a demanding metric at this size. The figure puts the family on the same axes as the references and reports the wall clock, which is only a few hours per model.</p>
           <figure>
-            <img src="assets/jaxchat_core_scaling.png" alt="Two panels sharing a y-axis of CORE score. Left: CORE versus training FLOPs on a log x-axis, with the jaxchat miniseries points d10 through d20 rising along a green fit line, against horizontal dashed reference lines for GPT-2 124M through 1.6B and GPT-3 125M through 175B. Right: the same CORE scores versus training time in hours on 8x H100, with the same fit and reference lines." />
-            <figcaption class="muted"><strong>Figure 3.</strong> CORE against training FLOPs (left) and training time (right). The miniseries (d10 to d20) traces a clean compute trend; the fit on d&ge;12, extrapolated, is read against GPT-2 and GPT-3 reference scores. The right panel reports the same trend in wall-clock hours on 8x H100.</figcaption>
+            <img src="assets/jaxchat_core_scaling.png" alt="Two panels sharing a y-axis of CORE score from 0 to 0.6. Left: CORE versus training FLOPs on a log x-axis, with the green JAXChat miniseries points d10 through d20 clustered low between about 0.05 and 0.08, far below dashed reference lines for GPT-2 124M, GPT-2 1.5B, and GPT-3 125M through 175B, with a roughly flat green fit line over d greater than or equal to 12. Right: the same CORE scores versus training time in hours on 8x RTX 6000, a few hours per model, with the same fit and reference lines." />
+            <figcaption class="muted"><strong>Figure 3.</strong> CORE (chance-centered, four tasks: ARC-Easy, ARC-Challenge, HellaSwag, PIQA) against training FLOPs (left) and training time on 8x RTX 6000 (right). The JAXChat miniseries (d10 to d20) sits between about 0.05 and 0.08, below the GPT-2 124M and GPT-3 125M reference lines, and the d&ge;12 fit is roughly flat at this scale.</figcaption>
           </figure>
-          <blockquote><strong>What I carry forward.</strong> (1) The stack is on the curve: a from-scratch JAX training loop recovers C<sup>0.50</sup> on both Chinchilla axes. (2) Compute-optimal means growing model and tokens together, not just adding parameters. (3) At a fixed budget the shallower model wins, but depth 16 is the family's best once each model has its compute, at val_bpb 0.7626. (4) On a CORE-style eval the family lands on a clean trend that reads sensibly against GPT-2 and GPT-3.</blockquote>
+          <blockquote><strong>What I carry forward.</strong> (1) The stack is on the curve: a from-scratch JAX training loop recovers C<sup>0.50</sup> on both Chinchilla axes. (2) Compute-optimal means growing model and tokens together, not just adding parameters. (3) At a fixed budget the shallower model wins, but depth 16 is the family's best once each model has its compute, at val_bpb 0.7626. (4) On a chance-centered four-task CORE the family is still below GPT-2 124M, which is exactly what 137M to 530M models on about 1.3B tokens should do.</blockquote>
         </div>
       </section>
 
@@ -124,23 +147,7 @@
         <div class="finding-body">
           <p>The IsoFLOP sweep, the depth miniseries, the parabola and power-law fits, and the rest of the end-to-end pipeline (tokenizer, pretraining, midtraining, SFT, GRPO, inference, and a chat UI) are all in one repository. The sweep reproduces with <code>runs/rtx_8gpu_chinchilla_isoflop.sh</code> and the fits and plots with <code>scripts/fit_chinchilla.py</code>.</p>
           <p><a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer"><strong>github.com/ibusnowden/jaxchat</strong> &#8599;</a></p>
-          <p class="muted" style="font-size:14px;">An end-to-end LLM training pipeline written from scratch in JAX, inspired by Karpathy's nanochat. One repo, one 8x RTX 6000 node, the whole stack.</p>
-        </div>
-      </section>
-
-      <section class="finding">
-        <div class="finding-aside">
-          <span class="finding-kicker">References</span>
-          <h2>References</h2>
-        </div>
-        <div class="finding-body">
-          <ol class="refs">
-            <li>Kaplan et al. &ldquo;Scaling Laws for Neural Language Models.&rdquo; 2020. <a href="https://arxiv.org/abs/2001.08361" target="_blank" rel="noreferrer">arXiv:2001.08361</a></li>
-            <li>Hoffmann et al. &ldquo;Training Compute-Optimal Large Language Models&rdquo; (Chinchilla). 2022. <a href="https://arxiv.org/abs/2203.15556" target="_blank" rel="noreferrer">arXiv:2203.15556</a></li>
-            <li>Lilian Weng. &ldquo;Scaling Laws.&rdquo; 2026. <a href="https://lilianweng.github.io/posts/2026-06-24-scaling-laws/" target="_blank" rel="noreferrer">lilianweng.github.io/posts/2026-06-24-scaling-laws</a></li>
-            <li>Andrej Karpathy. &ldquo;nanochat.&rdquo; 2025. <a href="https://github.com/karpathy/nanochat" target="_blank" rel="noreferrer">github.com/karpathy/nanochat</a></li>
-            <li>Ibra Niang. &ldquo;jaxchat&rdquo; (code). 2026. <a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">github.com/ibusnowden/jaxchat</a></li>
-          </ol>
+          <p class="muted" style="font-size:14px;">An end-to-end LLM training pipeline written from scratch in JAX, inspired by Karpathy's nanochat. One repo, one 8x RTX 6000 node, the whole stack. References are linked inline and in the right margin.</p>
         </div>
       </section>
     </article>
