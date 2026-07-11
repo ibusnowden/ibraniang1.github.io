@@ -10,6 +10,7 @@
 
   <script>
     (function(){
+      document.documentElement.classList.add('js');
       try{
         var t = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', t);
@@ -62,11 +63,24 @@
             <span class="dot">·</span>
             <span>Advised by <a href="https://sites.google.com/site/xiaoleiedu" target="_blank" rel="noreferrer">Dr. Xiaolei Huang</a></span>
           </p>
+          <div class="focus-tags" aria-label="Focus areas">
+            <span>Vision-Language Models</span>
+            <span>JAX</span>
+            <span>CUDA / C</span>
+            <span>RLHF &amp; Distillation</span>
+            <span>Training Systems</span>
+          </div>
         </div>
       </div>
+
+      <p class="now-strip">
+        <span class="now-dot" aria-hidden="true"></span>
+        <span class="now-label">Now</span>
+        <span class="now-text">Building an agriculture VLM benchmark (paper forthcoming) and the Jaxchat training stack in JAX.</span>
+      </p>
     </section>
 
-    <section class="section" aria-labelledby="work-heading">
+    <section class="section" id="work" aria-labelledby="work-heading" data-reveal>
       <h2 id="work-heading">Selected Work</h2>
       <p class="section-lead">Things I've built or am building. Code and write-ups linked.</p>
 
@@ -76,6 +90,11 @@
           <p class="work-tagline">
             Fine-tuned Qwen3.6-27B model trained for cybersecurity tasks and bug finding.
           </p>
+          <div class="work-tags" aria-label="Tags">
+            <span>Agents</span>
+            <span>Fine-tuning</span>
+            <span>Cybersecurity</span>
+          </div>
           <p class="work-links">
             <a href="https://github.com/ibusnowden/security_agent" target="_blank" rel="noreferrer">repo &#8599;</a>
           </p>
@@ -86,6 +105,13 @@
           <p class="work-tagline">
             End-to-end LLM training pipeline: pretraining, SFT, RL, and a chat web UI for inference, all in JAX.
           </p>
+          <div class="work-tags" aria-label="Tags">
+            <span>JAX</span>
+            <span>Pretraining</span>
+            <span>SFT</span>
+            <span>RL</span>
+            <span>Inference UI</span>
+          </div>
           <p class="work-links">
             <a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">repo &#8599;</a>
           </p>
@@ -96,6 +122,11 @@
           <p class="work-tagline">
             CUDA/C multimodal training stack for multimodal LLMs across image and vision modalities.
           </p>
+          <div class="work-tags" aria-label="Tags">
+            <span>CUDA / C</span>
+            <span>Training Systems</span>
+            <span>Multimodal</span>
+          </div>
           <p class="work-links">
             <a href="https://github.com/ibusnowden/ML" target="_blank" rel="noreferrer">repo &#8599;</a>
           </p>
@@ -107,6 +138,11 @@
             Research-grade benchmark for vision-language models in agriculture: dataset, evaluation
             harness, and reference baselines.
           </p>
+          <div class="work-tags" aria-label="Tags">
+            <span>VLMs</span>
+            <span>Benchmarks</span>
+            <span>Agriculture</span>
+          </div>
           <p class="work-status">in progress · paper forthcoming</p>
         </article>
       </div>
@@ -114,27 +150,39 @@
       <a class="see-all" href="projects.html">all projects &rarr;</a>
     </section>
 
-    <section class="section" aria-labelledby="writing-heading">
+    <section class="section" id="writing" aria-labelledby="writing-heading" data-reveal>
       <h2 id="writing-heading">Writing</h2>
       <p class="section-lead">Notes on VLMs, training, kernels, and building research tooling.</p>
 
       <a class="post-row" href="opd-distributional-lens.html">
         <div class="post-row-meta">Jun 2026</div>
         <div class="post-row-title">On-policy distillation through a distributional lens</div>
-        <p class="post-row-snippet">SFT, RL, and OPD as three corners of one (α, λ, π_T) space — eight experiments, and the single scalar that separates collapse from the best recipe.</p>
+        <p class="post-row-snippet">SFT, RL, and OPD as three corners of one (α, λ, π_T) space - eight experiments, and the single scalar that separates collapse from the best recipe.</p>
       </a>
 
       <a class="see-all" href="blog.html">all writing &rarr;</a>
     </section>
 
-    <section class="section" aria-labelledby="contact-heading">
+    <section class="section" id="contact" aria-labelledby="contact-heading" data-reveal>
       <h2 id="contact-heading">Get in touch</h2>
       <p class="section-lead">Open to research collaborations, applied roles, and conversations.</p>
-      <p class="contact-line">
-        <a href="mailto:inniang@memphis.edu">Email</a>,
-        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">LinkedIn</a>,
-        or <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">GitHub</a>.
-      </p>
+      <div class="contact-cards">
+        <a class="contact-card" href="mailto:inniang@memphis.edu">
+          <span class="cc-label">Email</span>
+          <span class="cc-value">inniang@memphis.edu</span>
+          <span class="cc-arrow">write &#8594;</span>
+        </a>
+        <a class="contact-card" href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">
+          <span class="cc-label">GitHub</span>
+          <span class="cc-value">@ibusnowden</span>
+          <span class="cc-arrow">open &#8599;</span>
+        </a>
+        <a class="contact-card" href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">
+          <span class="cc-label">LinkedIn</span>
+          <span class="cc-value">/in/ibra-niang</span>
+          <span class="cc-arrow">connect &#8599;</span>
+        </a>
+      </div>
     </section>
 
     <footer class="footer">
