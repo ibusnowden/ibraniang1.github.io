@@ -121,10 +121,11 @@ h1, h2, h3, h4{ color: var(--ink); }
   padding: 16px clamp(18px, 4vw, 40px);
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 18px;
   flex-wrap: wrap;
 }
+/* wordmark left; nav + toggle ride together on the right */
+.site-header-inner > .wordmark{ margin-right: auto; }
 .wordmark{
   display: inline-flex;
   align-items: center;
@@ -1197,15 +1198,33 @@ h2.prompt{
     gap: 6px;
   }
   .ls-meta{ font-size: 11px; }
-  .site-header-inner{ padding: 14px 18px; }
+  .site-header-inner{ padding: 14px 18px; row-gap: 10px; }
   .wordmark{ font-size: 15px; }
-  .top-nav{ gap: 14px; }
   .finding{ grid-template-columns: 1fr; gap: 14px; padding: 1.8em 0; }
   .finding-aside{ position: static; }
+
+  /* two deliberate rows: wordmark + toggle, then the nav on its own line.
+     Without this the toggle wraps below the links on its own orphan row. */
+  .site-header-inner > .theme-toggle{ order: 1; }
+  .top-nav{
+    order: 2;
+    flex-basis: 100%;
+    gap: 24px;
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 520px){
   .ms-wordmark-big{ font-size: 38px; }
   .top-nav .top-link{ font-size: 11.5px; }
   .footer-row.primary{ justify-content: flex-start; }
+  /* phone widths: let the five links span the row edge to edge */
+  .top-nav{ gap: 14px; justify-content: space-between; }
+}
+
+/* narrowest phones: tighten the nav so all five links stay on one row
+   rather than orphaning "school" onto a line of its own */
+@media (max-width: 380px){
+  .top-nav{ gap: 8px; }
+  .top-nav .top-link{ font-size: 11px; letter-spacing: 0.04em; }
 }
