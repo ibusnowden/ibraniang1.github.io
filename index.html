@@ -16,114 +16,39 @@
       }catch(e){}
     })();
   </script>
-  <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
 
   <header class="site-header">
-    <nav class="top-nav" aria-label="Primary">
-      <a class="top-link is-active" href="index.html">home</a>
-      <a class="top-link" href="projects.html">projects</a>
-      <a class="top-link" href="blog.html">blog</a>
-      <a class="top-link" href="reading.html">reading list</a>
-      <a class="top-link" href="school.html">school</a>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span class="theme-toggle-thumb"></span></button>
-    </nav>
-    <div class="top-links">
-      <a href="assets/resume_2025.pdf" target="_blank" rel="noreferrer" aria-label="Open resume"><span class="top-arrow">&#8599;</span> resume</a>
-      <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer"><span class="top-arrow">&#8599;</span> github</a>
-      <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer"><span class="top-arrow">&#8599;</span> linkedin</a>
-      <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer"><span class="top-arrow">&#8599;</span> twitter</a>
+    <div class="site-header-inner">
+      <a class="wordmark" href="index.html">IBRA<span class="wm-dot"></span>NIANG</a>
+      <nav class="top-nav" aria-label="Primary">
+        <a class="top-link is-active" href="index.html">home</a>
+        <a class="top-link" href="projects.html">projects</a>
+        <a class="top-link" href="blog.html">writing</a>
+        <a class="top-link" href="reading.html">reading</a>
+        <a class="top-link" href="school.html">school</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span class="theme-toggle-thumb"></span></button>
+      </nav>
     </div>
   </header>
 
   <main id="content" class="container">
-    <section class="term-hero">
-      <p class="term-path">~/ibra-niang</p>
-
-      <div class="cmd-block">
-        <p class="prompt"><span class="prompt-sym">&#10095;</span><span class="prompt-cmd">whoami</span></p>
-        <h1 class="term-name">Ibra Niang</h1>
-        <p class="term-tag">researcher &middot; builder</p>
-        <p class="term-desc">
-          Multimodal NLP researcher at the University of Memphis (BS/MS &rsquo;26),
-          building vision-language models and the systems that train them.
-        </p>
-      </div>
-
-      <div class="cmd-block">
-        <p class="prompt"><span class="prompt-sym">&#10095;</span><span class="prompt-cmd">cat contact.txt</span></p>
-        <p class="term-out">Memphis, TN &middot; <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a></p>
-        <p class="term-out">Advised by <a href="https://sites.google.com/site/xiaoleiedu" target="_blank" rel="noreferrer">Dr. Xiaolei Huang</a></p>
-      </div>
+    <section class="ms-hero">
+      <h1 class="ms-wordmark-big">IBRA<span class="wm-dot"></span>NIANG</h1>
+    <span class="dot-rule"></span>
     </section>
 
-    <section class="section term-section">
-      <h2 class="prompt"><span class="prompt-sym">&#10095;</span><span class="prompt-cmd">ls work/</span></h2>
-
-      <div class="ls-list">
-        <a class="ls-row" href="https://github.com/ibusnowden/security_agent" target="_blank" rel="noreferrer">
-          <span class="ls-name">security_agent/</span>
-          <span class="ls-desc">Fine-tuned Qwen3.6-27B model trained for cybersecurity tasks and bug finding.</span>
-          <span class="ls-meta">repo &#8599;</span>
-        </a>
-
-        <a class="ls-row" href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">
-          <span class="ls-name">jaxchat/</span>
-          <span class="ls-desc">End-to-end LLM training pipeline: pretraining, SFT, RL, and a chat web UI for inference, all in JAX.</span>
-          <span class="ls-meta">repo &#8599;</span>
-        </a>
-
-        <a class="ls-row" href="https://github.com/ibusnowden/ML" target="_blank" rel="noreferrer">
-          <span class="ls-name">multimodal-training/</span>
-          <span class="ls-desc">CUDA/C multimodal training stack for multimodal LLMs across image and vision modalities.</span>
-          <span class="ls-meta">repo &#8599;</span>
-        </a>
-
-        <div class="ls-row">
-          <span class="ls-name">agriculture-vlm/</span>
-          <span class="ls-desc">Research-grade benchmark for vision-language models in agriculture: dataset, evaluation harness, and reference baselines.</span>
-          <span class="ls-meta ls-meta--muted">in progress</span>
-        </div>
-      </div>
-
-      <a class="see-all" href="projects.html">all projects &rarr;</a>
-    </section>
-
-    <section class="section term-section">
-      <h2 class="prompt"><span class="prompt-sym">&#10095;</span><span class="prompt-cmd">ls writing/</span></h2>
-
-      <div class="ls-list">
-        <a class="ls-row" href="opd-distributional-lens.html">
-          <span class="ls-name">opd-distributional-lens.md</span>
-          <span class="ls-desc">On-policy distillation through a distributional lens &mdash; SFT, RL, and OPD as three corners of one (&alpha;, &lambda;, &pi;<sub>T</sub>) space.</span>
-          <span class="ls-meta">Jun 2026</span>
-        </a>
-      </div>
-
-      <a class="see-all" href="blog.html">all writing &rarr;</a>
-    </section>
-
-    <section class="section term-section">
-      <h2 class="prompt"><span class="prompt-sym">&#10095;</span><span class="prompt-cmd">contact --open</span></h2>
-      <p class="term-out">Open to research collaborations, applied roles, and conversations.</p>
-      <p class="term-out">
-        <a href="mailto:inniang@memphis.edu">email</a> &middot;
-        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">linkedin</a> &middot;
-        <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">github</a> &middot;
-        <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">twitter</a>
-      </p>
-      <p class="prompt prompt--idle"><span class="prompt-sym">&#10095;</span><span class="cursor" aria-hidden="true"></span></p>
-    </section>
+    <p class="bio drop-cap">My work is multimodal NLP: vision-language models and the systems that train them. I am finishing a combined BS/MS at the University of Memphis in 2026 under Dr. Xiaolei Huang, working on post-training and distillation methods, scaling-law sweeps, and from-scratch training and inference stacks in JAX, CUDA, and C.</p>
 
     <footer class="footer">
+      <div class="ms-footer-wordmark"><span class="dot-rule"></span><span class="wm-label">IBRA<span class="wm-dot"></span>NIANG</span><span class="dot-rule"></span></div>
       <div class="footer-row primary">
         <span>Memphis, TN</span>
         <span class="dot">·</span>
@@ -140,7 +65,7 @@
   </main>
 
   <button class="back-to-top" id="backToTop" aria-label="Back to top">
-    <i class="fas fa-arrow-up"></i>
+    &#8593;
   </button>
 
   <script src="app.js" defer></script>
