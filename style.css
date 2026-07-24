@@ -1,39 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap');
 
 :root{
-  --bg: #fbf9f5;
-  --fg: #1b1714;
-  --muted: #6b6157;
-  --faint: rgba(27,23,20,0.08);
-  --faint2: rgba(27,23,20,0.13);
-  --link: #b0481f;
-  --link-hover: #8c3a18;
-  --selection: rgba(176,72,31,0.18);
-  --surface: rgba(27,23,20,0.035);
-  --surface-strong: rgba(27,23,20,0.065);
-  --header-bg-top: rgba(251,249,245,0.9);
-  --header-bg-bottom: rgba(251,249,245,0.6);
+  /* CDE-style: pure white background, near-black text, classic blue links */
+  --bg: #ffffff;
+  --fg: #0a0a0a;
+  --muted: #595959;
+  --faint: rgba(0,0,0,0.10);
+  --faint2: rgba(0,0,0,0.20);
+  --link: #0000ee;
+  --link-hover: #00007a;
+  --selection: rgba(0,0,238,0.18);
+  --surface: rgba(0,0,0,0.04);
+  --surface-strong: rgba(0,0,0,0.08);
+  --header-bg-top: rgba(255,255,255,0.92);
+  --header-bg-bottom: rgba(255,255,255,0.72);
 
   --maxw: 720px;
-  --radius: 12px;
+  --radius: 0px;
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-serif: 'Source Serif 4', 'Iowan Old Style BT', Georgia, 'Times New Roman', serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 [data-theme="dark"]{
-  --bg: #15140f;
-  --fg: #ece6db;
-  --muted: #9a9286;
-  --faint: rgba(236,230,219,0.08);
-  --faint2: rgba(236,230,219,0.15);
-  --link: #e0996b;
-  --link-hover: #ecae87;
-  --selection: rgba(224,153,107,0.26);
-  --surface: rgba(236,230,219,0.045);
-  --surface-strong: rgba(236,230,219,0.08);
-  --header-bg-top: rgba(21,20,15,0.9);
-  --header-bg-bottom: rgba(21,20,15,0.6);
+  /* CDE-style: pure black background, near-white text, light blue links */
+  --bg: #000000;
+  --fg: #e8e8e8;
+  --muted: #8a8a8a;
+  --faint: rgba(232,232,232,0.14);
+  --faint2: rgba(232,232,232,0.26);
+  --link: #6a9fff;
+  --link-hover: #9bc1ff;
+  --selection: rgba(106,159,255,0.30);
+  --surface: rgba(232,232,232,0.06);
+  --surface-strong: rgba(232,232,232,0.11);
+  --header-bg-top: rgba(0,0,0,0.92);
+  --header-bg-bottom: rgba(0,0,0,0.72);
 }
 
 html, body{ background: var(--bg); color: var(--fg); }
@@ -45,9 +47,10 @@ body{
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-serif);
-  font-size: 18px;
-  line-height: 1.7;
+  /* CDE/Unix feel: monospace chrome everywhere; long-form articles opt back to serif */
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -82,7 +85,7 @@ em{ font-style: italic; }
   z-index: 10;
   backdrop-filter: blur(8px);
   background: linear-gradient(to bottom, var(--header-bg-top), var(--header-bg-bottom));
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid var(--faint2);
 }
 .top-nav{
   max-width: var(--maxw);
@@ -386,7 +389,7 @@ h3{
   text-decoration: none;
 }
 .post:hover{
-  border-color: rgba(124,74,30,0.35);
+  border-color: var(--link);
   text-decoration: none;
 }
 .post-title{ font-size: 16px; font-weight: 650; margin-top: 6px; }
@@ -441,7 +444,7 @@ h3{
   transform: translateY(6px);
   transition: opacity 180ms ease, transform 180ms ease, border-color 180ms ease;
 }
-.back-to-top:hover{ border-color: rgba(124,74,30,0.45); cursor: pointer; }
+.back-to-top:hover{ border-color: var(--link); cursor: pointer; }
 .back-to-top.show{
   opacity: 1;
   pointer-events: auto;
@@ -450,12 +453,6 @@ h3{
 
 @media (max-width: 680px){
   .top-nav{ gap: 14px; }
-  .name{ font-size: 32px; }
-  .hero-grid{
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .portrait{ width: 64px; height: 64px; }
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -463,47 +460,140 @@ h3{
   .back-to-top{ transition: none; }
 }
 
-/* ── Hero ────────────────────────────────────────────────────── */
-.hero-grid{
-  display: grid;
-  grid-template-columns: 72px 1fr;
-  gap: 20px;
-  align-items: start;
-  margin-bottom: 18px;
+/* ── Terminal-style home ─────────────────────────────────────── */
+.term-hero{ margin-top: 6px; }
+.term-path{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 30px;
+  letter-spacing: 0.02em;
 }
-.portrait{
-  width: 72px;
-  height: 72px;
-  border-radius: 999px;
-  object-fit: cover;
-  object-position: center 28%;
-  border: 1px solid var(--faint2);
-  display: block;
-}
-.hero-copy{ min-width: 0; }
-.hero-line{
-  font-family: var(--font-serif);
-  font-size: 18px;
+.cmd-block{ margin-bottom: 32px; }
+.prompt{
+  font-family: var(--font-mono);
+  font-size: 14px;
   line-height: 1.5;
-  margin: 8px 0 12px;
-  color: var(--fg);
-}
-.hero-meta{
-  font-family: var(--font-sans);
-  color: var(--muted);
-  font-size: 13.5px;
+  margin: 0 0 10px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
+  align-items: baseline;
+  gap: 9px;
+  font-weight: 600;
 }
-.hero-meta a{
+h2.prompt{
+  font-size: 15px;
+  margin: 0 0 18px;
+}
+.prompt-sym{
+  color: var(--link);
+  font-weight: 700;
+}
+.prompt-cmd{
+  color: var(--fg);
+  font-weight: 600;
+}
+.prompt--idle{ margin-top: 22px; }
+
+.term-name{
+  font-family: var(--font-sans);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 2px 0 4px;
+}
+.term-tag{
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 12px;
   color: var(--muted);
-  text-decoration: underline;
-  text-decoration-color: var(--faint2);
-  text-underline-offset: 3px;
+  margin: 0 0 14px;
 }
-.hero-meta a:hover{ color: var(--link); text-decoration-color: currentColor; }
+.term-desc{
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg);
+  max-width: 60ch;
+  margin: 0;
+}
+.term-out{
+  font-family: var(--font-sans);
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--fg);
+  margin: 4px 0;
+}
+.term-desc a, .term-out a{ color: var(--link); }
+
+.term-section{ margin-top: 50px; }
+
+.ls-list{
+  border-top: 1px solid var(--faint);
+}
+.ls-row{
+  display: grid;
+  grid-template-columns: minmax(150px, 200px) minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: baseline;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--faint);
+  color: var(--fg);
+  text-decoration: none;
+}
+a.ls-row:hover{ text-decoration: none; }
+a.ls-row:hover .ls-name{ color: var(--link); }
+.ls-name{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--fg);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ls-desc{
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.ls-meta{
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: var(--link);
+  white-space: nowrap;
+}
+.ls-meta--muted{ color: var(--muted); }
+
+.cursor{
+  display: inline-block;
+  width: 9px;
+  height: 16px;
+  background: var(--link);
+  vertical-align: text-bottom;
+  margin-left: 1px;
+  animation: term-blink 1.1s steps(1) infinite;
+}
+@keyframes term-blink{
+  0%, 50%{ opacity: 1; }
+  51%, 100%{ opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce){
+  .cursor{ animation: none; opacity: 0.65; }
+}
+
+@media (max-width: 680px){
+  .ls-row{
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .ls-meta{ font-size: 11px; }
+  .term-name{ font-size: 28px; }
+}
 
 /* ── Section helpers ─────────────────────────────────────────── */
 .section-lead{
@@ -635,7 +725,7 @@ h3{
 .back-link:hover{ color: var(--link); text-decoration: none; }
 
 /* ── Long-form reading article (.doc.reading) ────────────────── */
-.doc.reading{ line-height: 1.75; }
+.doc.reading{ line-height: 1.75; font-family: var(--font-serif); }
 .doc.reading h1{
   font-family: var(--font-serif);
   font-size: 40px;
@@ -710,7 +800,7 @@ figure img{
   background: #fff;
   display: block;
 }
-[data-theme="dark"] figure img{ background: #f7f5f1; }
+[data-theme="dark"] figure img{ background: #ffffff; }
 figcaption{
   font-family: var(--font-sans);
   font-size: 13px;

@@ -6,7 +6,7 @@
   <title>Ibra Niang · Researcher · Builder</title>
 
   <meta name="description" content="Ibra Niang. Multimodal NLP researcher at the University of Memphis (BS/MS '26). Building vision-language models and the systems that train them." />
-  <meta name="color-scheme" content="light" />
+  <meta name="color-scheme" content="light dark" />
 
   <script>
     (function(){
@@ -45,96 +45,82 @@
   </header>
 
   <main id="content" class="container">
-    <section class="section hero">
-      <div class="hero-grid">
-        <img class="portrait" src="assets/photo.jpeg" alt="Ibra Niang" width="72" height="72" />
-        <div class="hero-copy">
-          <p class="eyebrow">RESEARCHER · BUILDER</p>
-          <h1 class="name">Ibra Niang</h1>
-          <p class="hero-line">
-            Multimodal NLP researcher at the University of Memphis (BS/MS '26),
-            building vision-language models and the systems that train them.
-          </p>
-          <p class="hero-meta">
-            <span>Memphis, TN</span>
-            <span class="dot">·</span>
-            <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a>
-            <span class="dot">·</span>
-            <span>Advised by <a href="https://sites.google.com/site/xiaoleiedu" target="_blank" rel="noreferrer">Dr. Xiaolei Huang</a></span>
-          </p>
-        </div>
+    <section class="term-hero">
+      <p class="term-path">~/ibra-niang</p>
+
+      <div class="cmd-block">
+        <p class="prompt"><span class="prompt-sym">&#10095;</span><span class="prompt-cmd">whoami</span></p>
+        <h1 class="term-name">Ibra Niang</h1>
+        <p class="term-tag">researcher &middot; builder</p>
+        <p class="term-desc">
+          Multimodal NLP researcher at the University of Memphis (BS/MS &rsquo;26),
+          building vision-language models and the systems that train them.
+        </p>
+      </div>
+
+      <div class="cmd-block">
+        <p class="prompt"><span class="prompt-sym">&#10095;</span><span class="prompt-cmd">cat contact.txt</span></p>
+        <p class="term-out">Memphis, TN &middot; <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a></p>
+        <p class="term-out">Advised by <a href="https://sites.google.com/site/xiaoleiedu" target="_blank" rel="noreferrer">Dr. Xiaolei Huang</a></p>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="work-heading">
-      <h2 id="work-heading">Selected Work</h2>
-      <p class="section-lead">Things I've built or am building. Code and write-ups linked.</p>
+    <section class="section term-section">
+      <h2 class="prompt"><span class="prompt-sym">&#10095;</span><span class="prompt-cmd">ls work/</span></h2>
 
-      <div class="work-list">
-        <article class="work-item">
-          <h3 class="work-title"><a href="https://github.com/ibusnowden/security_agent" target="_blank" rel="noreferrer">Security Agent</a></h3>
-          <p class="work-tagline">
-            Fine-tuned Qwen3.6-27B model trained for cybersecurity tasks and bug finding.
-          </p>
-          <p class="work-links">
-            <a href="https://github.com/ibusnowden/security_agent" target="_blank" rel="noreferrer">repo &#8599;</a>
-          </p>
-        </article>
+      <div class="ls-list">
+        <a class="ls-row" href="https://github.com/ibusnowden/security_agent" target="_blank" rel="noreferrer">
+          <span class="ls-name">security_agent/</span>
+          <span class="ls-desc">Fine-tuned Qwen3.6-27B model trained for cybersecurity tasks and bug finding.</span>
+          <span class="ls-meta">repo &#8599;</span>
+        </a>
 
-        <article class="work-item">
-          <h3 class="work-title"><a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">Jaxchat</a></h3>
-          <p class="work-tagline">
-            End-to-end LLM training pipeline: pretraining, SFT, RL, and a chat web UI for inference, all in JAX.
-          </p>
-          <p class="work-links">
-            <a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">repo &#8599;</a>
-          </p>
-        </article>
+        <a class="ls-row" href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">
+          <span class="ls-name">jaxchat/</span>
+          <span class="ls-desc">End-to-end LLM training pipeline: pretraining, SFT, RL, and a chat web UI for inference, all in JAX.</span>
+          <span class="ls-meta">repo &#8599;</span>
+        </a>
 
-        <article class="work-item">
-          <h3 class="work-title"><a href="https://github.com/ibusnowden/ML" target="_blank" rel="noreferrer">Multimodal Training</a></h3>
-          <p class="work-tagline">
-            CUDA/C multimodal training stack for multimodal LLMs across image and vision modalities.
-          </p>
-          <p class="work-links">
-            <a href="https://github.com/ibusnowden/ML" target="_blank" rel="noreferrer">repo &#8599;</a>
-          </p>
-        </article>
+        <a class="ls-row" href="https://github.com/ibusnowden/ML" target="_blank" rel="noreferrer">
+          <span class="ls-name">multimodal-training/</span>
+          <span class="ls-desc">CUDA/C multimodal training stack for multimodal LLMs across image and vision modalities.</span>
+          <span class="ls-meta">repo &#8599;</span>
+        </a>
 
-        <article class="work-item">
-          <h3 class="work-title">Agriculture VLM Benchmark</h3>
-          <p class="work-tagline">
-            Research-grade benchmark for vision-language models in agriculture: dataset, evaluation
-            harness, and reference baselines.
-          </p>
-          <p class="work-status">in progress · paper forthcoming</p>
-        </article>
+        <div class="ls-row">
+          <span class="ls-name">agriculture-vlm/</span>
+          <span class="ls-desc">Research-grade benchmark for vision-language models in agriculture: dataset, evaluation harness, and reference baselines.</span>
+          <span class="ls-meta ls-meta--muted">in progress</span>
+        </div>
       </div>
 
       <a class="see-all" href="projects.html">all projects &rarr;</a>
     </section>
 
-    <section class="section" aria-labelledby="writing-heading">
-      <h2 id="writing-heading">Writing</h2>
-      <p class="section-lead">Notes on VLMs, training, kernels, and building research tooling.</p>
+    <section class="section term-section">
+      <h2 class="prompt"><span class="prompt-sym">&#10095;</span><span class="prompt-cmd">ls writing/</span></h2>
 
-      <a class="post-row" href="opd-distributional-lens.html">
-        <div class="post-row-meta">Jun 2026</div>
-        <div class="post-row-title">On-policy distillation through a distributional lens</div>
-        <p class="post-row-snippet">SFT, RL, and OPD as three corners of one (α, λ, π_T) space — eight experiments, and the single scalar that separates collapse from the best recipe.</p>
-      </a>
+      <div class="ls-list">
+        <a class="ls-row" href="opd-distributional-lens.html">
+          <span class="ls-name">opd-distributional-lens.md</span>
+          <span class="ls-desc">On-policy distillation through a distributional lens &mdash; SFT, RL, and OPD as three corners of one (&alpha;, &lambda;, &pi;<sub>T</sub>) space.</span>
+          <span class="ls-meta">Jun 2026</span>
+        </a>
+      </div>
 
       <a class="see-all" href="blog.html">all writing &rarr;</a>
     </section>
 
-    <section class="section" aria-labelledby="contact-heading">
-      <h2 id="contact-heading">Get in touch</h2>
-      <p class="section-lead">Open to research collaborations, applied roles, and conversations.</p>
-      <p class="contact-line">
-        <a href="mailto:inniang@memphis.edu">Email</a>,
-        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">LinkedIn</a>,
-        or <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">GitHub</a>.
+    <section class="section term-section">
+      <h2 class="prompt"><span class="prompt-sym">&#10095;</span><span class="prompt-cmd">contact --open</span></h2>
+      <p class="term-out">Open to research collaborations, applied roles, and conversations.</p>
+      <p class="term-out">
+        <a href="mailto:inniang@memphis.edu">email</a> &middot;
+        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">linkedin</a> &middot;
+        <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">github</a> &middot;
+        <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">twitter</a>
       </p>
+      <p class="prompt prompt--idle"><span class="prompt-sym">&#10095;</span><span class="cursor" aria-hidden="true"></span></p>
     </section>
 
     <footer class="footer">
