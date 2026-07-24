@@ -223,7 +223,8 @@ h1, h2, h3, h4{ color: var(--ink); }
   margin: 0 auto;
   padding: clamp(40px, 7vw, 80px) clamp(18px, 4vw, 40px) 40px;
 }
-.container.post-wide{ max-width: var(--widew); }
+/* long-form posts: one centered reading column, not the wide two-column shell */
+.container.post-wide{ max-width: 800px; }
 .section{ margin-top: clamp(40px, 6vw, 64px); }
 
 /* =====================================================================
@@ -341,11 +342,10 @@ p{ margin: 0 0 1.3rem; }
 .muted{ color: var(--muted); }
 
 /* =====================================================================
-   DROP-CAP — the signature makingsoftware first-letter
+   DROP-CAP — the signature first-letter. Site pages only: the long-form
+   posts read as plain articles, with no drop cap.
    ===================================================================== */
-.drop-cap::first-letter,
-.lead::first-letter,
-.doc.reading .post-intro > p:first-of-type::first-letter{
+.drop-cap::first-letter{
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 4.2em;
@@ -353,9 +353,6 @@ p{ margin: 0 0 1.3rem; }
   float: left;
   margin: 0.04em 0.12em 0 0;
   color: var(--accent);
-}
-.doc.reading .lead::first-letter{
-  font-size: 3.4em;
 }
 
 /* =====================================================================
@@ -630,6 +627,7 @@ a.ls-row:hover .ls-name{ color: var(--accent); }
   line-height: 1.72;
   color: var(--ink-soft);
   max-width: var(--readw);
+  margin-inline: auto;
 }
 .doc.reading h1{
   font-family: var(--font-display);
@@ -820,46 +818,73 @@ figcaption code{
 .callout strong{ color: var(--ink); }
 
 /* =====================================================================
-   TM-STYLE MARGIN-HEADING FINDINGS (opd post)
+   ARTICLE SECTIONS — single centered column, headings inline above the
+   text they introduce (was a 240px margin-heading grid).
    ===================================================================== */
 .finding{
-  display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
-  gap: 48px;
-  align-items: start;
+  display: block;
   margin: 0;
-  padding: 2.6em 0;
-  border-top: 1px solid var(--line);
+  padding: 0;
+  border-top: 0;
 }
-.finding-aside{ position: sticky; top: 96px; }
+.finding-aside{ position: static; }
 .finding-kicker{
-  display: inline-block;
+  display: block;
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 700;
   color: var(--accent-ink);
+  margin: 2.8em 0 0.6em;
 }
 [data-theme="dark"] .finding-kicker{ color: var(--accent); }
 .reading .finding-aside h2{
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: clamp(24px, 3.2vw, 31px);
   font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  margin: 10px 0 0;
+  line-height: 1.18;
+  letter-spacing: -0.014em;
+  margin: 0 0 0.5em;
   color: var(--ink);
 }
+/* the section's one-line summary, set just under its heading */
 .finding-lead{
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 18px;
+  line-height: 1.6;
   color: var(--muted);
-  margin: 12px 0 0;
+  margin: 0 0 1.3em;
 }
-.finding-body{ max-width: var(--readw); }
+.finding-body{ max-width: none; }
 .finding-body > *:first-child{ margin-top: 0; }
-.finding-body figure{ margin: 1.6rem 0; }
+.finding-body figure{ margin: 1.8rem 0; }
+
+/* table of contents, built by app.js from the section headings */
+.post-toc{
+  margin: 2.2em 0 0.5em;
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.post-toc-label{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+.post-toc ol{
+  margin: 0;
+  padding-left: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.post-toc li{ margin: 6px 0; }
+.post-toc a{ color: var(--ink-soft); text-decoration: none; }
+.post-toc a:hover{ color: var(--accent); text-decoration: underline; }
 
 .refs{
   margin: 0;
@@ -870,15 +895,7 @@ figcaption code{
 .refs li{ margin: 0 0 10px; color: var(--ink-soft); }
 
 @media (max-width: 900px){
-  .container.post-wide{ max-width: var(--readw); }
-  .finding{
-    grid-template-columns: 1fr;
-    gap: 14px;
-    padding: 2em 0;
-  }
-  .finding-aside{ position: static; }
-  .reading .finding-aside h2{ font-size: 1.4rem; }
-  .finding-lead{ font-size: 14.5px; }
+  .finding-lead{ font-size: 16.5px; }
 }
 
 /* =====================================================================

@@ -35,6 +35,46 @@
   }
 
 
+  // Long-form posts: build a table of contents from the section headings and
+  // drop it in under the byline, the way the article itself is structured.
+  const article = document.querySelector('.doc.reading');
+  const intro = article && article.querySelector('.post-intro');
+  if (article && intro) {
+    const heads = Array.from(article.querySelectorAll('.finding-aside h2'));
+    if (heads.length > 2) {
+      heads.forEach((h, i) => {
+        if (!h.id) {
+          h.id =
+            (h.textContent || '')
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-+|-+$/g, '') || 'section-' + (i + 1);
+        }
+      });
+
+      const nav = document.createElement('nav');
+      nav.className = 'post-toc';
+      nav.setAttribute('aria-label', 'Contents');
+
+      const label = document.createElement('p');
+      label.className = 'post-toc-label';
+      label.textContent = 'Contents';
+      nav.appendChild(label);
+
+      const ol = document.createElement('ol');
+      heads.forEach((h) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent;
+        li.appendChild(a);
+        ol.appendChild(li);
+      });
+      nav.appendChild(ol);
+      intro.appendChild(nav);
+    }
+  }
+
   // Writing index: sort entries by publication date or title.
   // The markup advertises these controls, so make them real.
   const postList = document.getElementById('postList');
