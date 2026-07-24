@@ -40,22 +40,49 @@
   <main id="content" class="container">
     <section class="section">
       <h1 class="page-title">Writing</h1>
-      <p class="page-sort">Sort entries by: <a href="#" class="is-active">publication date</a>, <a href="#">title</a></p>
+      <p class="page-sort">Sort entries by: <a href="#" data-sort="date" class="is-active">publication date</a>, <a href="#" data-sort="title">title</a></p>
 
-      <ul class="entry-list">
-        <li>
-          <a href="glm-5-2-vision-llama-cpp.html">Giving a 3-bit GLM-5.2 Vision in llama.cpp</a> — attaching a 943 MB vision projector to an unchanged 343 GB Q3 text model, adding native multimodal support in 44 lines across six files, and publishing the patch, checksums, licenses, and an honest four-case evaluation, published July 2026
+      <ol class="post-list" id="postList">
+        <li class="post-item" data-date="2026-07" data-title="Giving a 3-bit GLM-5.2 Vision in llama.cpp">
+          <a class="post-link" href="glm-5-2-vision-llama-cpp.html">
+            <span class="post-date">Jul 2026</span>
+            <span class="post-body">
+              <span class="post-title">Giving a 3-bit GLM-5.2 Vision in llama.cpp</span>
+              <span class="post-desc">Attaching a 943 MB vision projector to an unchanged 343 GB Q3 text model: native multimodal support in 44 lines across six files, with the patch, checksums, and an honest four-case evaluation.</span>
+            </span>
+          </a>
         </li>
-        <li>
-          <a href="jaxchat-scaling-laws.html">Scaling Laws for jaxchat: a Chinchilla IsoFLOP Sweep on One Node</a>. A Chinchilla-style IsoFLOP sweep run end to end on one 8x RTX 6000 node; 30 runs across four compute budgets recover textbook C^0.50 exponents on both axes, and a depth miniseries places a from-scratch JAX stack on the CORE-versus-compute trend against GPT-2 and GPT-3, published June 2026
+
+        <li class="post-item" data-date="2026-06" data-title="Scaling Laws for jaxchat: a Chinchilla IsoFLOP Sweep on One Node">
+          <a class="post-link" href="jaxchat-scaling-laws.html">
+            <span class="post-date">Jun 2026</span>
+            <span class="post-body">
+              <span class="post-title">Scaling Laws for jaxchat: a Chinchilla IsoFLOP Sweep on One Node</span>
+              <span class="post-desc">A Chinchilla-style IsoFLOP sweep run end to end on one 8&times;RTX 6000 node: 30 runs across four compute budgets recover textbook C^0.50 exponents on both axes.</span>
+            </span>
+          </a>
         </li>
-        <li>
-          <a href="opd-distributional-lens.html">On-Policy Distillation Through a Distributional Lens</a> — SFT, RL, and on-policy distillation written as three corners of one (α, λ, π_T) policy gradient; one unified trainer, eight experiments, and the single per-token KL clip that separates collapse from the best recipe, published June 2026
+
+        <li class="post-item" data-date="2026-06" data-title="On-Policy Distillation Through a Distributional Lens">
+          <a class="post-link" href="opd-distributional-lens.html">
+            <span class="post-date">Jun 2026</span>
+            <span class="post-body">
+              <span class="post-title">On-Policy Distillation Through a Distributional Lens</span>
+              <span class="post-desc">SFT, RL, and on-policy distillation as three corners of one (&alpha;, &lambda;, &pi;<sub>T</sub>) policy gradient: one trainer, eight experiments, and the per-token KL clip that separates collapse from the best recipe.</span>
+            </span>
+          </a>
         </li>
-        <li>
-          <a href="physics/index.html">Making Physics: an illustrated reference guide to physics through simulation</a> — a 20-chapter visual guide where every figure is a real render from a from-scratch C++ physics engine (mechanics through a general-relativistic black-hole ray tracer), published June 13, 2026
+
+        <li class="post-item" data-date="2026-06-13" data-title="Making Physics: an illustrated reference guide to physics through simulation">
+          <a class="post-link" href="physics/index.html">
+            <span class="post-date">Jun 2026</span>
+            <span class="post-body">
+              <span class="post-title">Making Physics: an illustrated reference guide to physics through simulation</span>
+              <span class="post-desc">A 20-chapter visual guide where every figure is a real render from a from-scratch C++ engine, from mechanics to a general-relativistic black-hole ray tracer.</span>
+            </span>
+          </a>
         </li>
-      </ul>
+      </ol>
     </section>
 
         <footer class="footer">

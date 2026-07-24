@@ -35,6 +35,37 @@
   }
 
 
+  // Writing index: sort entries by publication date or title.
+  // The markup advertises these controls, so make them real.
+  const postList = document.getElementById('postList');
+  const sortLinks = document.querySelectorAll('.page-sort a[data-sort]');
+  if (postList && sortLinks.length) {
+    // Remember the authored order so equal keys stay stable and predictable.
+    const items = Array.from(postList.children);
+    items.forEach((el, i) => { el.dataset.order = String(i); });
+
+    function sortBy(mode) {
+      const sorted = items.slice().sort((a, b) => {
+        if (mode === 'title') {
+          return (a.dataset.title || '').localeCompare(b.dataset.title || '');
+        }
+        // date: newest first; ties fall back to the authored order
+        const cmp = (b.dataset.date || '').localeCompare(a.dataset.date || '');
+        return cmp !== 0 ? cmp : Number(a.dataset.order) - Number(b.dataset.order);
+      });
+      sorted.forEach((el) => postList.appendChild(el));
+    }
+
+    sortLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        sortLinks.forEach((l) => l.classList.remove('is-active'));
+        link.classList.add('is-active');
+        sortBy(link.dataset.sort);
+      });
+    });
+  }
+
   // Smooth in-page scrolling
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
