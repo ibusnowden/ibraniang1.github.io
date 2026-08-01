@@ -1,0 +1,12 @@
+{
+  "name": "ibraniang-site-tools",
+  "private": true,
+  "description": "Build step for the prerendered reading list.",
+  "scripts": {
+    "build": "node prerender-reading.js"
+  },
+  "dependencies": {
+    "highlight.js": "11.9.0",
+    "marked": "9.1.6"
+  }
+}
