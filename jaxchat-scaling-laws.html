@@ -22,58 +22,63 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Benne&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* Right-margin citations, Thinking-Machines / Tufte style. The inline
-       marker links straight to the source; the note floats into the right
-       margin on wide screens and collapses inline on mobile. */
-    .cite{
-      font-size: 0.72em; vertical-align: super; line-height: 0;
-      font-weight: 600; text-decoration: none; padding: 0 1px;
-    }
-    .cite:hover{ text-decoration: underline; }
-    .sidenote{
-      float: right; clear: right;
-      width: 40%; max-width: 250px;
-      margin: 0.2rem 0 0.9rem 1.4rem;
-      padding-left: 0.9rem;
-      border-left: 2px solid var(--faint2);
-      font-size: 12.5px; line-height: 1.5; color: var(--muted, #6b6b6b);
-    }
-    .sidenote a{ word-break: break-word; }
-    @media (max-width: 680px){
-      .sidenote{ float: none; width: auto; max-width: none; margin-left: 0; }
-    }
-  </style>
 </head>
 
 <body>
-  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="c-site-container">
 
-    <header class="site-header">
-    <div class="site-header-inner">
-      <a class="wordmark" href="index.html">IBRA<span class="wm-dot"></span>NIANG</a>
-      <nav class="top-nav" aria-label="Primary">
-        <a class="top-link" href="index.html">home</a>
-        <a class="top-link" href="projects.html">projects</a>
-        <a class="top-link is-active" href="blog.html">writing</a>
-        <a class="top-link" href="reading.html">reading</a>
-        <a class="top-link" href="school.html">school</a>
-      </nav>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span class="theme-toggle-thumb"></span></button>
-    </div>
-  </header>
+    <header class="c-header">
+      <a href="#main-content" class="c-skip-to-content">Skip to content</a>
+      <div class="o-grid">
+        <div class="o-grid__col">
+          <div class="c-header__inner">
+            <div class="c-logo">
+              <a class="c-logo__link" href="index.html">IBRA NIANG</a>
+            </div>
+            <nav class="c-nav-wrap" aria-label="Main Navigation">
+              <ul class="c-nav o-plain-list">
+                <li class="c-nav__item"><a href="index.html" class="c-nav__link">Home</a></li>
+                <li class="c-nav__item"><a href="blog.html" class="c-nav__link c-nav__link--current" aria-current="page">Blog</a></li>
+                <li class="c-nav__item"><a href="reading.html" class="c-nav__link">Reading</a></li>
+                <li class="c-nav__item c-nav__item--hasIcon">
+                  <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">
+                    <span class="c-nav__item__icon">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </span>
+                    <span class="u-hidden-visually">Twitter</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="c-header__actions">
+              <button class="c-theme-toggle" id="themeToggle" type="button" aria-label="Toggle colour theme">
+                <span class="c-nav__item__icon">
+                  <svg class="c-theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                  <svg class="c-theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+                </span>
+              </button>
+              <button class="js-nav-toggle c-nav-toggle" type="button" aria-label="Menu">
+                <span class="c-nav-toggle__icon"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-  <main id="content" class="container post-wide">
-    <article class="doc reading">
+    <main id="main-content" class="o-wrapper">
+      <div class="o-grid">
+        <div class="o-grid__col o-grid__col--center o-grid__col--9-10-m o-grid__col--2-3-l">
+    <article class="c-post c-content">
       <div class="post-intro">
-        <a class="back-link" href="blog.html">&larr; all writing</a>
+        <a class="c-back-link" href="blog.html">&larr; all writing</a>
 
         <h1>Scaling Laws for jaxchat: a Chinchilla IsoFLOP Sweep on One Node</h1>
-        <p class="lead">Before you pick a model size you should know the shape of the curve you are climbing. I ran a Chinchilla-style IsoFLOP sweep end to end on one 8x RTX 6000 node, recovered the textbook compute-optimal exponents, and placed a from-scratch JAX stack on the CORE-versus-compute trend against GPT-2 and GPT-3.</p>
+        <p class="c-lead">Before you pick a model size you should know the shape of the curve you are climbing. I ran a Chinchilla-style IsoFLOP sweep end to end on one 8x RTX 6000 node, recovered the textbook compute-optimal exponents, and placed a from-scratch JAX stack on the CORE-versus-compute trend against GPT-2 and GPT-3.</p>
 
-        <p class="byline">Ibra Niang &middot; June 2026 &middot; <a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">code on GitHub &#8599;</a></p>
+        <p class="c-byline">Ibra Niang &middot; June 2026 &middot; <a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer">code on GitHub &#8599;</a></p>
 
         <p>jaxchat is an end-to-end LLM training pipeline written from scratch in JAX, inspired by Karpathy's nanochat<a class="cite" href="https://github.com/karpathy/nanochat" target="_blank" rel="noreferrer">[4]</a><span class="sidenote">[4] Andrej Karpathy. &ldquo;nanochat.&rdquo; 2025. <a href="https://github.com/karpathy/nanochat" target="_blank" rel="noreferrer">github.com/karpathy/nanochat &#8599;</a></span>: tokenizer, pretraining, midtraining, SFT, RL with GRPO, and inference, ending in a web UI you can actually chat with. One repo, one 8x RTX 6000 node, the whole stack. This post is about the part that comes before any of that pays off: how big a model should you train, and on how many tokens, for a fixed amount of compute.</p>
 
@@ -149,31 +154,30 @@
         <div class="finding-body">
           <p>The IsoFLOP sweep, the depth miniseries, the parabola and power-law fits, and the rest of the end-to-end pipeline (tokenizer, pretraining, midtraining, SFT, GRPO, inference, and a chat UI) are all in one repository. The sweep reproduces with <code>runs/rtx_8gpu_chinchilla_isoflop.sh</code> and the fits and plots with <code>scripts/fit_chinchilla.py</code>.</p>
           <p><a href="https://github.com/ibusnowden/jaxchat" target="_blank" rel="noreferrer"><strong>github.com/ibusnowden/jaxchat</strong> &#8599;</a></p>
-          <p class="muted" style="font-size:14px;">An end-to-end LLM training pipeline written from scratch in JAX, inspired by Karpathy's nanochat. One repo, one 8x RTX 6000 node, the whole stack. References are linked inline and in the right margin.</p>
+          <p class="muted" style="font-size:14px;">An end-to-end LLM training pipeline written from scratch in JAX, inspired by Karpathy's nanochat. One repo, one 8x RTX 6000 node, the whole stack. References are linked inline and listed at the foot of this post.</p>
         </div>
       </section>
     </article>
-
-        <footer class="footer">
-      <div class="ms-footer-wordmark"><span class="dot-rule"></span><span class="wm-label">IBRA<span class="wm-dot"></span>NIANG</span><span class="dot-rule"></span></div>
-      <div class="footer-row primary">
-        <span>Memphis, TN</span>
-        <span class="dot">·</span>
-        <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a>
-        <span class="dot">·</span>
-        <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">github</a>
-        <span class="dot">·</span>
-        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">linkedin</a>
-        <span class="dot">·</span>
-        <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">twitter</a>
+        </div>
       </div>
-      <div class="footer-row secondary">© 2026 Ibra Niang</div>
-    </footer>
-  </main>
+    </main>
 
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">
-    &#8593;
-  </button>
+    <footer class="c-footer">
+      <div class="o-grid">
+        <div class="o-grid__col">
+          <ul class="c-footer-nav o-plain-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="reading.html">Reading</a></li>
+            <li><a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">Twitter</a></li>
+          </ul>
+          <div class="c-footer-copy">&copy; 2026 Ibra Niang &middot; Memphis, Tennessee &middot; <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a></div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
 
   <script src="app.js" defer></script>
 </body>

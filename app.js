@@ -1,198 +1,99 @@
-// Smooth scrolling + active section highlighting + back-to-top + reveal animations + theme toggle
+// Theme toggle, mobile navigation, and footnote collection.
 (function () {
-  // Theme toggle
-  const HLJS_LIGHT = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css';
-  const HLJS_DARK = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css';
+  var HLJS_LIGHT = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css';
+  var HLJS_DARK = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css';
 
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    const hljsLink = document.getElementById('hljs-theme');
+    var hljsLink = document.getElementById('hljs-theme');
     if (hljsLink) hljsLink.href = theme === 'dark' ? HLJS_DARK : HLJS_LIGHT;
   }
 
-  // Initial state — the head inline script may have already set data-theme to avoid FOUC.
-  let initial = document.documentElement.getAttribute('data-theme');
+  // The inline head script sets data-theme first to avoid a flash of the
+  // wrong theme; fall back to the stored or system preference.
+  var initial = document.documentElement.getAttribute('data-theme');
   if (!initial) {
     try {
-      const saved = localStorage.getItem('theme');
-      initial = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      initial = localStorage.getItem('theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     } catch (e) {
       initial = 'light';
     }
   }
   applyTheme(initial);
 
-  const themeBtn = document.getElementById('themeToggle');
+  var themeBtn = document.getElementById('themeToggle');
   if (themeBtn) {
     themeBtn.setAttribute('aria-pressed', initial === 'dark' ? 'true' : 'false');
-    themeBtn.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme') || 'light';
-      const next = current === 'dark' ? 'light' : 'dark';
+    themeBtn.addEventListener('click', function () {
+      var current = document.documentElement.getAttribute('data-theme') || 'light';
+      var next = current === 'dark' ? 'light' : 'dark';
       applyTheme(next);
       themeBtn.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
       try { localStorage.setItem('theme', next); } catch (e) {}
     });
   }
 
+  // Mobile navigation overlay.
+  var navToggle = document.querySelector('.js-nav-toggle');
+  var navWrap = document.querySelector('.c-nav-wrap');
+  if (navToggle && navWrap) {
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.addEventListener('click', function () {
+      var open = navWrap.classList.toggle('is-active');
+      navToggle.classList.toggle('c-nav-toggle--close', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
 
-  // Long-form posts: build a table of contents from the section headings and
-  // drop it in under the byline, the way the article itself is structured.
-  const article = document.querySelector('.doc.reading');
-  const intro = article && article.querySelector('.post-intro');
-  if (article && intro) {
-    const heads = Array.from(article.querySelectorAll('.finding-aside h2'));
-    if (heads.length > 2) {
-      heads.forEach((h, i) => {
-        if (!h.id) {
-          h.id =
-            (h.textContent || '')
-              .toLowerCase()
-              .replace(/[^a-z0-9]+/g, '-')
-              .replace(/^-+|-+$/g, '') || 'section-' + (i + 1);
-        }
-      });
-
-      const nav = document.createElement('nav');
-      nav.className = 'post-toc';
-      nav.setAttribute('aria-label', 'Contents');
-
-      const label = document.createElement('p');
-      label.className = 'post-toc-label';
-      label.textContent = 'Contents';
-      nav.appendChild(label);
-
-      const ol = document.createElement('ol');
-      heads.forEach((h) => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = '#' + h.id;
-        a.textContent = h.textContent;
-        li.appendChild(a);
-        ol.appendChild(li);
-      });
-      nav.appendChild(ol);
-      intro.appendChild(nav);
-    }
-  }
-
-  // Writing index: sort entries by publication date or title.
-  // The markup advertises these controls, so make them real.
-  const postList = document.getElementById('postList');
-  const sortLinks = document.querySelectorAll('.page-sort a[data-sort]');
-  if (postList && sortLinks.length) {
-    // Remember the authored order so equal keys stay stable and predictable.
-    const items = Array.from(postList.children);
-    items.forEach((el, i) => { el.dataset.order = String(i); });
-
-    function sortBy(mode) {
-      const sorted = items.slice().sort((a, b) => {
-        if (mode === 'title') {
-          return (a.dataset.title || '').localeCompare(b.dataset.title || '');
-        }
-        // date: newest first; ties fall back to the authored order
-        const cmp = (b.dataset.date || '').localeCompare(a.dataset.date || '');
-        return cmp !== 0 ? cmp : Number(a.dataset.order) - Number(b.dataset.order);
-      });
-      sorted.forEach((el) => postList.appendChild(el));
-    }
-
-    sortLinks.forEach((link) => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        sortLinks.forEach((l) => l.classList.remove('is-active'));
-        link.classList.add('is-active');
-        sortBy(link.dataset.sort);
-      });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' || !navWrap.classList.contains('is-active')) return;
+      navWrap.classList.remove('is-active');
+      navToggle.classList.remove('c-nav-toggle--close');
+      navToggle.setAttribute('aria-expanded', 'false');
     });
   }
 
-  // Smooth in-page scrolling
-  document.querySelectorAll('a[href^="#"]').forEach((a) => {
-    a.addEventListener('click', (e) => {
-      const id = a.getAttribute('href');
-      if (!id || id === '#') return;
+  // Margin notes were part of the old two-column post layout. In a single
+  // column they read better as references at the foot of the article, one
+  // entry per distinct citation marker.
+  var post = document.querySelector('.c-post');
+  var content = post && (post.classList.contains('c-content') ? post : post.querySelector('.c-content'));
+  if (content) {
+    var notes = Array.prototype.slice.call(content.querySelectorAll('.sidenote'));
+    if (notes.length) {
+      var seen = {};
+      var entries = [];
 
-      let target;
-      try {
-        target = document.querySelector(id);
-      } catch (err) {
-        return;
+      notes.forEach(function (note) {
+        var marker = note.previousElementSibling;
+        if (!marker || !marker.classList.contains('cite')) return;
+        var label = (marker.textContent || '').replace(/[^0-9]/g, '') || String(entries.length + 1);
+        if (!seen[label]) {
+          seen[label] = true;
+          entries.push({ label: label, html: note.innerHTML });
+        }
+        marker.setAttribute('href', '#ref-' + label);
+      });
+
+      if (entries.length) {
+        entries.sort(function (a, b) { return Number(a.label) - Number(b.label); });
+
+        var heading = document.createElement('h2');
+        heading.id = 'references';
+        heading.textContent = 'References';
+
+        var list = document.createElement('ul');
+        list.className = 'o-plain-list c-refs';
+        entries.forEach(function (entry) {
+          var li = document.createElement('li');
+          li.id = 'ref-' + entry.label;
+          li.innerHTML = entry.html;
+          list.appendChild(li);
+        });
+
+        content.appendChild(heading);
+        content.appendChild(list);
       }
-      if (!target) return;
-
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      // Update hash without jump
-      history.pushState(null, '', id);
-    });
-  });
-
-  // Back to top
-  const btn = document.getElementById('backToTop');
-  if (btn) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 420) btn.classList.add('show');
-      else btn.classList.remove('show');
-    });
-
-    btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  // Active link highlight for section-nav (index page)
-  const sectionNav = document.querySelector('.section-nav');
-  if (sectionNav) {
-    const links = Array.from(sectionNav.querySelectorAll('a[href^="#"]'));
-    const map = new Map(links.map((l) => [l.getAttribute('href'), l]));
-
-    const sections = links
-      .map((l) => document.querySelector(l.getAttribute('href')))
-      .filter(Boolean);
-
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (!visible) return;
-
-        links.forEach((l) => l.classList.remove('active'));
-        const href = '#' + visible.target.id;
-        const active = map.get(href);
-        if (active) active.classList.add('active');
-      },
-      { root: null, threshold: [0.18, 0.28, 0.38, 0.5] }
-    );
-
-    sections.forEach((s) => obs.observe(s));
-  }
-
-  // Reveal on scroll
-  const reveals = document.querySelectorAll('[data-reveal]');
-  if (reveals.length) {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reducedMotion) {
-      reveals.forEach((el) => el.classList.add('is-visible'));
-    } else {
-      const revealObserver = new IntersectionObserver(
-        (entries, observer) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.2 }
-      );
-
-      reveals.forEach((el) => {
-        const delay = el.getAttribute('data-delay');
-        if (delay) el.style.setProperty('--delay', delay);
-        revealObserver.observe(el);
-      });
     }
   }
 })();

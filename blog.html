@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blog — Ibra Niang</title>
+  <title>Blog &middot; Ibra Niang</title>
+
+  <meta name="description" content="Writing by Ibra Niang on post-training, scaling laws, inference systems, and building training stacks from scratch." />
   <meta name="color-scheme" content="light dark" />
 
   <script>
@@ -14,97 +16,135 @@
       }catch(e){}
     })();
   </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Benne&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="c-site-container">
 
-    <header class="site-header">
-    <div class="site-header-inner">
-      <a class="wordmark" href="index.html">IBRA<span class="wm-dot"></span>NIANG</a>
-      <nav class="top-nav" aria-label="Primary">
-        <a class="top-link" href="index.html">home</a>
-        <a class="top-link" href="projects.html">projects</a>
-        <a class="top-link is-active" href="blog.html">writing</a>
-        <a class="top-link" href="reading.html">reading</a>
-        <a class="top-link" href="school.html">school</a>
-      </nav>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span class="theme-toggle-thumb"></span></button>
-    </div>
-  </header>
-
-  <main id="content" class="container">
-    <section class="section">
-      <h1 class="page-title">Writing</h1>
-      <p class="page-sort">Sort entries by: <a href="#" data-sort="date" class="is-active">publication date</a>, <a href="#" data-sort="title">title</a></p>
-
-      <ol class="post-list" id="postList">
-        <li class="post-item" data-date="2026-07" data-title="Giving a 3-bit GLM-5.2 Vision in llama.cpp">
-          <a class="post-link" href="glm-5-2-vision-llama-cpp.html">
-            <span class="post-date">Jul 2026</span>
-            <span class="post-body">
-              <span class="post-title">Giving a 3-bit GLM-5.2 Vision in llama.cpp</span>
-              <span class="post-desc">Attaching a 943 MB vision projector to an unchanged 343 GB Q3 text model: native multimodal support in 44 lines across six files, with the patch, checksums, and an honest four-case evaluation.</span>
-            </span>
-          </a>
-        </li>
-
-        <li class="post-item" data-date="2026-06" data-title="Scaling Laws for jaxchat: a Chinchilla IsoFLOP Sweep on One Node">
-          <a class="post-link" href="jaxchat-scaling-laws.html">
-            <span class="post-date">Jun 2026</span>
-            <span class="post-body">
-              <span class="post-title">Scaling Laws for jaxchat: a Chinchilla IsoFLOP Sweep on One Node</span>
-              <span class="post-desc">A Chinchilla-style IsoFLOP sweep run end to end on one 8&times;RTX 6000 node: 30 runs across four compute budgets recover textbook C^0.50 exponents on both axes.</span>
-            </span>
-          </a>
-        </li>
-
-        <li class="post-item" data-date="2026-06" data-title="On-Policy Distillation Through a Distributional Lens">
-          <a class="post-link" href="opd-distributional-lens.html">
-            <span class="post-date">Jun 2026</span>
-            <span class="post-body">
-              <span class="post-title">On-Policy Distillation Through a Distributional Lens</span>
-              <span class="post-desc">SFT, RL, and on-policy distillation as three corners of one (&alpha;, &lambda;, &pi;<sub>T</sub>) policy gradient: one trainer, eight experiments, and the per-token KL clip that separates collapse from the best recipe.</span>
-            </span>
-          </a>
-        </li>
-
-        <li class="post-item" data-date="2026-06-13" data-title="Making Physics: an illustrated reference guide to physics through simulation">
-          <a class="post-link" href="physics/index.html">
-            <span class="post-date">Jun 2026</span>
-            <span class="post-body">
-              <span class="post-title">Making Physics: an illustrated reference guide to physics through simulation</span>
-              <span class="post-desc">A 20-chapter visual guide where every figure is a real render from a from-scratch C++ engine, from mechanics to a general-relativistic black-hole ray tracer.</span>
-            </span>
-          </a>
-        </li>
-      </ol>
-    </section>
-
-        <footer class="footer">
-      <div class="ms-footer-wordmark"><span class="dot-rule"></span><span class="wm-label">IBRA<span class="wm-dot"></span>NIANG</span><span class="dot-rule"></span></div>
-      <div class="footer-row primary">
-        <span>Memphis, TN</span>
-        <span class="dot">·</span>
-        <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a>
-        <span class="dot">·</span>
-        <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">github</a>
-        <span class="dot">·</span>
-        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">linkedin</a>
-        <span class="dot">·</span>
-        <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">twitter</a>
+    <header class="c-header">
+      <a href="#main-content" class="c-skip-to-content">Skip to content</a>
+      <div class="o-grid">
+        <div class="o-grid__col">
+          <div class="c-header__inner">
+            <div class="c-logo">
+              <a class="c-logo__link" href="index.html">IBRA NIANG</a>
+            </div>
+            <nav class="c-nav-wrap" aria-label="Main Navigation">
+              <ul class="c-nav o-plain-list">
+                <li class="c-nav__item"><a href="index.html" class="c-nav__link">Home</a></li>
+                <li class="c-nav__item"><a href="blog.html" class="c-nav__link c-nav__link--current" aria-current="page">Blog</a></li>
+                <li class="c-nav__item"><a href="reading.html" class="c-nav__link">Reading</a></li>
+                <li class="c-nav__item c-nav__item--hasIcon">
+                  <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">
+                    <span class="c-nav__item__icon">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </span>
+                    <span class="u-hidden-visually">Twitter</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="c-header__actions">
+              <button class="c-theme-toggle" id="themeToggle" type="button" aria-label="Toggle colour theme">
+                <span class="c-nav__item__icon">
+                  <svg class="c-theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                  <svg class="c-theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+                </span>
+              </button>
+              <button class="js-nav-toggle c-nav-toggle" type="button" aria-label="Menu">
+                <span class="c-nav-toggle__icon"></span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="footer-row secondary">© 2026 Ibra Niang</div>
-    </footer>
-  </main>
+    </header>
 
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">
-    &#8593;
-  </button>
+    <main id="main-content" class="o-wrapper">
+      <div class="o-grid">
+        <div class="o-grid__col o-grid__col--center o-grid__col--9-10-m o-grid__col--2-3-l">
+          <div class="c-title-bar">
+            <h1 class="c-title-bar__title">Posts</h1>
+            <span class="c-title-bar__divider"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="o-grid">
+        <div class="o-grid__col o-grid__col--center o-grid__col--9-10-m o-grid__col--2-3-l">
+
+          <article class="c-post-card">
+            <div class="c-post-card__meta">
+              <time class="c-post-card__date u-type-uppercase" datetime="2026-07">Jul 2026</time>
+            </div>
+            <div class="c-post-card__content">
+              <h2 class="c-post-card__title">
+                <a href="glm-5-2-vision-llama-cpp.html" class="c-post-card__url">Giving a 3-bit GLM-5.2 Vision in llama.cpp</a>
+              </h2>
+              <p class="c-post-card__excerpt">Attaching a 943 MB vision projector to an unchanged 343 GB Q3 text model: native multimodal support in 44 lines across six files, with the patch, checksums, and an honest four-case evaluation.</p>
+            </div>
+          </article>
+
+          <article class="c-post-card">
+            <div class="c-post-card__meta">
+              <time class="c-post-card__date u-type-uppercase" datetime="2026-06">Jun 2026</time>
+            </div>
+            <div class="c-post-card__content">
+              <h2 class="c-post-card__title">
+                <a href="jaxchat-scaling-laws.html" class="c-post-card__url">Scaling Laws for jaxchat: a Chinchilla IsoFLOP Sweep on One Node</a>
+              </h2>
+              <p class="c-post-card__excerpt">A Chinchilla-style IsoFLOP sweep run end to end on one 8&times;RTX 6000 node: 30 runs across four compute budgets recover textbook C^0.50 exponents on both axes.</p>
+            </div>
+          </article>
+
+          <article class="c-post-card">
+            <div class="c-post-card__meta">
+              <time class="c-post-card__date u-type-uppercase" datetime="2026-06">Jun 2026</time>
+            </div>
+            <div class="c-post-card__content">
+              <h2 class="c-post-card__title">
+                <a href="opd-distributional-lens.html" class="c-post-card__url">On-Policy Distillation Through a Distributional Lens</a>
+              </h2>
+              <p class="c-post-card__excerpt">SFT, RL, and on-policy distillation as three corners of one (&alpha;, &lambda;, &pi;<sub>T</sub>) policy gradient: one trainer, eight experiments, and the per-token KL clip that separates collapse from the best recipe.</p>
+            </div>
+          </article>
+
+          <article class="c-post-card">
+            <div class="c-post-card__meta">
+              <time class="c-post-card__date u-type-uppercase" datetime="2026-06">Jun 2026</time>
+            </div>
+            <div class="c-post-card__content">
+              <h2 class="c-post-card__title">
+                <a href="physics/index.html" class="c-post-card__url">Making Physics: an illustrated reference guide to physics through simulation</a>
+              </h2>
+              <p class="c-post-card__excerpt">A 20-chapter visual guide where every figure is a real render from a from-scratch C++ engine, from mechanics to a general-relativistic black-hole ray tracer.</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </main>
+
+    <footer class="c-footer">
+      <div class="o-grid">
+        <div class="o-grid__col">
+          <ul class="c-footer-nav o-plain-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="reading.html">Reading</a></li>
+            <li><a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">Twitter</a></li>
+          </ul>
+          <div class="c-footer-copy">&copy; 2026 Ibra Niang &middot; Memphis, Tennessee &middot; <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a></div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
 
   <script src="app.js" defer></script>
 </body>

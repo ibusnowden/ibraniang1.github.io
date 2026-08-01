@@ -26,36 +26,63 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Benne&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="c-site-container">
 
-    <header class="site-header">
-    <div class="site-header-inner">
-      <a class="wordmark" href="index.html">IBRA<span class="wm-dot"></span>NIANG</a>
-      <nav class="top-nav" aria-label="Primary">
-        <a class="top-link" href="index.html">home</a>
-        <a class="top-link" href="projects.html">projects</a>
-        <a class="top-link is-active" href="blog.html">writing</a>
-        <a class="top-link" href="reading.html">reading</a>
-        <a class="top-link" href="school.html">school</a>
-      </nav>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span class="theme-toggle-thumb"></span></button>
-    </div>
-  </header>
+    <header class="c-header">
+      <a href="#main-content" class="c-skip-to-content">Skip to content</a>
+      <div class="o-grid">
+        <div class="o-grid__col">
+          <div class="c-header__inner">
+            <div class="c-logo">
+              <a class="c-logo__link" href="index.html">IBRA NIANG</a>
+            </div>
+            <nav class="c-nav-wrap" aria-label="Main Navigation">
+              <ul class="c-nav o-plain-list">
+                <li class="c-nav__item"><a href="index.html" class="c-nav__link">Home</a></li>
+                <li class="c-nav__item"><a href="blog.html" class="c-nav__link c-nav__link--current" aria-current="page">Blog</a></li>
+                <li class="c-nav__item"><a href="reading.html" class="c-nav__link">Reading</a></li>
+                <li class="c-nav__item c-nav__item--hasIcon">
+                  <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">
+                    <span class="c-nav__item__icon">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </span>
+                    <span class="u-hidden-visually">Twitter</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="c-header__actions">
+              <button class="c-theme-toggle" id="themeToggle" type="button" aria-label="Toggle colour theme">
+                <span class="c-nav__item__icon">
+                  <svg class="c-theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                  <svg class="c-theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+                </span>
+              </button>
+              <button class="js-nav-toggle c-nav-toggle" type="button" aria-label="Menu">
+                <span class="c-nav-toggle__icon"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-  <main id="content" class="container post-wide">
-    <article class="doc reading">
+    <main id="main-content" class="o-wrapper">
+      <div class="o-grid">
+        <div class="o-grid__col o-grid__col--center o-grid__col--9-10-m o-grid__col--2-3-l">
+    <article class="c-post c-content">
       <div class="post-intro">
-        <a class="back-link" href="blog.html">&larr; all writing</a>
+        <a class="c-back-link" href="blog.html">&larr; all writing</a>
 
         <h1>Giving a 3-bit GLM-5.2 Vision in llama.cpp</h1>
-        <p class="lead">The language model did not need another conversion. I kept the existing 343 GB Q3 GGUF byte-for-byte unchanged, attached a 943 MB vision projector at runtime, and added the missing GLM multimodal path to llama.cpp in 44 lines across six files.</p>
+        <p class="c-lead">The language model did not need another conversion. I kept the existing 343 GB Q3 GGUF byte-for-byte unchanged, attached a 943 MB vision projector at runtime, and added the missing GLM multimodal path to llama.cpp in 44 lines across six files.</p>
 
-        <p class="byline">Ibra Niang &middot; July 2026 &middot; <a href="https://huggingface.co/ibrahima2222/GLM-5.2-Vision-mmproj-GGUF" target="_blank" rel="noreferrer">projector and patch on Hugging Face &#8599;</a></p>
+        <p class="c-byline">Ibra Niang &middot; July 2026 &middot; <a href="https://huggingface.co/ibrahima2222/GLM-5.2-Vision-mmproj-GGUF" target="_blank" rel="noreferrer">projector and patch on Hugging Face &#8599;</a></p>
 
         <p>The starting point was a useful asymmetry. I already had Unsloth's <code>UD-Q3_K_XL</code> GLM-5.2 text model serving at a 524,288-token context. Baseten's vision release provided the missing visual side: a frozen MoonViT tower and its trained PatchMerger projector. The text backbone was the same GLM-5.2 family. That meant the practical question was not “can I quantize a second enormous checkpoint?” It was “can I connect this small visual front end to the text model I already run?”</p>
 
@@ -137,7 +164,7 @@
       <section class="finding">
         <div class="finding-aside">
           <span class="finding-kicker">Demo</span>
-          <h2>It read the code—and found the bug</h2>
+          <h2>It read the code and found the bug</h2>
           <p class="finding-lead">OCR was useful because it supported reasoning, not because transcription was the endpoint.</p>
         </div>
         <div class="finding-body">
@@ -195,27 +222,26 @@ cmake --build build-cuda --target llama-server -j
         </div>
       </section>
     </article>
-
-        <footer class="footer">
-      <div class="ms-footer-wordmark"><span class="dot-rule"></span><span class="wm-label">IBRA<span class="wm-dot"></span>NIANG</span><span class="dot-rule"></span></div>
-      <div class="footer-row primary">
-        <span>Memphis, TN</span>
-        <span class="dot">·</span>
-        <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a>
-        <span class="dot">·</span>
-        <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">github</a>
-        <span class="dot">·</span>
-        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">linkedin</a>
-        <span class="dot">·</span>
-        <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">twitter</a>
+        </div>
       </div>
-      <div class="footer-row secondary">© 2026 Ibra Niang</div>
-    </footer>
-  </main>
+    </main>
 
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">
-    &#8593;
-  </button>
+    <footer class="c-footer">
+      <div class="o-grid">
+        <div class="o-grid__col">
+          <ul class="c-footer-nav o-plain-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="reading.html">Reading</a></li>
+            <li><a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">Twitter</a></li>
+          </ul>
+          <div class="c-footer-copy">&copy; 2026 Ibra Niang &middot; Memphis, Tennessee &middot; <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a></div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
 
   <script src="app.js" defer></script>
 </body>

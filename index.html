@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ibra Niang · Researcher · Builder</title>
+  <title>Ibra Niang</title>
 
-  <meta name="description" content="Ibra Niang. Multimodal NLP researcher at the University of Memphis (BS/MS '26). Building vision-language models and the systems that train them." />
+  <meta name="description" content="Ibra Niang. Multimodal NLP: vision language models and the systems that train them." />
   <meta name="color-scheme" content="light dark" />
 
   <script>
@@ -16,57 +16,90 @@
       }catch(e){}
     })();
   </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Benne&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="c-site-container">
 
-  <header class="site-header">
-    <div class="site-header-inner">
-      <a class="wordmark" href="index.html">IBRA<span class="wm-dot"></span>NIANG</a>
-      <nav class="top-nav" aria-label="Primary">
-        <a class="top-link is-active" href="index.html">home</a>
-        <a class="top-link" href="projects.html">projects</a>
-        <a class="top-link" href="blog.html">writing</a>
-        <a class="top-link" href="reading.html">reading</a>
-        <a class="top-link" href="school.html">school</a>
-      </nav>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme"><span class="theme-toggle-thumb"></span></button>
-    </div>
-  </header>
-
-  <main id="content" class="container">
-    <section class="ms-hero">
-      <h1 class="ms-wordmark-big">IBRA<span class="wm-dot"></span>NIANG</h1>
-    <span class="dot-rule"></span>
-    </section>
-
-    <p class="bio drop-cap">My work is multimodal NLP: vision-language models and the systems that train them. I am finishing a combined BS/MS at the University of Memphis in 2026 under Dr. Xiaolei Huang, working on post-training and distillation methods, scaling-law sweeps, and from-scratch training and inference stacks in JAX, CUDA, and C.</p>
-
-    <footer class="footer">
-      <div class="ms-footer-wordmark"><span class="dot-rule"></span><span class="wm-label">IBRA<span class="wm-dot"></span>NIANG</span><span class="dot-rule"></span></div>
-      <div class="footer-row primary">
-        <span>Memphis, TN</span>
-        <span class="dot">·</span>
-        <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a>
-        <span class="dot">·</span>
-        <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">github</a>
-        <span class="dot">·</span>
-        <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">linkedin</a>
-        <span class="dot">·</span>
-        <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">twitter</a>
+    <header class="c-header">
+      <a href="#main-content" class="c-skip-to-content">Skip to content</a>
+      <div class="o-grid">
+        <div class="o-grid__col">
+          <div class="c-header__inner">
+            <div class="c-logo">
+              <a class="c-logo__link" href="index.html">IBRA NIANG</a>
+            </div>
+            <nav class="c-nav-wrap" aria-label="Main Navigation">
+              <ul class="c-nav o-plain-list">
+                <li class="c-nav__item"><a href="index.html" class="c-nav__link c-nav__link--current" aria-current="page">Home</a></li>
+                <li class="c-nav__item"><a href="blog.html" class="c-nav__link">Blog</a></li>
+                <li class="c-nav__item"><a href="reading.html" class="c-nav__link">Reading</a></li>
+                <li class="c-nav__item c-nav__item--hasIcon">
+                  <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">
+                    <span class="c-nav__item__icon">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </span>
+                    <span class="u-hidden-visually">Twitter</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="c-header__actions">
+              <button class="c-theme-toggle" id="themeToggle" type="button" aria-label="Toggle colour theme">
+                <span class="c-nav__item__icon">
+                  <svg class="c-theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                  <svg class="c-theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+                </span>
+              </button>
+              <button class="js-nav-toggle c-nav-toggle" type="button" aria-label="Menu">
+                <span class="c-nav-toggle__icon"></span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="footer-row secondary">© 2026 Ibra Niang</div>
-    </footer>
-  </main>
+    </header>
 
-  <button class="back-to-top" id="backToTop" aria-label="Back to top">
-    &#8593;
-  </button>
+    <main id="main-content" class="o-wrapper">
+      <div class="o-grid">
+        <div class="o-grid__col o-grid__col--center o-grid__col--9-10-m o-grid__col--2-3-l">
+          <div class="c-home c-home--content-only">
+            <div class="c-home__content c-home__content--only">
+              <section class="c-content">
+                <p>Hi, I'm <strong>Ibra Niang</strong>. I work on multimodal NLP: vision language models and the systems that train them. I am finishing a combined BS/MS at the University of Memphis in 2026, advised by Dr. Xiaolei Huang.</p>
+
+                <p>Most of what I do sits close to the metal. I study post-training and distillation, run scaling-law sweeps, and build training and inference stacks from scratch in JAX, CUDA, and C. I like questions whose answer is a number you have to earn, so I tend to write the trainer, run the sweep, and then publish what actually happened, including the runs that did not work.</p>
+
+                <p>I live in Memphis, Tennessee.</p>
+
+                <p>My code is on <a href="https://github.com/ibusnowden" target="_blank" rel="noreferrer">GitHub</a>, my background is on <a href="https://www.linkedin.com/in/ibra-niang" target="_blank" rel="noreferrer">LinkedIn</a>, and shorter notes go on <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">Twitter</a>. You can email me <a href="mailto:inniang@memphis.edu">here</a>.</p>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="c-footer">
+      <div class="o-grid">
+        <div class="o-grid__col">
+          <ul class="c-footer-nav o-plain-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="reading.html">Reading</a></li>
+            <li><a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">Twitter</a></li>
+          </ul>
+          <div class="c-footer-copy">&copy; 2026 Ibra Niang &middot; Memphis, Tennessee &middot; <a href="mailto:inniang@memphis.edu">inniang@memphis.edu</a></div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
 
   <script src="app.js" defer></script>
 </body>
