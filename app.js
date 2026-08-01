@@ -1,12 +1,7 @@
 // Theme toggle, mobile navigation, and footnote collection.
 (function () {
-  var HLJS_LIGHT = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css';
-  var HLJS_DARK = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css';
-
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    var hljsLink = document.getElementById('hljs-theme');
-    if (hljsLink) hljsLink.href = theme === 'dark' ? HLJS_DARK : HLJS_LIGHT;
   }
 
   // The inline head script sets data-theme first to avoid a flash of the

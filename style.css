@@ -628,6 +628,34 @@ code, kbd, pre, samp {
   background: transparent;
 }
 
+/* Monochrome syntax highlighting. Code is prerendered at build time, so this
+   replaces the CDN theme; structure comes from weight and grey, not hue, and
+   it follows the light/dark variables for free. */
+.hljs-comment {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-literal,
+.hljs-type,
+.hljs-meta {
+  font-weight: var(--font-weight-bold);
+}
+
+.hljs-string,
+.hljs-attr {
+  color: var(--color-text-secondary);
+}
+
+.hljs-title,
+.hljs-built_in {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--color-border);
+}
+
 .c-content :not(pre) > code {
   padding: 2px var(--space-4);
   background-color: var(--background-code);
