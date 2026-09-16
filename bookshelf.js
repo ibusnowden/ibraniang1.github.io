@@ -11,8 +11,8 @@
   if (!stage || !items.length) return;
 
   var PX_PER_INCH = 28;
-  var PACK = 38;       // space between closed books, on top of their thickness
-  var CLEARANCE = 250; // space either side of the open book
+  var PACK = 38;       // edge of each closed book left in view, on top of its thickness
+  var GAP = 70;        // clear space between the open book and its neighbours
   var SLOPE = -0.22;   // rise of the line; a little flatter than the 16deg yaw
   var LINE = 0;        // where the line of closed books crosses the centre
   var DROP = 120;      // how far the open book comes forward
@@ -119,12 +119,23 @@
     var xs = [];
     xs[open] = 0;
 
+    // Distance between the centres of two neighbours, left then right. The
+    // open book clears half of each cover plus GAP. Closed books overlap, and
+    // the left one is drawn in front, so a narrower book behind a wider one
+    // gets extra room: every book keeps at least PACK of its edge in view.
+    function spacing(left, right) {
+      var span = left === current || right === current
+        ? GAP + (left.width + right.width) / 2
+        : PACK + Math.max(0, (left.width - right.width) / 2);
+      return span + (left.depth + right.depth) / 2;
+    }
+
     var i;
     for (i = open + 1; i < list.length; i++) {
-      xs[i] = xs[i - 1] + (i - 1 === open ? CLEARANCE : PACK) + (list[i - 1].depth + list[i].depth) / 2;
+      xs[i] = xs[i - 1] + spacing(list[i - 1], list[i]);
     }
     for (i = open - 1; i >= 0; i--) {
-      xs[i] = xs[i + 1] - (i + 1 === open ? CLEARANCE : PACK) - (list[i + 1].depth + list[i].depth) / 2;
+      xs[i] = xs[i + 1] - spacing(list[i], list[i + 1]);
     }
 
     books.forEach(function (book) {

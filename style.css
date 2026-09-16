@@ -1137,7 +1137,7 @@ code, kbd, pre, samp {
 
 .c-shelf__stage {
   position: relative;
-  height: 520px;
+  height: 560px;
   overflow: hidden;
   perspective: 1800px;
   cursor: grab;
@@ -1332,8 +1332,21 @@ code, kbd, pre, samp {
     --book-scale: .72;
   }
 
+  /* One swipeable row instead of a stack of wrapped lines. */
+  .c-shelf__filters {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: var(--space-8);
+    scrollbar-width: none;
+  }
+
+  .c-shelf__filters::-webkit-scrollbar {
+    display: none;
+  }
+
   .c-shelf__stage {
-    height: 360px;
+    height: 400px;
   }
 }
 
