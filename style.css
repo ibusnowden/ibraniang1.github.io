@@ -1106,7 +1106,8 @@ code, kbd, pre, samp {
    Each book is a box: the cover faces the reader, the back board sits one
    thickness behind it, and the spine and page block hinge off either edge.
    bookshelf.js sets --x/--y per book; the tokens below keep the boards and
-   paper inside the monochrome palette, and covers are shown in greyscale.
+   paper inside the monochrome palette. Covers keep their own colours; they
+   are the only colour on the site.
    -------------------------------------------------------------------------- */
 
 .c-shelf {
@@ -1237,7 +1238,6 @@ code, kbd, pre, samp {
   height: 100%;
   object-fit: cover;
   pointer-events: none;
-  filter: grayscale(1);
 }
 
 .c-shelf__book:not([data-open="true"]):hover .c-shelf__cover {
