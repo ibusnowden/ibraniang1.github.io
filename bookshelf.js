@@ -1,4 +1,4 @@
-// Bookshelf: turns the catalogue on bookshelf.html into a 3D shelf.
+// Bookshelf: turns the catalogue on reading.html into a 3D shelf.
 //
 // Every book stands on one line that recedes up and to the right. The open
 // book drops out of that line toward the reader, with clearance on both
@@ -206,7 +206,7 @@
     addFilter(category, category, books.filter(function (b) { return b.category === category; }).length);
   });
 
-  // A deep link such as bookshelf.html#conjectures-and-refutations opens that book.
+  // A deep link such as reading.html#conjectures-and-refutations opens that book.
   function linkedBook() {
     return books.filter(function (book) { return '#' + book.id === location.hash; })[0];
   }

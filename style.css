@@ -1054,8 +1054,8 @@ code, kbd, pre, samp {
 }
 
 /* --------------------------------------------------------------------------
-   Tabs: the Reading sub-navigation and the bookshelf category filters.
-   Same treatment as the main nav: the current item gets a 2px rule.
+   Tabs: the bookshelf category filters. Same treatment as the main nav:
+   the current item gets a 2px rule.
    -------------------------------------------------------------------------- */
 
 .c-tabs {
@@ -1085,13 +1085,11 @@ code, kbd, pre, samp {
 
 .c-tabs__item:hover,
 .c-tabs__item:focus-visible,
-.c-tabs__item[aria-current="page"],
 .c-tabs__item[aria-pressed="true"] {
   color: var(--color-text-primary);
 }
 
 .c-tabs__item:hover::after,
-.c-tabs__item[aria-current="page"]::after,
 .c-tabs__item[aria-pressed="true"]::after {
   background-color: var(--color-text-primary);
 }

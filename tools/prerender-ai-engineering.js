@@ -1,9 +1,9 @@
-// Regenerate the AI Engineering body in reading.html from the markdown source.
+// Regenerate the AI Engineering body in ai-engineering.html from the markdown source.
 //
 //   cd tools && npm install && npm run build
 //
 // The corpus lives in content/ai-engineering.json. This renders it to static
-// HTML between the sentinels in reading.html, so the published page needs no
+// HTML between the sentinels in ai-engineering.html, so the published page needs no
 // markdown or highlighting library at runtime.
 
 const fs = require('fs');
@@ -13,7 +13,7 @@ const hljs = require('highlight.js');
 
 const root = path.join(__dirname, '..');
 const SOURCE = path.join(root, 'content', 'ai-engineering.json');
-const PAGE = path.join(root, 'reading.html');
+const PAGE = path.join(root, 'ai-engineering.html');
 
 const START = '<!-- reading:start -->';
 const END = '<!-- reading:end -->';
@@ -52,7 +52,7 @@ const sections = data
 const page = fs.readFileSync(PAGE, 'utf8');
 const from = page.indexOf(START);
 const to = page.indexOf(END);
-if (from === -1 || to === -1) throw new Error(`sentinels ${START} / ${END} not found in reading.html`);
+if (from === -1 || to === -1) throw new Error(`sentinels ${START} / ${END} not found in ai-engineering.html`);
 
 // Replace via slices, not String.replace: the corpus contains `$` sequences
 // that would otherwise be read as backreferences.
@@ -61,4 +61,4 @@ fs.writeFileSync(PAGE, out);
 
 const highlighted = (sections.match(/class="hljs /g) || []).length;
 console.log(`${data.length} sections, ${highlighted} highlighted blocks`);
-console.log(`reading.html is now ${(out.length / 1024).toFixed(0)} KB`);
+console.log(`ai-engineering.html is now ${(out.length / 1024).toFixed(0)} KB`);
