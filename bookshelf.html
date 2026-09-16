@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookshelf &middot; Ibra Niang</title>
+
+  <meta name="description" content="The books Ibra Niang is reading, shelved by category." />
+  <meta name="color-scheme" content="light dark" />
+
+  <script>
+    (function(){
+      try{
+        var t = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', t);
+      }catch(e){}
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Benne&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="c-site-container">
+
+    <header class="c-header">
+      <a href="#main-content" class="c-skip-to-content">Skip to content</a>
+      <div class="o-grid">
+        <div class="o-grid__col">
+          <div class="c-header__inner">
+            <div class="c-logo">
+              <a class="c-logo__link" href="index.html">IBRA NIANG</a>
+            </div>
+            <nav class="c-nav-wrap" aria-label="Main Navigation">
+              <ul class="c-nav o-plain-list">
+                <li class="c-nav__item"><a href="index.html" class="c-nav__link">Home</a></li>
+                <li class="c-nav__item"><a href="blog.html" class="c-nav__link">Blog</a></li>
+                <li class="c-nav__item"><a href="reading.html" class="c-nav__link c-nav__link--current">Reading</a></li>
+                <li class="c-nav__item c-nav__item--hasIcon">
+                  <a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">
+                    <span class="c-nav__item__icon">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </span>
+                    <span class="u-hidden-visually">Twitter</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="c-header__actions">
+              <button class="c-theme-toggle" id="themeToggle" type="button" aria-label="Toggle colour theme">
+                <span class="c-nav__item__icon">
+                  <svg class="c-theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                  <svg class="c-theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+                </span>
+              </button>
+              <button class="js-nav-toggle c-nav-toggle" type="button" aria-label="Menu">
+                <span class="c-nav-toggle__icon"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="o-wrapper">
+      <div class="o-grid">
+        <div class="o-grid__col o-grid__col--center o-grid__col--9-10-m o-grid__col--2-3-l">
+          <div class="c-post">
+            <header class="c-post-header">
+              <nav class="c-tabs" aria-label="Reading">
+                <a href="reading.html" class="c-tabs__item">AI Engineering</a>
+                <a href="bookshelf.html" class="c-tabs__item" aria-current="page">Bookshelf</a>
+              </nav>
+              <h1 class="c-post-header__title">Bookshelf</h1>
+              <p class="c-post-header__excerpt">What I am reading, shelved by category. Pick a book, drag the shelf, or use the arrow keys to browse.</p>
+            </header>
+          </div>
+        </div>
+      </div>
+
+      <!-- Built by bookshelf.js from the catalogue below. Hidden without JS,
+           where the catalogue stands on its own. -->
+      <section class="c-shelf js-shelf" id="shelf" aria-label="Bookshelf" hidden>
+        <div class="c-tabs c-shelf__filters js-shelf-filters" role="group" aria-label="Filter by category"></div>
+        <div class="c-shelf__stage js-shelf-stage" aria-label="Interactive bookshelf. Drag or scroll sideways to browse, select a book to bring it forward, or use the left and right arrow keys."></div>
+        <div class="c-shelf__footer">
+          <button type="button" class="c-shelf__arrow js-shelf-prev" aria-label="Previous book">&larr;</button>
+          <div class="c-shelf__caption" aria-live="polite" aria-atomic="true">
+            <p class="c-shelf__kicker js-shelf-category"></p>
+            <p class="c-shelf__title js-shelf-title"></p>
+            <p class="c-shelf__author js-shelf-author"></p>
+          </div>
+          <button type="button" class="c-shelf__arrow js-shelf-next" aria-label="Next book">&rarr;</button>
+        </div>
+      </section>
+
+      <div class="o-grid">
+        <div class="o-grid__col o-grid__col--center o-grid__col--9-10-m o-grid__col--2-3-l">
+          <div class="c-post c-catalogue">
+          <!--
+            The catalogue is the source of truth for the shelf. To add a book,
+            add an <li class="c-book"> under its category (or copy a whole
+            <section> for a new category). The shelf follows document order.
+              data-id    slug, also a deep link: bookshelf.html#<data-id>
+                         (not an id, so the browser does not scroll to the
+                         list instead of the shelf)
+              data-cover image under assets/books/
+              data-dims  physical size in inches: width height thickness
+          -->
+
+            <section class="c-catalogue__category" data-category="Philosophy of Science">
+              <div class="c-title-bar">
+                <h2 class="c-title-bar__title">Philosophy of Science</h2>
+                <span class="c-title-bar__divider"></span>
+              </div>
+              <ul class="o-plain-list">
+                <li class="c-post-card c-book" data-id="the-beginning-of-infinity" data-cover="assets/books/the-beginning-of-infinity.jpg" data-dims="5.5 8.4 1.1">
+                  <div class="c-post-card__meta">
+                    <span class="c-post-card__date c-book__author">David Deutsch</span>
+                  </div>
+                  <div class="c-post-card__content">
+                    <h3 class="c-post-card__title"><a href="#the-beginning-of-infinity" class="c-post-card__url c-book__title">The Beginning of Infinity</a></h3>
+                    <p class="c-post-card__excerpt">Explanations That Transform the World &middot; 2011</p>
+                  </div>
+                </li>
+
+                <li class="c-post-card c-book" data-id="conjectures-and-refutations" data-cover="assets/books/conjectures-and-refutations.jpg" data-dims="5.1 7.8 1.3">
+                  <div class="c-post-card__meta">
+                    <span class="c-post-card__date c-book__author">Karl Popper</span>
+                  </div>
+                  <div class="c-post-card__content">
+                    <h3 class="c-post-card__title"><a href="#conjectures-and-refutations" class="c-post-card__url c-book__title">Conjectures and Refutations</a></h3>
+                    <p class="c-post-card__excerpt">The Growth of Scientific Knowledge &middot; 1963</p>
+                  </div>
+                </li>
+              </ul>
+            </section>
+
+            <section class="c-catalogue__category" data-category="Memoir">
+              <div class="c-title-bar">
+                <h2 class="c-title-bar__title">Memoir</h2>
+                <span class="c-title-bar__divider"></span>
+              </div>
+              <ul class="o-plain-list">
+                <li class="c-post-card c-book" data-id="surely-youre-joking-mr-feynman" data-cover="assets/books/surely-youre-joking-mr-feynman.jpg" data-dims="5.5 8.2 0.8">
+                  <div class="c-post-card__meta">
+                    <span class="c-post-card__date c-book__author">Richard P. Feynman</span>
+                  </div>
+                  <div class="c-post-card__content">
+                    <h3 class="c-post-card__title"><a href="#surely-youre-joking-mr-feynman" class="c-post-card__url c-book__title">Surely You're Joking, Mr. Feynman!</a></h3>
+                    <p class="c-post-card__excerpt">Adventures of a Curious Character &middot; 1985</p>
+                  </div>
+                </li>
+              </ul>
+            </section>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="c-footer">
+      <div class="o-grid">
+        <div class="o-grid__col">
+          <ul class="c-footer-nav o-plain-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="reading.html">Reading</a></li>
+            <li><a href="https://x.com/PaIbraNiang1" target="_blank" rel="noreferrer">Twitter</a></li>
+          </ul>
+          <div class="c-footer-copy">&copy; 2026 Ibra Niang &middot; Memphis, Tennessee &middot; [fname][lname]998[at]gmail.com</div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="app.js" defer></script>
+  <script src="bookshelf.js" defer></script>
+</body>
+</html>

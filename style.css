@@ -1054,6 +1054,300 @@ code, kbd, pre, samp {
 }
 
 /* --------------------------------------------------------------------------
+   Tabs: the Reading sub-navigation and the bookshelf category filters.
+   Same treatment as the main nav: the current item gets a 2px rule.
+   -------------------------------------------------------------------------- */
+
+.c-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8) var(--space-24);
+}
+
+.c-tabs__item {
+  position: relative;
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.c-tabs__item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background-color: transparent;
+}
+
+.c-tabs__item:hover,
+.c-tabs__item:focus-visible,
+.c-tabs__item[aria-current="page"],
+.c-tabs__item[aria-pressed="true"] {
+  color: var(--color-text-primary);
+}
+
+.c-tabs__item:hover::after,
+.c-tabs__item[aria-current="page"]::after,
+.c-tabs__item[aria-pressed="true"]::after {
+  background-color: var(--color-text-primary);
+}
+
+.c-tabs__count {
+  font-size: var(--font-size-xxsmall);
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Bookshelf
+   Each book is a box: the cover faces the reader, the back board sits one
+   thickness behind it, and the spine and page block hinge off either edge.
+   bookshelf.js sets --x/--y per book; the tokens below keep the boards and
+   paper inside the monochrome palette, and covers are shown in greyscale.
+   -------------------------------------------------------------------------- */
+
+.c-shelf {
+  --book-scale: 1;
+  --book-board: #181818;
+  --book-paper: #DCDCDC;
+  --book-paper-light: #F2F2F2;
+  --book-paper-edge: #BDBDBD;
+  --book-shadow: rgba(0, 0, 0, .28);
+  margin-top: var(--space-40);
+}
+
+:root[data-theme="dark"] .c-shelf {
+  --book-board: #2C2C2C;
+  --book-paper: #8C8C8C;
+  --book-paper-light: #A8A8A8;
+  --book-paper-edge: #6B6B6B;
+  --book-shadow: rgba(0, 0, 0, .75);
+}
+
+.c-shelf[hidden] {
+  display: none;
+}
+
+.c-shelf__filters {
+  justify-content: center;
+  padding: 0 var(--space-16);
+}
+
+.c-shelf__stage {
+  position: relative;
+  height: 520px;
+  overflow: hidden;
+  perspective: 1800px;
+  cursor: grab;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.c-shelf__stage[data-dragging="true"],
+.c-shelf__stage[data-dragging="true"] .c-shelf__book {
+  cursor: grabbing;
+}
+
+.c-shelf__book {
+  --depth: calc(var(--thickness) * var(--book-scale));
+  position: absolute;
+  top: 66%;
+  left: 50%;
+  width: calc(var(--width) * var(--book-scale));
+  height: calc(var(--height) * var(--book-scale));
+  transform:
+    translate(calc(-50% + var(--x) * var(--book-scale)), calc(-100% + var(--y) * var(--book-scale)))
+    rotateY(-16deg)
+    rotateZ(3deg);
+  transform-origin: bottom;
+  transform-style: preserve-3d;
+  transition:
+    transform .6s cubic-bezier(.22, .8, .24, 1),
+    opacity .35s ease,
+    visibility .35s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.c-shelf__stage[data-dragging="true"] .c-shelf__book {
+  transition-duration: .3s;
+}
+
+.c-shelf__book.is-filtered {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.c-shelf__book:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 10px;
+}
+
+.c-shelf__back,
+.c-shelf__spine,
+.c-shelf__pages {
+  position: absolute;
+  pointer-events: none;
+}
+
+.c-shelf__back {
+  inset: 0;
+  background: var(--book-board);
+  transform: translateZ(calc(0px - var(--depth)));
+  box-shadow: 12px 18px 24px -10px var(--book-shadow);
+}
+
+.c-shelf__spine {
+  top: 0;
+  right: 100%;
+  width: var(--depth);
+  height: 100%;
+  background: var(--book-board);
+  transform-origin: 100%;
+  transform: rotateY(-90deg);
+}
+
+.c-shelf__pages {
+  top: 1px;
+  left: 100%;
+  width: var(--depth);
+  height: calc(100% - 2px);
+  background: repeating-linear-gradient(90deg, var(--book-paper) 0, var(--book-paper-light) .8px, var(--book-paper) 1.6px);
+  border-block: 1px solid var(--book-paper-edge);
+  transform-origin: 0;
+  transform: rotateY(90deg);
+}
+
+.c-shelf__cover {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--book-board);
+}
+
+.c-shelf__cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  filter: grayscale(1);
+}
+
+.c-shelf__book:not([data-open="true"]):hover .c-shelf__cover {
+  filter: brightness(1.08);
+}
+
+.c-shelf__cover.is-missing img {
+  display: none;
+}
+
+/* Typeset stand-in when a book has no cover image. */
+.c-shelf__plate {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 14% 12%;
+  color: #F2F2F2;
+  text-align: center;
+}
+
+.c-shelf__cover.is-missing .c-shelf__plate {
+  display: flex;
+}
+
+.c-shelf__plate-title {
+  font-size: calc(18px * var(--book-scale));
+  line-height: 1.2;
+  font-weight: var(--font-weight-bold);
+}
+
+.c-shelf__plate-author {
+  font-size: calc(12px * var(--book-scale));
+  letter-spacing: var(--font-letter-space);
+  text-transform: uppercase;
+}
+
+.c-shelf__footer {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: var(--space-12);
+  width: min(460px, 100% - 2 * var(--space-16));
+  margin: 0 auto;
+  text-align: center;
+}
+
+.c-shelf__caption {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: 92px;
+  overflow-wrap: anywhere;
+}
+
+.c-shelf__kicker {
+  font-size: var(--font-size-xxsmall);
+  line-height: var(--line-height-xxsmall);
+  letter-spacing: var(--font-letter-space);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.c-shelf__title {
+  margin-top: var(--space-4);
+  font-size: var(--font-size-large);
+  line-height: var(--line-height-small);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--font-letter-space-negative);
+}
+
+.c-shelf__author {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  color: var(--color-text-secondary);
+}
+
+.c-shelf__arrow {
+  width: var(--space-32);
+  height: var(--space-32);
+  font-size: var(--font-size-large);
+  line-height: 1;
+}
+
+.c-shelf__arrow:disabled {
+  opacity: .3;
+  cursor: default;
+}
+
+@media (max-width: 39.99em) {
+  .c-shelf {
+    --book-scale: .72;
+  }
+
+  .c-shelf__stage {
+    height: 360px;
+  }
+}
+
+.c-catalogue {
+  margin-top: var(--space-64);
+}
+
+.c-catalogue__category + .c-catalogue__category {
+  margin-top: var(--space-64);
+}
+
+/* --------------------------------------------------------------------------
    Footer
    -------------------------------------------------------------------------- */
 
