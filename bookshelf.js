@@ -207,7 +207,11 @@
   });
 
   // A deep link such as bookshelf.html#conjectures-and-refutations opens that book.
-  var linked = books.filter(function (book) { return '#' + book.id === location.hash; })[0];
+  function linkedBook() {
+    return books.filter(function (book) { return '#' + book.id === location.hash; })[0];
+  }
+
+  var linked = linkedBook();
   if (linked) current = linked;
 
   // Styles are in place before the books join the page, so nothing animates in.
@@ -220,15 +224,19 @@
   prevBtn.addEventListener('click', function () { step(-1); });
   nextBtn.addEventListener('click', function () { step(1); });
 
+  // Left and right browse whenever focus is not somewhere else on the page.
+  // Home and End only jump along the shelf while a book has focus; otherwise
+  // they keep scrolling the page.
   document.addEventListener('keydown', function (e) {
     if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
     var active = document.activeElement;
     if (active && active !== document.body && !shelf.contains(active)) return;
     var list = visible();
+    var onBook = stage.contains(active);
     if (e.key === 'ArrowLeft') step(-1);
     else if (e.key === 'ArrowRight') step(1);
-    else if (e.key === 'Home') select(list[0]);
-    else if (e.key === 'End') select(list[list.length - 1]);
+    else if (e.key === 'Home' && onBook) select(list[0]);
+    else if (e.key === 'End' && onBook) select(list[list.length - 1]);
     else return;
     e.preventDefault();
   });
@@ -261,6 +269,12 @@
 
   stage.addEventListener('pointermove', function (e) {
     if (!drag || e.pointerId !== drag.id) return;
+    // A press released outside the stage before it moved never reaches
+    // pointerup here; without this, hovering later would drag the shelf.
+    if (!e.buttons) {
+      endDrag(e);
+      return;
+    }
     var dx = e.clientX - drag.x;
     if (!drag.moved) {
       if (Math.abs(dx) < 6) return;
@@ -286,17 +300,29 @@
   stage.addEventListener('pointerup', endDrag);
   stage.addEventListener('pointercancel', endDrag);
 
+  // Opens a book from outside the shelf: clears a filter that would hide it
+  // and brings the shelf into view.
+  function reveal(book) {
+    if (filter && filter !== book.category) filter = null;
+    current = book;
+    render();
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    shelf.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
+  }
+
   // Choosing a book in the catalogue opens it on the shelf.
   books.forEach(function (book) {
     var link = book.item.querySelector('.c-book__title');
     if (!link) return;
     link.addEventListener('click', function (e) {
       e.preventDefault();
-      if (filter && filter !== book.category) filter = null;
-      current = null;
-      select(book);
-      var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      shelf.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
+      reveal(book);
     });
+  });
+
+  // The hash can also change without a reload, from the address bar or a link.
+  window.addEventListener('hashchange', function () {
+    var book = linkedBook();
+    if (book) reveal(book);
   });
 })();

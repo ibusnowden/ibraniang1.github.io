@@ -1143,7 +1143,7 @@ code, kbd, pre, samp {
   overflow: hidden;
   perspective: 1800px;
   cursor: grab;
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
   -webkit-user-select: none;
   user-select: none;
 }
