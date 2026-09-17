@@ -232,6 +232,10 @@
   stage.appendChild(fragment);
   shelf.hidden = false;
 
+  // The catalogue is only the shelf's data once the shelf is showing.
+  var catalogue = document.querySelector('.c-catalogue');
+  if (catalogue) catalogue.hidden = true;
+
   prevBtn.addEventListener('click', function () { step(-1); });
   nextBtn.addEventListener('click', function () { step(1); });
 
@@ -311,29 +315,15 @@
   stage.addEventListener('pointerup', endDrag);
   stage.addEventListener('pointercancel', endDrag);
 
-  // Opens a book from outside the shelf: clears a filter that would hide it
-  // and brings the shelf into view.
-  function reveal(book) {
+  // The hash can also change without a reload, from the address bar or a
+  // link. Open that book, clearing a filter that would hide it.
+  window.addEventListener('hashchange', function () {
+    var book = linkedBook();
+    if (!book) return;
     if (filter && filter !== book.category) filter = null;
     current = book;
     render();
     var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     shelf.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
-  }
-
-  // Choosing a book in the catalogue opens it on the shelf.
-  books.forEach(function (book) {
-    var link = book.item.querySelector('.c-book__title');
-    if (!link) return;
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      reveal(book);
-    });
-  });
-
-  // The hash can also change without a reload, from the address bar or a link.
-  window.addEventListener('hashchange', function () {
-    var book = linkedBook();
-    if (book) reveal(book);
   });
 })();

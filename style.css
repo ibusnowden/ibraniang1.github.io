@@ -1126,7 +1126,8 @@ code, kbd, pre, samp {
   --book-shadow: rgba(0, 0, 0, .75);
 }
 
-.c-shelf[hidden] {
+.c-shelf[hidden],
+.c-catalogue[hidden] {
   display: none;
 }
 
